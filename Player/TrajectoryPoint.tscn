@@ -1,0 +1,9 @@
+[gd_scene format=2]
+
+[node name="TrajectoryPoint" type="PathFollow2D"]
+rotate = false
+loop = false
+
+[node name="Area2D" type="Area2D" parent="."]
+monitoring = false
+monitorable = false

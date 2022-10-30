@@ -1,0 +1,147 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Table/Table.gd" type="Script" id=1]
+[ext_resource path="res://Stuff/Block.tscn" type="PackedScene" id=2]
+[ext_resource path="res://UI/Button4.gd" type="Script" id=3]
+[ext_resource path="res://Table/Border/Border.tscn" type="PackedScene" id=4]
+[ext_resource path="res://UI/ButtonTheme.tres" type="Theme" id=5]
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Table/Border/Cutout Corner.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Table/Border/Cutout Middle.tscn" type="PackedScene" id=8]
+[ext_resource path="res://UI/InGameMenu.gd" type="Script" id=9]
+[ext_resource path="res://Table/Gameplay.gd" type="Script" id=10]
+
+[sub_resource type="Curve2D" id=1]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 1434.16, 100.879, 0, 0, 0, 0, 1436.47, 996.74 )
+}
+
+[node name="Table" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="Block" parent="." instance=ExtResource( 2 )]
+position = Vector2( 728.217, 479.933 )
+
+[node name="Border" type="Node" parent="."]
+
+[node name="Border1" parent="Border" instance=ExtResource( 4 )]
+position = Vector2( 0, 284.321 )
+
+[node name="Border3" parent="Border" instance=ExtResource( 4 )]
+position = Vector2( 1018.94, 294.474 )
+rotation = 3.14159
+
+[node name="Border2" parent="Border" instance=ExtResource( 4 )]
+position = Vector2( 493.489, 0 )
+rotation = 1.5708
+
+[node name="Border4" parent="Border" instance=ExtResource( 4 )]
+position = Vector2( 514.706, 596.606 )
+rotation = 4.71239
+
+[node name="Border5" parent="Border" instance=ExtResource( 4 )]
+position = Vector2( 1416.69, -2.26276 )
+rotation = 1.5708
+
+[node name="Border6" parent="Border" instance=ExtResource( 4 )]
+position = Vector2( 1465.06, 607.92 )
+rotation = 4.71239
+
+[node name="Balls" type="Node" parent="."]
+
+[node name="Holes" type="Node" parent="."]
+
+[node name="Cutout Corner" parent="Holes" instance=ExtResource( 7 )]
+scale = Vector2( 0.5, 0.5 )
+
+[node name="Cutout Corner2" parent="Holes" instance=ExtResource( 7 )]
+position = Vector2( 1920, 0 )
+rotation = 1.5708
+scale = Vector2( 0.5, 0.5 )
+
+[node name="Cutout Corner3" parent="Holes" instance=ExtResource( 7 )]
+position = Vector2( 1920, 1080 )
+rotation = 3.14159
+scale = Vector2( 0.5, 0.5 )
+
+[node name="Cutout Corner4" parent="Holes" instance=ExtResource( 7 )]
+position = Vector2( 0, 1080 )
+rotation = -1.5708
+scale = Vector2( 0.5, 0.5 )
+
+[node name="Cutout Middle" parent="Holes" instance=ExtResource( 8 )]
+position = Vector2( 960, 1080 )
+rotation = 3.14159
+scale = Vector2( 0.5, 0.5 )
+
+[node name="Cutout Middle2" parent="Holes" instance=ExtResource( 8 )]
+position = Vector2( 960, 0 )
+scale = Vector2( 0.5, 0.5 )
+
+[node name="Players" type="Node" parent="."]
+
+[node name="Player" parent="Players" instance=ExtResource( 6 )]
+
+[node name="InGameMenu" type="Popup" parent="."]
+pause_mode = 2
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -150.0
+margin_right = 150.0
+popup_exclusive = true
+script = ExtResource( 9 )
+
+[node name="ColorRect" type="ColorRect" parent="InGameMenu"]
+modulate = Color( 1, 1, 1, 0.121569 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InGameMenu"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_vertical = 2
+theme = ExtResource( 5 )
+custom_constants/separation = 20
+script = ExtResource( 3 )
+
+[node name="Label" type="Label" parent="InGameMenu/VBoxContainer"]
+margin_right = 40.0
+margin_bottom = 32.0
+text = "Popup"
+
+[node name="ContinueButton" type="Button" parent="InGameMenu/VBoxContainer"]
+margin_right = 300.0
+margin_bottom = 38.0
+theme = ExtResource( 5 )
+text = "Continue"
+
+[node name="RestartButton" type="Button" parent="InGameMenu/VBoxContainer"]
+margin_top = 58.0
+margin_right = 300.0
+margin_bottom = 96.0
+text = "Restart"
+
+[node name="BackToMenuButton" type="Button" parent="InGameMenu/VBoxContainer"]
+margin_top = 116.0
+margin_right = 300.0
+margin_bottom = 154.0
+text = "Back to Menu"
+
+[node name="CenterContainer" type="CenterContainer" parent="InGameMenu"]
+margin_left = 200.0
+margin_top = 100.0
+margin_right = 400.0
+margin_bottom = 400.0
+
+[node name="Gameplay" type="Node" parent="."]
+script = ExtResource( 10 )
+
+[node name="HeadString" type="Path2D" parent="."]
+curve = SubResource( 1 )
+
+[connection signal="pressed" from="InGameMenu/VBoxContainer/ContinueButton" to="InGameMenu/VBoxContainer" method="_on_ContinueButton_pressed"]
+[connection signal="pressed" from="InGameMenu/VBoxContainer/RestartButton" to="InGameMenu/VBoxContainer" method="_on_RestartButton_pressed"]
+[connection signal="pressed" from="InGameMenu/VBoxContainer/BackToMenuButton" to="InGameMenu/VBoxContainer" method="_on_BackToMenuButton_pressed"]
