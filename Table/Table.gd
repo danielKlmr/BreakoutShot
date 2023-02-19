@@ -1,4 +1,4 @@
-extends Node2D
+extends Control
 
 # Singleton
 onready var game_variables = get_node("/root/GameVariables")
@@ -6,6 +6,7 @@ onready var game_variables = get_node("/root/GameVariables")
 # Member variables
 var balls = []
 var table_color
+var border_color
 var cue_ball
 var eight_ball
 var hole_offset = 38
@@ -13,19 +14,25 @@ var BORDER_SATURATION_SHIFT = 0.2
 onready var GAMEPLAY = get_node("Gameplay")
 onready var HeadString = get_node("HeadString")
 onready var Ball = preload("res://Ball/Ball.tscn")
+onready var BallPositioner = preload("res://Ball/BallPositioner.tscn")
 
 func _ready():
 	_set_color()
 	_check_table_size()
 	_setup_table()
 	_init_balls()
+	setup_cue_ball()
 	GAMEPLAY.play_game(cue_ball)
 	
 func _draw():
 	draw_polyline(HeadString.get_curve().get_baked_points(), game_variables.COLORS["blue"], 2.0)
+	draw_circle(game_variables.food_spot_position, 5, border_color)
+	draw_circle(game_variables.head_spot_position, 5, border_color)
 
 func _set_color():
-	table_color = game_variables.TABLE_COLORS[0]
+	randomize()
+	var color_index:int = randi() % len(game_variables.TABLE_COLORS)
+	table_color = game_variables.TABLE_COLORS[color_index]
 	VisualServer.set_default_clear_color(table_color)
 
 func _check_table_size():
@@ -48,7 +55,7 @@ func _check_table_size():
 		game_variables.orientation = 2
 		
 func _setup_table():
-	var border_color = table_color
+	border_color = table_color
 	border_color.s += BORDER_SATURATION_SHIFT
 	
 	get_node("Border").get_child(0).set_size(game_variables.table_size.y - 2 * game_variables.CUTOUT_OVERLAP)
@@ -73,25 +80,18 @@ func _setup_table():
 	for cutout in get_node("Holes").get_children():
 		cutout.get_node("Sprite").set_modulate(border_color)
 		
-	var head_line_x = game_variables.table_size.x * 3 / 4 # 3/4 of the tables length
+	game_variables.head_string_position = game_variables.table_size.x * 3 / 4 # 3/4 of the tables length
 	var head_line_top = game_variables.BORDER_THICKNESS + game_variables.ballradius
 	var head_line_bottom = head_line_top + game_variables.table_size.y - (2 * game_variables.ballradius)
-	game_variables.head_string_position = [
-		Vector2(head_line_x, head_line_top),
-		Vector2(head_line_x, head_line_bottom)
-		]
 	HeadString.get_curve().clear_points()
-	HeadString.get_curve().add_point(game_variables.head_string_position[0])
-	HeadString.get_curve().add_point(game_variables.head_string_position[1])
+	HeadString.get_curve().add_point(Vector2(game_variables.head_string_position, head_line_top))
+	HeadString.get_curve().add_point(Vector2(game_variables.head_string_position, head_line_bottom))
 	update() # TODO Remove
 	
-	game_variables.head_spot_position = Vector2(head_line_x, game_variables.BORDER_THICKNESS + (game_variables.table_size.y / 2))
+	game_variables.head_spot_position = Vector2(game_variables.head_string_position, game_variables.BORDER_THICKNESS + (game_variables.table_size.y / 2))
+	game_variables.food_spot_position = Vector2(game_variables.table_size.x * 1 / 4, game_variables.BORDER_THICKNESS + (game_variables.table_size.y / 2))
 
 func _init_balls():
-	eight_ball = Ball.instance().init(8, game_variables.COLORS['black'], Vector2(100,100))
-	
-	var numbers = [5, 13, 15, 6, 12, 11, 7, 14, 4, 10, 8, 3, 9, 2, 1]
-	
 	var colors = [
 		game_variables.COLORS["yellow"],
 		game_variables.COLORS["blue"],
@@ -102,54 +102,86 @@ func _init_balls():
 		game_variables.COLORS["dark_red"],
 		game_variables.COLORS["black"]]
 		
+	var suits = game_variables.suits
+		
 	for ball_index in game_variables.NUMBER_OBJECT_BALLS:
-		var ball = Ball.instance().init(ball_index + 1, colors[ball_index % len(colors)], Vector2(0,0))
-		get_node("Balls").add_child(eight_ball)
+		var suit
+		if ball_index < game_variables.EIGHT_BALL_NUMBER:
+			suit = suits.Solid
+		else:
+			suit = suits.Stripe
+		var ball = Ball.instance().init(ball_index + 1, colors[ball_index % len(colors)], Vector2(0,0), suit)
 		balls.append(ball)
 		
-	eight_ball = balls[9]
-	balls.remove(9)
+	eight_ball = balls[7]
+	balls.remove(7)
 	
+	randomize()
 	balls.shuffle()
-	
+	if balls[-5].suit == balls[-1].suit:
+		for ball_number in range(game_variables.NUMBER_OBJECT_BALLS - 1):
+			var ball = balls[ball_number]
+			if ball.suit != balls[-1].suit:
+				balls.erase(ball)
+				balls.insert(game_variables.NUMBER_OBJECT_BALLS - 6, ball)
+				break
+
+	balls.insert(4, eight_ball) # Insert always after the given index
 	var assignment_iterator = 0
 	var distance_rows = game_variables.ballradius * 2 + 7
 	var distance_columns = game_variables.ballradius * 2 + 2
 	
+	# Place balls from the front column to the rear column
 	for column in range(5):
-		var x_position = 150 + column * distance_columns
-		for rows in range(5 - column, 0, -1):
-			var y_position = (game_variables.y_size / 2) - (((4 - column) * distance_rows) / 2) + (5 - column - rows) * distance_rows 
-			_create_ball(Vector2(x_position, y_position), numbers[assignment_iterator], (colors + colors)[numbers[assignment_iterator] - 1])
-			assignment_iterator = assignment_iterator + 1
+		var x_position = game_variables.food_spot_position.x - (column * distance_columns)
+		for rows in range(0, column+1):
+			var y_position = game_variables.food_spot_position.y - ((column * distance_rows) / 2) + (rows) * distance_rows 
+			var ball = balls[assignment_iterator]
+			ball.set_position(Vector2(x_position, y_position))
+			get_node("Balls").add_child(ball)
+			assignment_iterator += 1
 			
-	cue_ball = _create_ball(game_variables.head_spot_position, 0, game_variables.COLORS["white"])
-
-# Creates a ball at given position
-func _create_ball(position, number, color):
-	var new_ball = load("res://Ball/Ball.tscn").instance()
-	balls.append(new_ball)
-	balls[-1].set_position(position)
-	balls[-1].number = number
-	balls[-1].color = color
-	get_node("Balls").add_child(balls[-1])
 	
-	return new_ball
+func setup_cue_ball():
+	self.cue_ball = Ball.instance().init(0, game_variables.COLORS["white"], game_variables.head_spot_position)
+	print(game_variables.head_spot_position)
+	
+	if GAMEPLAY.current_turn_state == GAMEPLAY.turn_states.PlaceBallKitchen:
+		var cue_ball_positioner = BallPositioner.instance().init(self.cue_ball)
+		self.add_child(cue_ball_positioner)
+	else:
+		print('Now??')
+		get_node("Balls").add_child(self.cue_ball)
+	return self.cue_ball
 	
 func delete_ball(ball):
 	var ball_number = ball.number
 	balls.erase(ball)
 	ball.queue_free()
 	
-	if ball_number == game_variables.EIGHT_BALL_NUMBER:
-		get_node("InGameMenu").open_lost_menu()
+	if ball_number == 0:
+		GAMEPLAY.cue_ball = null
+	elif ball_number == game_variables.EIGHT_BALL_NUMBER:
+		if GAMEPLAY.current_game_state != GAMEPLAY.game_states.PocketingEightBall:
+			GAMEPLAY.set_game_state(GAMEPLAY.game_states.Lost)
+		else:
+			GAMEPLAY.set_game_state(GAMEPLAY.game_states.Win)
 	
-	count_balls()
+	var number_object_balls = count_object_balls()
+	
+	# Change game state to PocketingEightBall when only 1 ball, which must be the 8 ball, is left
+	if number_object_balls == 1:
+		if GAMEPLAY.current_game_state != GAMEPLAY.game_states.PocketingEightBall:
+			GAMEPLAY.set_game_state(GAMEPLAY.game_states.PocketingEightBall)
 
-func count_balls():
+func count_object_balls():
 	var number_balls = len(balls)
-	print(number_balls)
 	return number_balls
+	
+func set_balls_static(value: bool):
+	for ball in balls:
+		var value_to_set = ball.MODE_STATIC if value == true else ball.MODE_RIGID
+		ball.set_mode(value_to_set)
 
 func _unhandled_input(event):
 	if event is InputEventKey:

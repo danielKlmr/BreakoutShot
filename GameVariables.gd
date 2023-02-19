@@ -13,6 +13,9 @@ var food_spot_position = null
 # Game
 var NUMBER_OBJECT_BALLS = 15
 
+# Statics
+enum suits {Stripe, Solid}
+
 var window_size = Vector2(0, 0)
 var table_size = Vector2(0, 0)
 var ballradius = 20

@@ -15,7 +15,6 @@ func _on_Button_pressed():
 
 
 func _on_BackToMenuButton_pressed():
-	print("clicked")
 	get_tree().change_scene("res://UI/Main Menu.tscn")
 
 

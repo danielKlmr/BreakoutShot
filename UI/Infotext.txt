@@ -1,0 +1,10 @@
+This game does not folloe the professional rule system, but rather implements soe dirty street pool rules. Additionally, it is played by one person, so the suit of the ball does not really matter in this case. Instead, the player has to focus on getting the balls in the holes in arbitrary order, after which the 8 ball must be inserted.
+- Break is done from the head line
+
+Fouls:
+- Cue ball in hole
+- No object ball hit
+
+Game is won when 8 ball is in a hole after no object balls are left
+
+Game is lost when the 8 ball is in the hole when object balls are left
