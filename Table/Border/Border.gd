@@ -7,12 +7,15 @@ var drawing_color = Color(ColorN("white"))
 
 func _draw():
 	draw_rect(
-			Rect2(Vector2(-game_variables.OUTSIDE_DRAWING, -drawing_length / 2), Vector2(game_variables.OUTSIDE_DRAWING + game_variables.BORDER_THICKNESS, drawing_length)),
+			Rect2(
+				Vector2(-game_variables.OUTSIDE_DRAWING, -drawing_length / 2),
+				Vector2(game_variables.OUTSIDE_DRAWING, drawing_length)),
 			drawing_color)
 	
 func set_size(length):
 	drawing_length = length
 	get_node("CollisionShape2D").scale.x = game_variables.BORDER_THICKNESS
+	get_node("CollisionShape2D").position.x = -game_variables.BORDER_THICKNESS
 	get_node("CollisionShape2D").scale.y = length / 2
 #	get_node("CollisionShape2D").shape = RectangleShape2D.new().set_extents(Vector2(game_variables.BORDER_THICKNESS, length))
 	update()

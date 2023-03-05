@@ -16,17 +16,7 @@ _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 1434.16, 100.879, 0, 0, 0, 0, 1436.47, 996.74 )
 }
 
-[node name="Table" type="Control"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -960.0
-margin_top = -540.0
-margin_right = 960.0
-margin_bottom = 540.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
+[node name="Table" type="Node2D"]
 script = ExtResource( 1 )
 
 [node name="Border" type="Node" parent="."]
@@ -197,6 +187,11 @@ margin_bottom = 32.0
 rect_min_size = Vector2( 50, 0 )
 custom_fonts/font = ExtResource( 2 )
 text = "X"
+
+[node name="CameraPosition" type="Node2D" parent="."]
+
+[node name="Camera" type="Camera2D" parent="CameraPosition"]
+current = true
 
 [connection signal="pressed" from="InGameMenu/VBoxContainer/ContinueButton" to="InGameMenu/VBoxContainer" method="_on_ContinueButton_pressed"]
 [connection signal="pressed" from="InGameMenu/VBoxContainer/RestartButton" to="InGameMenu/VBoxContainer" method="_on_RestartButton_pressed"]

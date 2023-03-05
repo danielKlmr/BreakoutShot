@@ -6,6 +6,7 @@ var SNAPPING_DISTANCE = 50
 # Table
 var x_size = 0
 var y_size = 0
+var middle_spot_position = null
 var head_string_position = null
 var head_spot_position = null
 var food_spot_position = null

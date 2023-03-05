@@ -4,6 +4,7 @@ This game does not folloe the professional rule system, but rather implements so
 Fouls:
 - Cue ball in hole
 - No object ball hit
+After a foul, ball is shot from behind the head string
 
 Game is won when 8 ball is in a hole after no object balls are left
 

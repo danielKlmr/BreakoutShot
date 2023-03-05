@@ -1,6 +1,7 @@
 extends RigidBody2D
 
 # Member Variables
+var radius
 var number # Number displayed on the ball
 var suit
 var movement = Vector2(0, 0)
@@ -22,25 +23,28 @@ signal hole_in(ball_number)
 # Linear damp in Project Settings set to 0.3 for realistic speed reduction
 
 func init(
+	radius:int = 20,
 	number:int = 0,
 	color:Color = Color(ColorN("white")),
 	pos:Vector2 = Vector2(0, 0),
 	suit = null
 	):
+	self.radius = radius
 	self.number = number
 	self.color = color
 	self.position = pos
 	self.suit = suit
 	
+	get_node("CollisionShape2D").shape.radius = self.radius
+	
 	return self
 	
 func _ready():
-	get_node("CollisionShape2D").shape.radius = game_variables.ballradius
 	get_node("Label").text = str(number)
 	
 func _draw():
-	draw_circle(Vector2(0,0), game_variables.ballradius, color)
-	draw_circle(Vector2(0,0), game_variables.ballradius / 2, game_variables.COLORS["white"])
+	draw_circle(Vector2(0,0), self.radius, color)
+	draw_circle(Vector2(0,0), self.radius / 2, game_variables.COLORS["white"])
 	
 func _physics_process(delta):
 	if hit_mode == 1:

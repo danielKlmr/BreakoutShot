@@ -6,12 +6,9 @@
 [node name="Cutout Middle" type="StaticBody2D"]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-position = Vector2( 64, 64 )
-polygon = PoolVector2Array( -128, 52, -192, 52, -192, -128, 64, -128, 64, 52, 0, 52, -20.5694, -17.5557, -26.4062, -28.1068, -35.1614, -37.76, -46.1615, -43.5968, -57.6106, -46.7397, -69.9577, -46.9642, -81.1823, -44.0458, -93.0804, -37.311, -101.836, -27.4334, -107.672, -18.0047 )
+polygon = PoolVector2Array( -65, 0, -128, 0, -128, -128, 128, -128, 128, 0, 65, 0, 50, -63, 44, -77, 35, -89, 22, -96, 9, -98, -8, -98, -21, -96, -32, -91, -41, -81, -49, -66 )
 
 [node name="Area2D" parent="." instance=ExtResource( 2 )]
-position = Vector2( 0, 64 )
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 0, 64 )
 texture = ExtResource( 1 )

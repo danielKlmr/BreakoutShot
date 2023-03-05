@@ -1,9 +1,17 @@
-extends Control
+extends Node2D
 
 # Singleton
 onready var game_variables = get_node("/root/GameVariables")
 
+# Field size (mm)
+# https://de.wikipedia.org/wiki/Billardtisch_(Pool)
+var STANDARD_LENGTH = 2240
+var STANDARD_WIDTH = 1120
+var STANDARD_BALL_DIAMETER = 57.2
+
 # Member variables
+var mm_to_px_scaling_factor
+var ball_radius
 var balls = []
 var table_color
 var border_color
@@ -15,6 +23,8 @@ onready var GAMEPLAY = get_node("Gameplay")
 onready var HeadString = get_node("HeadString")
 onready var Ball = preload("res://Ball/Ball.tscn")
 onready var BallPositioner = preload("res://Ball/BallPositioner.tscn")
+onready var cameraPosition = get_node("CameraPosition")
+onready var camera = get_node("CameraPosition/Camera")
 
 func _ready():
 	_set_color()
@@ -28,6 +38,7 @@ func _draw():
 	draw_polyline(HeadString.get_curve().get_baked_points(), game_variables.COLORS["blue"], 2.0)
 	draw_circle(game_variables.food_spot_position, 5, border_color)
 	draw_circle(game_variables.head_spot_position, 5, border_color)
+	draw_circle(Vector2(cameraPosition.position.x, cameraPosition.position.y), 5, border_color)
 
 func _set_color():
 	randomize()
@@ -37,6 +48,7 @@ func _set_color():
 
 func _check_table_size():
 	var window = OS.get_window_size()
+
 	game_variables.x_size = window.x
 	game_variables.y_size = window.y
 	
@@ -47,6 +59,11 @@ func _check_table_size():
 	game_variables.table_size.x = game_variables.window_size.x - 2 * game_variables.BORDER_THICKNESS
 	game_variables.table_size.y = round(game_variables.table_size.x / 2)
 	
+	game_variables.middle_spot_position = Vector2(game_variables.window_size.x / 2, game_variables.window_size.y / 2)
+	
+	cameraPosition.position.x = game_variables.window_size.x / 2
+	cameraPosition.position.y = game_variables.window_size.y / 2
+	
 	if(window.x * 1.1 > window.y):
 		game_variables.orientation = 0
 	elif(window.x < window.y * 1.1):
@@ -55,24 +72,35 @@ func _check_table_size():
 		game_variables.orientation = 2
 		
 func _setup_table():
+	# TODO CHECK https://github.com/vrojak/godot-multiplayer-billiards
+	#https://www.youtube.com/watch?v=pJ0SW4ayXzU
 	border_color = table_color
 	border_color.s += BORDER_SATURATION_SHIFT
 	
+	var top = game_variables.middle_spot_position.y - (game_variables.table_size.y / 2)
+	var bottom = game_variables.middle_spot_position.y + (game_variables.table_size.y / 2)
+	var left = game_variables.middle_spot_position.x - (game_variables.table_size.x / 2)
+	var right = game_variables.middle_spot_position.x + (game_variables.table_size.x / 2)
+	
 	get_node("Border").get_child(0).set_size(game_variables.table_size.y - 2 * game_variables.CUTOUT_OVERLAP)
-	get_node("Border").get_child(0).position = Vector2(0, game_variables.table_size.y / 2 + game_variables.BORDER_THICKNESS)
+	get_node("Border").get_child(0).position = Vector2(left, game_variables.middle_spot_position.y)
 	get_node("Border").get_child(2).set_size((game_variables.table_size.x - 4 * game_variables.CUTOUT_OVERLAP) / 2)
-	get_node("Border").get_child(2).position = Vector2((game_variables.table_size.x - 4 * game_variables.CUTOUT_OVERLAP) / 4 + game_variables.CUTOUT_OVERLAP + game_variables.BORDER_THICKNESS, 0)
+	get_node("Border").get_child(2).position = Vector2((game_variables.table_size.x - 4 * game_variables.CUTOUT_OVERLAP) / 4 + game_variables.CUTOUT_OVERLAP + game_variables.BORDER_THICKNESS, top)
 	get_node("Border").get_child(4).set_size((game_variables.table_size.x - 4 * game_variables.CUTOUT_OVERLAP) / 2)
-	get_node("Border").get_child(4).position = Vector2(game_variables.table_size.x - ((game_variables.table_size.x - 4 * game_variables.CUTOUT_OVERLAP) / 4 + game_variables.CUTOUT_OVERLAP) + game_variables.BORDER_THICKNESS, 0)
+	get_node("Border").get_child(4).position = Vector2(game_variables.table_size.x - ((game_variables.table_size.x - 4 * game_variables.CUTOUT_OVERLAP) / 4 + game_variables.CUTOUT_OVERLAP) + game_variables.BORDER_THICKNESS, top)
 	get_node("Border").get_child(1).set_size(game_variables.table_size.y - 2 * game_variables.CUTOUT_OVERLAP)
-	get_node("Border").get_child(1).position = Vector2(game_variables.x_size, game_variables.table_size.y / 2 + game_variables.BORDER_THICKNESS)
+	get_node("Border").get_child(1).position = Vector2(right, game_variables.middle_spot_position.y)
 	get_node("Border").get_child(3).set_size((game_variables.table_size.x - 4 * game_variables.CUTOUT_OVERLAP) / 2)
-	get_node("Border").get_child(3).position = Vector2((game_variables.table_size.x - 4 * game_variables.CUTOUT_OVERLAP) / 4 + game_variables.CUTOUT_OVERLAP + game_variables.BORDER_THICKNESS, game_variables.table_size.y + 2 * game_variables.BORDER_THICKNESS)
+	get_node("Border").get_child(3).position = Vector2((game_variables.table_size.x - 4 * game_variables.CUTOUT_OVERLAP) / 4 + game_variables.CUTOUT_OVERLAP + game_variables.BORDER_THICKNESS, bottom)
 	get_node("Border").get_child(5).set_size((game_variables.table_size.x - 4 * game_variables.CUTOUT_OVERLAP) / 2)
-	get_node("Border").get_child(5).position = Vector2(game_variables.table_size.x - ((game_variables.table_size.x - 4 * game_variables.CUTOUT_OVERLAP) / 4 + game_variables.CUTOUT_OVERLAP) + game_variables.BORDER_THICKNESS, game_variables.table_size.y + 2 * game_variables.BORDER_THICKNESS)
-	get_node("Holes").get_node("Cutout Corner4").position = Vector2(0, game_variables.table_size.y + 2 * game_variables.BORDER_THICKNESS)
-	get_node("Holes").get_node("Cutout Corner3").position = Vector2(game_variables.window_size.x, game_variables.table_size.y + 2 * game_variables.BORDER_THICKNESS)
-	get_node("Holes").get_node("Cutout Middle").position = Vector2(game_variables.window_size.x / 2, game_variables.table_size.y + 2 * game_variables.BORDER_THICKNESS)
+	get_node("Border").get_child(5).position = Vector2(game_variables.table_size.x - ((game_variables.table_size.x - 4 * game_variables.CUTOUT_OVERLAP) / 4 + game_variables.CUTOUT_OVERLAP) + game_variables.BORDER_THICKNESS, bottom)
+	
+	get_node("Holes").get_node("Cutout Corner").position = Vector2(left, top)
+	get_node("Holes").get_node("Cutout Corner2").position = Vector2(right, top)
+	get_node("Holes").get_node("Cutout Middle2").position = Vector2(game_variables.middle_spot_position.x, top)
+	get_node("Holes").get_node("Cutout Corner4").position = Vector2(left, bottom)
+	get_node("Holes").get_node("Cutout Corner3").position = Vector2(right, bottom)
+	get_node("Holes").get_node("Cutout Middle").position = Vector2(game_variables.middle_spot_position.x, bottom)
 	
 	for border in get_node("Border").get_children():
 		border.set_color(border_color)
@@ -80,16 +108,23 @@ func _setup_table():
 	for cutout in get_node("Holes").get_children():
 		cutout.get_node("Sprite").set_modulate(border_color)
 		
+	mm_to_px_scaling_factor = game_variables.table_size.x / STANDARD_LENGTH
+	ball_radius = round(mm_to_px_scaling_factor * STANDARD_BALL_DIAMETER / 2)
+	
+	for hole in get_node("Holes").get_children():
+		hole.scale.x = mm_to_px_scaling_factor
+		hole.scale.y = mm_to_px_scaling_factor
+		
 	game_variables.head_string_position = game_variables.table_size.x * 3 / 4 # 3/4 of the tables length
-	var head_line_top = game_variables.BORDER_THICKNESS + game_variables.ballradius
-	var head_line_bottom = head_line_top + game_variables.table_size.y - (2 * game_variables.ballradius)
+	var head_line_top = game_variables.middle_spot_position.y - (game_variables.table_size.y / 2) + ball_radius
+	var head_line_bottom = game_variables.middle_spot_position.y + (game_variables.table_size.y / 2) - ball_radius
 	HeadString.get_curve().clear_points()
 	HeadString.get_curve().add_point(Vector2(game_variables.head_string_position, head_line_top))
 	HeadString.get_curve().add_point(Vector2(game_variables.head_string_position, head_line_bottom))
 	update() # TODO Remove
 	
-	game_variables.head_spot_position = Vector2(game_variables.head_string_position, game_variables.BORDER_THICKNESS + (game_variables.table_size.y / 2))
-	game_variables.food_spot_position = Vector2(game_variables.table_size.x * 1 / 4, game_variables.BORDER_THICKNESS + (game_variables.table_size.y / 2))
+	game_variables.head_spot_position = Vector2(game_variables.head_string_position, game_variables.middle_spot_position.y)
+	game_variables.food_spot_position = Vector2(game_variables.table_size.x * 1 / 4, game_variables.middle_spot_position.y)
 
 func _init_balls():
 	var colors = [
@@ -110,7 +145,7 @@ func _init_balls():
 			suit = suits.Solid
 		else:
 			suit = suits.Stripe
-		var ball = Ball.instance().init(ball_index + 1, colors[ball_index % len(colors)], Vector2(0,0), suit)
+		var ball = Ball.instance().init(ball_radius, ball_index + 1, colors[ball_index % len(colors)], Vector2(0,0), suit)
 		balls.append(ball)
 		
 	eight_ball = balls[7]
@@ -128,8 +163,8 @@ func _init_balls():
 
 	balls.insert(4, eight_ball) # Insert always after the given index
 	var assignment_iterator = 0
-	var distance_rows = game_variables.ballradius * 2 + 7
-	var distance_columns = game_variables.ballradius * 2 + 2
+	var distance_rows = ball_radius * 2 + 7
+	var distance_columns = ball_radius * 2 + 2
 	
 	# Place balls from the front column to the rear column
 	for column in range(5):
@@ -143,7 +178,7 @@ func _init_balls():
 			
 	
 func setup_cue_ball():
-	self.cue_ball = Ball.instance().init(0, game_variables.COLORS["white"], game_variables.head_spot_position)
+	self.cue_ball = Ball.instance().init(ball_radius, 0, game_variables.COLORS["white"], game_variables.head_spot_position)
 	print(game_variables.head_spot_position)
 	
 	if GAMEPLAY.current_turn_state == GAMEPLAY.turn_states.PlaceBallKitchen:
