@@ -26,5 +26,8 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 align = 1
 valign = 1
 
+[node name="Audio" type="Node" parent="."]
+
 [connection signal="body_entered" from="." to="." method="_on_Ball_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_Ball_body_exited"]
 [connection signal="input_event" from="." to="." method="_on_Ball_input_event"]

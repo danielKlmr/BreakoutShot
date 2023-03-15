@@ -10,6 +10,7 @@ var hit_mode = 0 # 1 if the player is currently trying to hit a ball ToDo: bool?
 var hit_direction = Vector2(0, 0)
 var HIT_STRENGTH = 5 # Scalar to balance the intensity of the impuls that is given to a ball
 var mouse_drag_scale = 10
+var first_collider = true
 
 onready var game_variables = get_node("/root/GameVariables") # Singleton
 onready var table = get_node("/root/Table")
@@ -84,6 +85,7 @@ func _unhandled_input(event):
 					apply_impulse(Vector2(0, 0), movement)
 					set_sleeping(false) # So ball is not detected as idle when checked next frame by gameplay
 					player.get_node("AimLine").queue_free()
+					table.get_node("Hit").play()
 					hit_mode = 0
 					GAMEPLAY.set_turn_state(GAMEPLAY.turn_states.Hit)
 
@@ -94,9 +96,13 @@ func hole_in():
 
 
 func _on_Ball_body_entered(body):
-	# Hit is correct, when another ball is hit
-	if self.number == 0:
-		if body.get_filename() == self.get_filename():
+	if body.get_filename() == self.get_filename():
+		# Hit with another ball
+		if first_collider:
+			table.get_node("Clack1").play()
+		body.first_collider = false
+		# Hit is correct, when another ball is hit
+		if self.number == 0:
 			if GAMEPLAY.current_turn_state == GAMEPLAY.turn_states.Hit:
 				if GAMEPLAY.current_game_state != GAMEPLAY.game_states.PocketingEightBall:
 					if body.number != 8:
@@ -105,3 +111,7 @@ func _on_Ball_body_entered(body):
 						GAMEPLAY.set_turn_state(GAMEPLAY.turn_states.Foul)
 				else:
 					GAMEPLAY.set_turn_state(GAMEPLAY.turn_states.CorrectHit)
+
+
+func _on_Ball_body_exited(body):
+	first_collider = true

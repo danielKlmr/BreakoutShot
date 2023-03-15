@@ -26,7 +26,7 @@ var attempts
 var fouls
 var cue_ball
 
-onready var head_string = get_node("/root/Table/HeadString")
+onready var head_string = get_node("/root/Table/PlayingSurface/HeadString")
 onready var InGameMenu = get_node("/root/Table/InGameMenu")
 onready var Table = get_node("/root/Table")
 onready var UIAttempts = get_node("/root/Table/GUI Layer/GUI/Stats/Attempts Value")
@@ -55,7 +55,7 @@ func _physics_process(delta):
 func _balls_moving():
 	var moving = false
 
-	for ball in Table.get_node("Balls").get_children():			#if ball.linear_velocity.length_squared() > 5:
+	for ball in Table.get_node("PlayingSurface/Balls").get_children():			#if ball.linear_velocity.length_squared() > 5:
 		if !ball.is_sleeping():
 			moving = true
 			break
@@ -132,7 +132,7 @@ func _input(event):
 				cue_ball.get_node("CollisionShape2D").set_disabled(false)
 				cue_ball.set_mode(0)
 				ball_positioner.remove_child(cue_ball)
-				Table.get_node("Balls").add_child(cue_ball)
+				Table.get_node("PlayingSurface/Balls").add_child(cue_ball)
 				ball_positioner.queue_free()
 				Table.set_balls_static(false)
 				current_turn_state = turn_states.Wait
