@@ -1,7 +1,7 @@
 extends Node2D
 
 # Singleton
-onready var game_variables = get_node("/root/GameVariables")
+@onready var game_variables = get_node("/root/GameVariables")
 
 # Field size (mm)
 # https://de.wikipedia.org/wiki/Billardtisch_(Pool)
@@ -21,17 +21,19 @@ var cue_ball
 var eight_ball
 var hole_offset = 38
 var BORDER_SATURATION_SHIFT = 0.2
-onready var GAMEPLAY = get_node("Gameplay")
-onready var HeadString = get_node("PlayingSurface/HeadString")
-onready var Ball = preload("res://Ball/Ball.tscn")
-onready var BallPositioner = preload("res://Ball/BallPositioner.tscn")
-onready var playingSurface = get_node("PlayingSurface")
-onready var camera = get_node("PlayingSurface/Camera")
+@onready var GAMEPLAY = get_node("Gameplay")
+@onready var HeadString = get_node("PlayingSurface/HeadString")
+@onready var Ball = preload("res://Ball/Ball.tscn")
+@onready var BallPositioner = preload("res://Ball/BallPositioner.tscn")
+@onready var playingSurface = get_node("PlayingSurface")
+@onready var camera = get_node("PlayingSurface/Camera3D")
+@onready var Gui = get_node("GUI Layer")
 
 func _ready():
 	_set_color()
 	_check_table_size()
 	_setup_table()
+	_setup_gui()
 	_init_balls()
 	setup_cue_ball()
 	GAMEPLAY.play_game(cue_ball)
@@ -51,17 +53,17 @@ func _set_color():
 	border_color = table_color
 	border_color.s += BORDER_SATURATION_SHIFT
 	
-	VisualServer.set_default_clear_color(border_color)
+	RenderingServer.set_default_clear_color(border_color)
 
 func _check_table_size():
-	var window = OS.get_window_size()
+	var window = get_window().get_size()
 
 	game_variables.x_size = window.x
 	game_variables.y_size = window.y
 	
 	game_variables.window_size = Vector2(
-			ProjectSettings.get("display/window/size/width"),
-			ProjectSettings.get("display/window/size/height"))
+			ProjectSettings.get("display/window/size/viewport_width"),
+			ProjectSettings.get("display/window/size/viewport_height"))
 			
 	game_variables.table_size.x = game_variables.window_size.x - 2 * game_variables.BORDER_THICKNESS
 	game_variables.table_size.y = round(game_variables.table_size.x / 2)
@@ -118,7 +120,7 @@ func _setup_table():
 		border.set_color(border_color)
 		
 	for cutout in get_node("PlayingSurface/Holes").get_children():
-		cutout.get_node("Sprite").set_modulate(border_color)
+		cutout.get_node("Sprite2D").set_modulate(border_color)
 		
 	ball_radius = round(mm_to_px_scaling_factor * STANDARD_BALL_DIAMETER / 2)
 		
@@ -128,10 +130,13 @@ func _setup_table():
 	HeadString.get_curve().clear_points()
 	HeadString.get_curve().add_point(Vector2(game_variables.head_string_position, head_line_top))
 	HeadString.get_curve().add_point(Vector2(game_variables.head_string_position, head_line_bottom))
-	update() # TODO Remove
+	queue_redraw() # TODO Remove
 	
 	game_variables.head_spot_position = Vector2(game_variables.head_string_position, game_variables.middle_spot_position.y)
 	game_variables.food_spot_position = Vector2(game_variables.table_size.x * 1 / 4, game_variables.middle_spot_position.y)
+	
+func _setup_gui():
+	pass#Gui.get_node("MenuButtonPositioner/MenuButton")
 
 func _init_balls():
 	var colors = [
@@ -152,11 +157,12 @@ func _init_balls():
 			suit = suits.Solid
 		else:
 			suit = suits.Stripe
-		var ball = Ball.instance().init(ball_radius, ball_index + 1, colors[ball_index % len(colors)], Vector2(0,0), suit)
+		var ball = Ball.instantiate().init(ball_radius, ball_index + 1, colors[ball_index % len(colors)], Vector2(0,0), suit)
 		balls.append(ball)
 		
+		
 	eight_ball = balls[7]
-	balls.remove(7)
+	balls.remove_at(7)
 	
 	randomize()
 	balls.shuffle()
@@ -180,16 +186,17 @@ func _init_balls():
 			var y_position = game_variables.food_spot_position.y - ((column * distance_rows) / 2) + (rows) * distance_rows 
 			var ball = balls[assignment_iterator]
 			ball.set_position(Vector2(x_position, y_position))
+			ball.set_rotation(randf_range(0, 2*PI)) # TODO: Randomize?
 			get_node("PlayingSurface/Balls").add_child(ball)
 			assignment_iterator += 1
 			
 	
 func setup_cue_ball():
-	self.cue_ball = Ball.instance().init(ball_radius, 0, game_variables.COLORS["white"], game_variables.head_spot_position)
-	print(game_variables.head_spot_position)
+	self.cue_ball = Ball.instantiate().init(ball_radius, 0, game_variables.COLORS["white"], game_variables.head_spot_position)
+	cue_ball.set_rotation(randf_range(0, 2*PI)) # TODO: Randomize?
 	
 	if GAMEPLAY.current_turn_state == GAMEPLAY.turn_states.PlaceBallKitchen:
-		var cue_ball_positioner = BallPositioner.instance().init(self.cue_ball)
+		var cue_ball_positioner = BallPositioner.instantiate().init(self.cue_ball)
 		self.add_child(cue_ball_positioner)
 	else:
 		print('Now??')
@@ -222,10 +229,9 @@ func count_object_balls():
 	
 func set_balls_static(value: bool):
 	for ball in balls:
-		var value_to_set = ball.MODE_STATIC if value == true else ball.MODE_RIGID
-		ball.set_mode(value_to_set)
+		ball.set_freeze_enabled(value)
 
 func _unhandled_input(event):
 	if event is InputEventKey:
-		if event.pressed and event.scancode == KEY_ESCAPE:
-			get_node("InGameMenu").open_pause_menu()
+		if event.pressed and event.keycode == KEY_ESCAPE:
+			get_node("GUI Layer").open_pause_menu()

@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends CharacterBody2D
 
 
 # Declare member variables here. Examples:
@@ -17,7 +17,8 @@ func _physics_process(delta):
 	var linear_velocity = get_global_mouse_position() - position
 	linear_velocity *= mouse_drag_scale
 	linear_velocity *= delta
-	move_and_slide(linear_velocity)
+	set_velocity(linear_velocity)
+	move_and_slide()
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass

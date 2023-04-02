@@ -21,7 +21,7 @@ var window_size = Vector2(0, 0)
 var table_size = Vector2(0, 0)
 var ballradius = 20
 var orientation = 0 # 0 = Landscape, 1 = Portrait, 2 = (Almost) square
-var BORDER_THICKNESS = 58
+var BORDER_THICKNESS = 70
 var CUTOUT_OVERLAP = 38
 var BORDER_SCALE = 0.5
 var OUTSIDE_DRAWING = 5000 # How much should be drawn outside of the intended window
@@ -37,11 +37,11 @@ const COLORS = {
 	"dark_red": Color(0.72, 0.23, 0.36, 1),
 }
 var TABLE_COLORS = [
-	Color(ColorN("mistyrose")),
-	Color(ColorN("wheat")),
-	Color(ColorN("lemonchiffon")),
-	Color(ColorN("lightblue")),
-	Color(ColorN("lavender"))]
+	Color("mistyrose"),
+	Color("wheat"),
+	Color("lemonchiffon"),
+	Color("lightblue"),
+	Color("lavender")]
 #https://www.reddit.com/r/godot/comments/bp9qsv/visualising_shot_preview_in_2d_snooker_game/
 
 var EIGHT_BALL_NUMBER = 8

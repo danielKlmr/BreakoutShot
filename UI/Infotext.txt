@@ -1,11 +1,15 @@
-This game does not folloe the professional rule system, but rather implements soe dirty street pool rules. Additionally, it is played by one person, so the suit of the ball does not really matter in this case. Instead, the player has to focus on getting the balls in the holes in arbitrary order, after which the 8 ball must be inserted.
-- Break is done from the head line
+[p]Hello, glad you found your way to my game. It may not look like a big thing, but it's the first project I've finished, and it's given me the opportunity to learn a bit about gamedev and the Godot engine.[/p]
+[p]It's a simplification of actual pool, since I didn't really care about the multiplayer functionality (I mean, why play this with a friend when there are tons of professional pool games out there).[/p]
+[p]So if you want to test it, you'll have to play it alone and therefore neither professional nor dirty street pool rules apply.[/p]
 
-Fouls:
-- Cue ball in hole
+General rules
+- The break is played from the head line.
+- The color of the ball does not matter in this case. Just try to get the balls into the pockets in any order.
+- After that, the 8 ball must be dumped into a pocket of your choice to win the game.
+- If the 8 ball lands in a pocket while there are still object balls left, the game is lost.
+
+Fouls
+After a foul, you must play the cue ball from the head pocket
+- Cue ball in the pocket
 - No object ball hit
-After a foul, ball is shot from behind the head string
-
-Game is won when 8 ball is in a hole after no object balls are left
-
-Game is lost when the 8 ball is in the hole when object balls are left
+[p]If you want to give me feedback (or just want someone to chat with otherwise) the easiest way to reach me is on Mastodon. The link is down here.[/p]

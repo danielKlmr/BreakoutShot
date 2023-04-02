@@ -1,6 +1,6 @@
 extends StaticBody2D
 
-onready var game_variables = get_node("/root/GameVariables")
+@onready var game_variables = get_node("/root/GameVariables")
 
 var drawing_length = 0
 

@@ -4,10 +4,9 @@
 
 [sub_resource type="Curve2D" id=1]
 _data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 388.388, 294.096, 0, 0, 0, 0, 1367.87, 623.127 )
+"points": PackedVector2Array( 0, 0, 0, 0, 388.388, 294.096, 0, 0, 0, 0, 1367.87, 623.127 )
 }
 
 [node name="AimLine" type="Path2D"]
-z_index = -1
 curve = SubResource( 1 )
 script = ExtResource( 1 )

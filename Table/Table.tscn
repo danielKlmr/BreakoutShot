@@ -1,203 +1,195 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=3 uid="uid://bd64nbtrtx2d6"]
 
-[ext_resource path="res://Table/Table.gd" type="Script" id=1]
-[ext_resource path="res://UI/Fonts/Franco.tres" type="DynamicFont" id=2]
-[ext_resource path="res://UI/Menu.gd" type="Script" id=3]
-[ext_resource path="res://Table/Border/Border.tscn" type="PackedScene" id=4]
-[ext_resource path="res://UI/ButtonTheme.tres" type="Theme" id=5]
-[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=6]
-[ext_resource path="res://Table/Border/Cutout Corner.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Table/Border/Cutout Middle.tscn" type="PackedScene" id=8]
-[ext_resource path="res://UI/InGameMenu.gd" type="Script" id=9]
-[ext_resource path="res://Table/Gameplay.gd" type="Script" id=10]
-[ext_resource path="res://Ball/sfx/Clack1.wav" type="AudioStream" id=11]
+[ext_resource type="Script" path="res://Table/Table.gd" id="1"]
+[ext_resource type="FontFile" path="res://UI/Fonts/Franco.tres" id="2"]
+[ext_resource type="PackedScene" path="res://UI/Sfx/ClickSound.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://c57db7lu6cfjp" path="res://Table/Border/Border.tscn" id="4"]
+[ext_resource type="Theme" uid="uid://dsxjacfs5pxiu" path="res://UI/ButtonTheme.tres" id="5"]
+[ext_resource type="Theme" uid="uid://cfxs4s6yhcvc1" path="res://UI/LabelTheme.tres" id="5_0tigx"]
+[ext_resource type="PackedScene" path="res://Player/Player.tscn" id="6"]
+[ext_resource type="PackedScene" path="res://Table/Border/Cutout Corner.tscn" id="7"]
+[ext_resource type="PackedScene" uid="uid://c58kh7fy7d00h" path="res://Table/Border/Cutout Middle.tscn" id="8"]
+[ext_resource type="Script" path="res://UI/InGameMenu.gd" id="9"]
+[ext_resource type="Script" path="res://Table/Gameplay.gd" id="10"]
+[ext_resource type="Texture2D" uid="uid://cw5k3gihmw67t" path="res://addons/tmthymllr/Hamburger_icon.svg" id="11"]
 
-[sub_resource type="Curve2D" id=1]
+[sub_resource type="Curve2D" id="1"]
 _data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 1434.16, 100.879, 0, 0, 0, 0, 1436.47, 996.74 )
+"points": PackedVector2Array(0, 0, 0, 0, 1434.16, 100.879, 0, 0, 0, 0, 1436.47, 996.74)
 }
+point_count = 2
 
 [node name="Table" type="Node2D"]
-script = ExtResource( 1 )
-
-[node name="InGameMenu" type="Popup" parent="."]
-pause_mode = 2
-visible = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-popup_exclusive = true
-script = ExtResource( 9 )
-
-[node name="CenterContainer" type="CenterContainer" parent="InGameMenu"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="ColorRect" type="ColorRect" parent="InGameMenu/CenterContainer"]
-modulate = Color( 1, 1, 1, 0.121569 )
-margin_left = 72.0
-margin_top = 129.0
-margin_right = 72.0
-margin_bottom = 129.0
-color = Color( 0, 0, 0, 1 )
-
-[node name="VBoxContainer" type="VBoxContainer" parent="InGameMenu/CenterContainer"]
-margin_right = 144.0
-margin_bottom = 258.0
-grow_vertical = 2
-theme = ExtResource( 5 )
-custom_constants/separation = 20
-script = ExtResource( 3 )
-
-[node name="Label" type="Label" parent="InGameMenu/CenterContainer/VBoxContainer"]
-margin_right = 144.0
-margin_bottom = 32.0
-text = "Popup"
-
-[node name="Subtext" type="Label" parent="InGameMenu/CenterContainer/VBoxContainer"]
-margin_top = 52.0
-margin_right = 144.0
-margin_bottom = 84.0
-text = "Popup Subtext"
-
-[node name="ContinueButton" type="Button" parent="InGameMenu/CenterContainer/VBoxContainer"]
-margin_top = 104.0
-margin_right = 144.0
-margin_bottom = 142.0
-theme = ExtResource( 5 )
-text = "Continue"
-
-[node name="RestartButton" type="Button" parent="InGameMenu/CenterContainer/VBoxContainer"]
-margin_top = 162.0
-margin_right = 144.0
-margin_bottom = 200.0
-text = "Restart"
-
-[node name="BackToMenuButton" type="Button" parent="InGameMenu/CenterContainer/VBoxContainer"]
-margin_top = 220.0
-margin_right = 144.0
-margin_bottom = 258.0
-text = "Back to Menu"
+script = ExtResource("1")
 
 [node name="Gameplay" type="Node" parent="."]
-script = ExtResource( 10 )
+script = ExtResource("10")
 
 [node name="GUI Layer" type="CanvasLayer" parent="."]
+script = ExtResource("9")
+
+[node name="InGameMenu" type="MarginContainer" parent="GUI Layer"]
+process_mode = 2
+visible = false
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_right = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="ColorRect" type="ColorRect" parent="GUI Layer/InGameMenu"]
+modulate = Color(1, 1, 1, 0.121569)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GUI Layer/InGameMenu"]
+layout_mode = 2
+size_flags_vertical = 4
+theme = ExtResource("5")
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="GUI Layer/InGameMenu/VBoxContainer"]
+layout_mode = 2
+text = "Popup"
+
+[node name="Subtext" type="Label" parent="GUI Layer/InGameMenu/VBoxContainer"]
+layout_mode = 2
+text = "Popup Subtext"
+
+[node name="ContinueButton" type="Button" parent="GUI Layer/InGameMenu/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("5")
+text = "Continue"
+
+[node name="RestartButton" type="Button" parent="GUI Layer/InGameMenu/VBoxContainer"]
+layout_mode = 2
+text = "Restart"
+
+[node name="BackToMenuButton" type="Button" parent="GUI Layer/InGameMenu/VBoxContainer"]
+layout_mode = 2
+text = "Back to Menu"
 
 [node name="GUI" type="MarginContainer" parent="GUI Layer"]
+anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_left = 100.0
-margin_top = -40.0
-margin_right = 200.0
-margin_bottom = -20.0
+offset_left = 150.0
+offset_top = -32.0
+offset_right = 414.0
+offset_bottom = -40.0
+grow_vertical = 0
 
 [node name="Stats" type="HBoxContainer" parent="GUI Layer/GUI"]
-margin_right = 280.0
-margin_bottom = 32.0
+layout_mode = 2
+theme = ExtResource("5_0tigx")
 
 [node name="Attempts" type="Label" parent="GUI Layer/GUI/Stats"]
-margin_right = 102.0
-margin_bottom = 32.0
-custom_fonts/font = ExtResource( 2 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
 text = "Attempts: "
 
 [node name="Attempts Value" type="Label" parent="GUI Layer/GUI/Stats"]
-margin_left = 106.0
-margin_right = 156.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 50, 0 )
-custom_fonts/font = ExtResource( 2 )
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
 text = "X"
 
 [node name="Fouls" type="Label" parent="GUI Layer/GUI/Stats"]
-margin_left = 160.0
-margin_right = 226.0
-margin_bottom = 32.0
-custom_fonts/font = ExtResource( 2 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
 text = "Fouls: "
 
 [node name="Fouls Value" type="Label" parent="GUI Layer/GUI/Stats"]
-margin_left = 230.0
-margin_right = 280.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 50, 0 )
-custom_fonts/font = ExtResource( 2 )
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
 text = "X"
 
-[node name="PlayingSurface" type="Node2D" parent="."]
+[node name="MenuButtonPositioner" type="MarginContainer" parent="GUI Layer"]
+offset_left = 150.0
+offset_top = 40.0
+offset_right = 190.0
+offset_bottom = 80.0
 
-[node name="Camera" type="Camera2D" parent="PlayingSurface"]
-current = true
+[node name="MenuButton" type="Button" parent="GUI Layer/MenuButtonPositioner"]
+layout_mode = 2
+icon = ExtResource("11")
 
-[node name="HeadString" type="Path2D" parent="PlayingSurface"]
-curve = SubResource( 1 )
-
-[node name="Border" type="Node" parent="PlayingSurface"]
-
-[node name="Border1" parent="PlayingSurface/Border" instance=ExtResource( 4 )]
-position = Vector2( 0, 284.321 )
-
-[node name="Border3" parent="PlayingSurface/Border" instance=ExtResource( 4 )]
-position = Vector2( 1018.94, 294.474 )
-rotation = 3.14159
-
-[node name="Border2" parent="PlayingSurface/Border" instance=ExtResource( 4 )]
-position = Vector2( 493.489, 0 )
-rotation = 1.5708
-
-[node name="Border4" parent="PlayingSurface/Border" instance=ExtResource( 4 )]
-position = Vector2( 514.706, 596.606 )
-rotation = 4.71239
-
-[node name="Border5" parent="PlayingSurface/Border" instance=ExtResource( 4 )]
-position = Vector2( 1416.69, -2.26276 )
-rotation = 1.5708
-
-[node name="Border6" parent="PlayingSurface/Border" instance=ExtResource( 4 )]
-position = Vector2( 1465.06, 607.92 )
-rotation = 4.71239
-
-[node name="Balls" type="Node" parent="PlayingSurface"]
-
-[node name="Holes" type="Node" parent="PlayingSurface"]
-
-[node name="Cutout Corner" parent="PlayingSurface/Holes" instance=ExtResource( 7 )]
-scale = Vector2( 0.5, 0.5 )
-
-[node name="Cutout Corner2" parent="PlayingSurface/Holes" instance=ExtResource( 7 )]
-position = Vector2( 1920, 0 )
-rotation = 1.5708
-scale = Vector2( 0.5, 0.5 )
-
-[node name="Cutout Corner3" parent="PlayingSurface/Holes" instance=ExtResource( 7 )]
-position = Vector2( 1920, 1080 )
-rotation = 3.14159
-scale = Vector2( 0.5, 0.5 )
-
-[node name="Cutout Corner4" parent="PlayingSurface/Holes" instance=ExtResource( 7 )]
-position = Vector2( 0, 1080 )
-rotation = -1.5708
-scale = Vector2( 0.5, 0.5 )
-
-[node name="Cutout Middle" parent="PlayingSurface/Holes" instance=ExtResource( 8 )]
-position = Vector2( 960, 1080 )
-rotation = 3.14159
-scale = Vector2( 0.5, 0.5 )
-
-[node name="Cutout Middle2" parent="PlayingSurface/Holes" instance=ExtResource( 8 )]
-position = Vector2( 960, 0 )
-scale = Vector2( 0.5, 0.5 )
+[node name="ClickSound" parent="GUI Layer" instance=ExtResource("3")]
 
 [node name="Players" type="Node" parent="."]
 
-[node name="Player" parent="Players" instance=ExtResource( 6 )]
+[node name="Player" parent="Players" instance=ExtResource("6")]
 
-[node name="Hit" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource( 11 )
+[node name="PlayingSurface" type="Node2D" parent="."]
 
-[node name="Clack1" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource( 11 )
+[node name="Camera3D" type="Camera2D" parent="PlayingSurface"]
 
-[connection signal="pressed" from="InGameMenu/CenterContainer/VBoxContainer/ContinueButton" to="InGameMenu/CenterContainer/VBoxContainer" method="_on_ContinueButton_pressed"]
-[connection signal="pressed" from="InGameMenu/CenterContainer/VBoxContainer/RestartButton" to="InGameMenu/CenterContainer/VBoxContainer" method="_on_RestartButton_pressed"]
-[connection signal="pressed" from="InGameMenu/CenterContainer/VBoxContainer/BackToMenuButton" to="InGameMenu/CenterContainer/VBoxContainer" method="_on_BackToMenuButton_pressed"]
+[node name="HeadString" type="Path2D" parent="PlayingSurface"]
+curve = SubResource("1")
+
+[node name="Border" type="Node" parent="PlayingSurface"]
+
+[node name="Border1" parent="PlayingSurface/Border" instance=ExtResource("4")]
+position = Vector2(0, 284.321)
+
+[node name="Border3" parent="PlayingSurface/Border" instance=ExtResource("4")]
+position = Vector2(1018.94, 294.474)
+rotation = 3.14159
+
+[node name="Border2" parent="PlayingSurface/Border" instance=ExtResource("4")]
+position = Vector2(493.489, 0)
+rotation = 1.5708
+
+[node name="Border4" parent="PlayingSurface/Border" instance=ExtResource("4")]
+position = Vector2(514.706, 596.606)
+rotation = 4.71239
+
+[node name="Border5" parent="PlayingSurface/Border" instance=ExtResource("4")]
+position = Vector2(1416.69, -2.26276)
+rotation = 1.5708
+
+[node name="Border6" parent="PlayingSurface/Border" instance=ExtResource("4")]
+position = Vector2(1465.06, 607.92)
+rotation = 4.71239
+
+[node name="Holes" type="Node" parent="PlayingSurface"]
+
+[node name="Cutout Corner" parent="PlayingSurface/Holes" instance=ExtResource("7")]
+scale = Vector2(0.5, 0.5)
+
+[node name="Cutout Corner2" parent="PlayingSurface/Holes" instance=ExtResource("7")]
+position = Vector2(1920, 0)
+rotation = 1.5708
+scale = Vector2(0.5, 0.5)
+
+[node name="Cutout Corner3" parent="PlayingSurface/Holes" instance=ExtResource("7")]
+position = Vector2(1920, 1080)
+rotation = 3.14159
+scale = Vector2(0.5, 0.5)
+
+[node name="Cutout Corner4" parent="PlayingSurface/Holes" instance=ExtResource("7")]
+position = Vector2(0, 1080)
+rotation = -1.5708
+scale = Vector2(0.5, 0.5)
+
+[node name="Cutout Middle" parent="PlayingSurface/Holes" instance=ExtResource("8")]
+position = Vector2(960, 1080)
+rotation = 3.14159
+scale = Vector2(0.5, 0.5)
+
+[node name="Cutout Middle2" parent="PlayingSurface/Holes" instance=ExtResource("8")]
+position = Vector2(960, 0)
+scale = Vector2(0.5, 0.5)
+
+[node name="Balls" type="Node" parent="PlayingSurface"]
+
+[connection signal="pressed" from="GUI Layer/InGameMenu/VBoxContainer/ContinueButton" to="GUI Layer" method="_on_ContinueButton_pressed"]
+[connection signal="pressed" from="GUI Layer/InGameMenu/VBoxContainer/RestartButton" to="GUI Layer" method="_on_RestartButton_pressed"]
+[connection signal="pressed" from="GUI Layer/InGameMenu/VBoxContainer/BackToMenuButton" to="GUI Layer" method="_on_BackToMenuButton_pressed"]
+[connection signal="pressed" from="GUI Layer/MenuButtonPositioner/MenuButton" to="GUI Layer" method="open_pause_menu"]

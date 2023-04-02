@@ -1,7 +1,7 @@
 extends Node
 
 # Singleton
-onready var game_variables = get_node("/root/GameVariables")
+@onready var game_variables = get_node("/root/GameVariables")
 
 enum game_states {
 	Break,
@@ -26,11 +26,11 @@ var attempts
 var fouls
 var cue_ball
 
-onready var head_string = get_node("/root/Table/PlayingSurface/HeadString")
-onready var InGameMenu = get_node("/root/Table/InGameMenu")
-onready var Table = get_node("/root/Table")
-onready var UIAttempts = get_node("/root/Table/GUI Layer/GUI/Stats/Attempts Value")
-onready var UIFouls = get_node("/root/Table/GUI Layer/GUI/Stats/Fouls Value")
+@onready var head_string = get_node("/root/Table/PlayingSurface/HeadString")
+@onready var Gui = get_node("/root/Table/GUI Layer")
+@onready var Table = get_node("/root/Table")
+@onready var UIAttempts = get_node("/root/Table/GUI Layer/GUI/Stats/Attempts Value")
+@onready var UIFouls = get_node("/root/Table/GUI Layer/GUI/Stats/Fouls Value")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -45,11 +45,11 @@ func _physics_process(delta):
 	elif current_turn_state == turn_states.Hit:
 		if !_balls_moving():
 			increase_fouls_counter() # TODO set to foul instead?
-			InGameMenu.show_foul()
+			Gui.show_foul()
 			set_turn_state(turn_states.PlaceBallKitchen)
 	elif current_turn_state == turn_states.Foul:
 		if !_balls_moving():
-			InGameMenu.show_foul()
+			Gui.show_foul()
 			set_turn_state(turn_states.PlaceBallKitchen)
 
 func _balls_moving():
@@ -65,14 +65,14 @@ func _balls_moving():
 func set_game_state(state):
 	current_game_state = state
 	if state == game_states.Lost:
-		InGameMenu.open_lost_menu()
+		Gui.open_lost_menu()
 	elif state == game_states.Win:
-		InGameMenu.open_win_menu()
+		Gui.open_win_menu()
 		
 func set_turn_state(state):
 	current_turn_state = state
 	if state == turn_states.PlaceBall:
-		InGameMenu.show_place_cue()
+		Gui.show_place_cue()
 		Table.set_balls_static(true)
 	if state == turn_states.PlaceBallKitchen:
 		if self.cue_ball:
@@ -80,7 +80,7 @@ func set_turn_state(state):
 		self.cue_ball = Table.setup_cue_ball()
 		Table.set_balls_static(true)
 	elif state == turn_states.Play:
-		cue_ball.connect("hole_in", self, "_cue_ball_in") # TODO called everytime gameplay gets set to Play
+		cue_ball.connect("hole_in", Callable(self, "_cue_ball_in")) # TODO called everytime gameplay gets set to Play
 		if current_game_state == game_states.Break:
 			set_game_state(game_states.Pocketing)
 	elif state == turn_states.Hit:
@@ -121,7 +121,7 @@ func _input(event):
 			pass
 			#_place_in_kitchen(event.position)
 	elif event is InputEventMouseButton:
-		if event.button_index == BUTTON_LEFT and !event.pressed:
+		if event.button_index == MOUSE_BUTTON_LEFT and !event.pressed:
 			if current_turn_state == turn_states.PlaceBall:
 				Table.set_balls_static(false)
 				current_turn_state = turn_states.Wait # Wait for a frame, so that the ball gets not played
@@ -130,7 +130,7 @@ func _input(event):
 				var cue_ball_position = ball_positioner.get_position()
 				cue_ball.set_position(cue_ball_position)
 				cue_ball.get_node("CollisionShape2D").set_disabled(false)
-				cue_ball.set_mode(0)
+				cue_ball.set_freeze_enabled(false)
 				ball_positioner.remove_child(cue_ball)
 				Table.get_node("PlayingSurface/Balls").add_child(cue_ball)
 				ball_positioner.queue_free()

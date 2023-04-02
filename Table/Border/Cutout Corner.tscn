@@ -1,15 +1,16 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Table/Border/Hole Corner.png" type="Texture" id=1]
+[ext_resource path="res://Table/Border/Hole Corner.png" type="Texture2D" id=1]
 [ext_resource path="res://Table/Border/Hole.tscn" type="PackedScene" id=2]
 
 [node name="Cutout Corner" type="StaticBody2D"]
+collision_layer = 2
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-polygon = PoolVector2Array( 0, 128, 0, 80, -51, 15, -57, 5, -59, -6, -57, -20, -48, -36, -38, -47, -26, -55, -11, -58, 3, -58, 15, -51, 80, 0, 128, 0, 128, -128, -128, -128, -128, 128 )
+polygon = PackedVector2Array( 0, 128, 0, 80, -51, 15, -57, 5, -59, -6, -57, -20, -48, -36, -38, -47, -26, -55, -11, -58, 3, -58, 15, -51, 80, 0, 128, 0, 128, -128, -128, -128, -128, 128 )
 
 [node name="Area2D" parent="." instance=ExtResource( 2 )]
 position = Vector2( -50, -50 )
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource( 1 )

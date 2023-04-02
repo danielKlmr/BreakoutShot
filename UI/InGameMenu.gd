@@ -1,11 +1,13 @@
-extends Popup
+extends CanvasLayer
 
 var AUTOCLOSE_TIME = 2.0
 
-onready var vbox = self.get_node("VBoxContainer")
-onready var label = self.get_node("VBoxContainer/Label")
-onready var subtext = self.get_node("VBoxContainer/Subtext")
-onready var buttons = {
+@onready var vbox = self.get_node("InGameMenu/VBoxContainer")
+@onready var label = self.get_node("InGameMenu/VBoxContainer/Label")
+@onready var subtext = self.get_node("InGameMenu/VBoxContainer/Subtext")
+@onready var InGameMenu = $InGameMenu
+@onready var buttons = {
+	"menu": get_node("MenuButtonPositioner/MenuButton"),
 	"continue": vbox.get_node("ContinueButton"),
 	"restart": vbox.get_node("RestartButton"),
 	"back_to_menu": vbox.get_node("BackToMenuButton"),
@@ -14,42 +16,63 @@ onready var buttons = {
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_close_popup()
+	for button in buttons.values():
+		button.connect("pressed", Callable(self, "_play_click_sound"))
+		
+func _play_click_sound():
+	$ClickSound.play()
 	
 func _open_popup(title):
 	# TODO: If not already open
 	label.set_text(title)
-	self.popup()
+	InGameMenu.show()
+	buttons["menu"].hide() # TODO: Hide only when pause menu is open, not notification
 	
 func _close_popup():
 	subtext.hide()
 	for button in buttons.values():
 		button.hide()
-	self.hide()
+	InGameMenu.hide()
+	buttons["menu"].show()
 
 func open_pause_menu():
-	self.buttons['continue'].show()
-	self.buttons['restart'].show()
-	self.buttons['back_to_menu'].show()
+	buttons['continue'].show()
+	buttons['restart'].show()
+	buttons['back_to_menu'].show()
+	get_tree().paused = true
 	_open_popup("Pause")
 	
 func open_win_menu():
-	self.buttons['restart'].show()
-	self.buttons['back_to_menu'].show()
+	InGameMenu.buttons['restart'].show()
+	InGameMenu.buttons['back_to_menu'].show()
 	_open_popup("Won!")
 	
 func open_lost_menu():
-	self.buttons['restart'].show()
-	self.buttons['back_to_menu'].show()
+	buttons['restart'].show()
+	buttons['back_to_menu'].show()
 	_open_popup("Lost!")
 
 func show_place_cue():
+	print("calleb")
 	_open_popup("Place Cue Ball!")
-	yield(get_tree().create_timer(AUTOCLOSE_TIME), "timeout")
+	await get_tree().create_timer(AUTOCLOSE_TIME).timeout
 	_close_popup()
 	
 func show_foul():
 	subtext.show()
 	subtext.set_text('Place Cue Ball in Head Field')
 	_open_popup("Foul!")
-	yield(get_tree().create_timer(AUTOCLOSE_TIME), "timeout")
+	await get_tree().create_timer(AUTOCLOSE_TIME).timeout
 	_close_popup()
+
+func _on_BackToMenuButton_pressed():
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://UI/Main Menu.tscn")
+
+func _on_ContinueButton_pressed():
+	get_tree().paused = false
+	_close_popup()
+
+func _on_RestartButton_pressed():
+	get_tree().paused = false
+	get_tree().reload_current_scene()

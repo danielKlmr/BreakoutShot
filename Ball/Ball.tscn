@@ -1,32 +1,53 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=9 format=3 uid="uid://cayjxa407by1a"]
 
-[ext_resource path="res://Ball/Ball.gd" type="Script" id=1]
-[ext_resource path="res://Ball/Ball - Physics.tres" type="PhysicsMaterial" id=2]
+[ext_resource type="Script" path="res://Ball/Ball.gd" id="1"]
+[ext_resource type="PhysicsMaterial" path="res://Ball/Ball - Physics.tres" id="2"]
+[ext_resource type="AudioStream" uid="uid://caaahcdpk38v2" path="res://addons/juskiddink/Rail.wav" id="3"]
+[ext_resource type="AudioStream" uid="uid://dhqwya3kmm2cu" path="res://addons/Za-Games/539854__za-games__billiard-ball-clack.wav" id="4"]
+[ext_resource type="AudioStream" uid="uid://but7prsdmh0dh" path="res://addons/Ironlink15/Clack2.wav" id="5"]
+[ext_resource type="AudioStream" uid="uid://wplysff04sh6" path="res://addons/Hankof/ClackSilent.wav" id="6"]
+[ext_resource type="AudioStream" uid="uid://ixqipwklcnhy" path="res://addons/150112/Hit.wav" id="7"]
 
-[sub_resource type="CircleShape2D" id=1]
+[sub_resource type="CircleShape2D" id="1"]
 
 [node name="Ball" type="RigidBody2D"]
 collision_mask = 3
 input_pickable = true
-physics_material_override = ExtResource( 2 )
-contacts_reported = 5
+physics_material_override = ExtResource("2")
+max_contacts_reported = 5
 contact_monitor = true
 linear_damp = 0.7
-script = ExtResource( 1 )
+script = ExtResource("1")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 1 )
+shape = SubResource("1")
 
 [node name="Label" type="Label" parent="."]
-margin_left = -50.0
-margin_top = -50.0
-margin_right = 50.0
-margin_bottom = 50.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-align = 1
-valign = 1
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Audio" type="Node" parent="."]
+
+[node name="PocketSound" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("6")
+volume_db = 10.0
+
+[node name="Hit" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("7")
+
+[node name="Clack2" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("4")
+
+[node name="Clack3" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("5")
+
+[node name="Clack1" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("3")
 
 [connection signal="body_entered" from="." to="." method="_on_Ball_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_Ball_body_exited"]

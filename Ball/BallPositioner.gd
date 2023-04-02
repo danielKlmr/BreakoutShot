@@ -1,8 +1,8 @@
-extends KinematicBody2D
+extends CharacterBody2D
 
 # Uses Kinematicbody instead of Rigidbody to be able to follow mouse
 
-onready var game_variables = get_node("/root/GameVariables")
+@onready var game_variables = get_node("/root/GameVariables")
 # var a = 2
 # var b = "text"
 
@@ -16,7 +16,7 @@ func init(ball):
 	var shape = ball.get_node("CollisionShape2D")
 	add_child(shape.duplicate())
 	shape.set_disabled(true)
-	ball.set_mode(1)
+	ball.set_freeze_enabled(true)
 	
 	return self
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -34,4 +34,5 @@ func _physics_process(delta):
 		else:
 			linear_velocity = projected_position - position
 	linear_velocity *= mouse_drag_scale
-	move_and_slide(linear_velocity * delta)
+	set_velocity(linear_velocity * delta)
+	move_and_slide()

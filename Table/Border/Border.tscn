@@ -1,13 +1,14 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://c57db7lu6cfjp"]
 
-[ext_resource path="res://Table/Border/Border.gd" type="Script" id=3]
+[ext_resource type="Script" path="res://Table/Border/Border.gd" id="3"]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 1, 1 )
+[sub_resource type="RectangleShape2D" id="1"]
+size = Vector2(1, 1)
 
 [node name="Border" type="StaticBody2D"]
 collision_layer = 2
-script = ExtResource( 3 )
+script = ExtResource("3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 1 )
+scale = Vector2(100, 100)
+shape = SubResource("1")

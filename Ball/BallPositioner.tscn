@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Ball/BallPositioner.gd" type="Script" id=1]
 
-[node name="BallPositioner" type="KinematicBody2D"]
+[node name="BallPositioner" type="CharacterBody2D"]
 collision_layer = 0
-collision_mask = 3
+collision_mask = 7
 script = ExtResource( 1 )

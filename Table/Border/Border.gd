@@ -1,9 +1,9 @@
 extends StaticBody2D
 
-onready var game_variables = get_node("/root/GameVariables")
+@onready var game_variables = get_node("/root/GameVariables")
 
 var drawing_length = 0
-var drawing_color = Color(ColorN("white"))
+var drawing_color = Color("white")
 
 func _draw():
 	draw_rect(
@@ -15,10 +15,10 @@ func _draw():
 func set_size(length):
 	drawing_length = length
 	get_node("CollisionShape2D").scale.x = game_variables.BORDER_THICKNESS
-	get_node("CollisionShape2D").position.x = -game_variables.BORDER_THICKNESS
-	get_node("CollisionShape2D").scale.y = length / 2
+	get_node("CollisionShape2D").position.x = -game_variables.BORDER_THICKNESS / 2
+	get_node("CollisionShape2D").scale.y = length
 #	get_node("CollisionShape2D").shape = RectangleShape2D.new().set_extents(Vector2(game_variables.BORDER_THICKNESS, length))
-	update()
+	queue_redraw()
 	
 func set_color(color):
 	drawing_color = color
