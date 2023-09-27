@@ -1,12 +1,15 @@
-[gd_scene load_steps=8 format=3 uid="uid://boj6s6stprxa3"]
+[gd_scene load_steps=9 format=3 uid="uid://boj6s6stprxa3"]
 
 [ext_resource type="Script" path="res://UI/Menu.gd" id="1"]
-[ext_resource type="Texture2D" uid="uid://c4mwdmi78cisn" path="res://UI/Logo.png" id="2"]
 [ext_resource type="Texture2D" uid="uid://c1op815dvohk7" path="res://addons/joeyguns/Main Menu Background.jpg" id="2_fk4k3"]
 [ext_resource type="Theme" uid="uid://dsxjacfs5pxiu" path="res://UI/ButtonTheme.tres" id="3"]
 [ext_resource type="PackedScene" path="res://UI/Sfx/ClickSound.tscn" id="4"]
-[ext_resource type="FontFile" path="res://UI/Fonts/Franco.tres" id="4_w8cqm"]
 [ext_resource type="Theme" uid="uid://cfxs4s6yhcvc1" path="res://UI/LabelTheme.tres" id="5_hmm2i"]
+[ext_resource type="FontFile" uid="uid://c3a6ubp2mwy8r" path="res://addons/Roboto_Condensed/RobotoCondensed-Bold.ttf" id="6_tewwi"]
+[ext_resource type="Texture2D" uid="uid://b6yr80cijrtp6" path="res://Logo/logo.png" id="7_7yp6y"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fm4qg"]
+bg_color = Color(0, 0, 0, 0.188235)
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -28,160 +31,219 @@ texture = ExtResource("2_fk4k3")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="ClickSound" parent="." instance=ExtResource("4")]
+
+[node name="Menu" type="Control" parent="."]
+clip_contents = true
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_left = 150.0
-offset_right = 662.0
+offset_left = 200.0
+offset_right = 712.0
 grow_vertical = 2
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_right = 50
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer"]
+[node name="MenuItems" type="MarginContainer" parent="Menu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_right = 60
+
+[node name="Dimming" type="ColorRect" parent="Menu/MenuItems"]
 modulate = Color(1, 1, 1, 0.121569)
 layout_mode = 2
 color = Color(0, 0, 0, 1)
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer"]
+[node name="ButtonNode" type="Control" parent="Menu/MenuItems"]
 layout_mode = 2
-theme_override_constants/margin_top = 542
+
+[node name="ButtonMarginContainer" type="MarginContainer" parent="Menu/MenuItems/ButtonNode"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.55
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 30
 theme_override_constants/margin_bottom = 30
 
-[node name="SelectItem" type="VBoxContainer" parent="MarginContainer/MarginContainer"]
+[node name="SelectItem" type="VBoxContainer" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer"]
+visible = false
 layout_mode = 2
 theme = ExtResource("3")
 alignment = 1
 
-[node name="PlayButton" type="Button" parent="MarginContainer/MarginContainer/SelectItem"]
+[node name="PlayButton" type="Button" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem"]
 layout_mode = 2
 theme = ExtResource("3")
 text = "Play"
 
-[node name="OptionsButton" type="Button" parent="MarginContainer/MarginContainer/SelectItem"]
+[node name="OptionsButton" type="Button" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem"]
 layout_mode = 2
 theme = ExtResource("3")
 text = "Options"
 
-[node name="InfoButton" type="Button" parent="MarginContainer/MarginContainer/SelectItem"]
+[node name="InfoButton" type="Button" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem"]
 layout_mode = 2
 theme = ExtResource("3")
 text = "Info & Rules"
 
-[node name="CreditsButton" type="Button" parent="MarginContainer/MarginContainer/SelectItem"]
+[node name="CreditsButton" type="Button" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem"]
 layout_mode = 2
 theme = ExtResource("3")
 text = "Credits"
 
-[node name="QuitButton" type="Button" parent="MarginContainer/MarginContainer/SelectItem"]
+[node name="QuitButton" type="Button" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem"]
 layout_mode = 2
 theme = ExtResource("3")
 text = "Quit"
 
-[node name="Info" type="VBoxContainer" parent="MarginContainer/MarginContainer"]
+[node name="Options" type="VBoxContainer" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer"]
+visible = false
+layout_mode = 2
+theme = ExtResource("3")
+alignment = 1
+
+[node name="MusicButton" type="CheckButton" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Options"]
+layout_mode = 2
+theme = ExtResource("3")
+text = "Music"
+alignment = 1
+
+[node name="BackButton" type="Button" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Options"]
+layout_mode = 2
+theme = ExtResource("3")
+text = "Back"
+
+[node name="Info" type="VBoxContainer" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("3")
+alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Info"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Info/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_right = 5
+
+[node name="Label" type="RichTextLabel" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Info/ScrollContainer/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("5_hmm2i")
+theme_override_fonts/bold_font = ExtResource("6_tewwi")
+bbcode_enabled = true
+text = "Hello, glad you found your way to my game. It may not look like a big thing, but it's the first project I've finished, and it's given me the opportunity to learn a bit about gamedev and the Godot engine.
+
+It's a simplification of actual pool, since I didn't really care about the multiplayer functionality (I mean, why play this with a friend when there are tons of professional pool games out there).
+
+So if you want to test it, you'll have to play it alone and therefore neither professional nor dirty street pool rules apply.
+
+[b]General rules[/b][ul]
+The break is played from the head line.
+The color of the ball does not matter in this case. Just try to get the balls into the pockets in any order.
+After that, the 8 ball must be dumped into a pocket of your choice to win the game.
+If the 8 ball lands in a pocket while there are still object balls left, the game is lost.[/ul]
+
+[b]Fouls[/b]
+After a foul, you must play the cue ball from the head pocket[ul]
+Cue ball in the pocket
+No object ball hit[/ul]
+
+If you want to give me feedback (or just want someone to chat with otherwise) the easiest way to reach me is on Mastodon. The link is down here."
+fit_content = true
+
+[node name="VersionLabel" type="Label" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Info"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_fm4qg")
+text = "Version: "
+horizontal_alignment = 1
+
+[node name="BackButton" type="Button" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Info"]
+layout_mode = 2
+theme = ExtResource("3")
+text = "Back"
+
+[node name="Credits" type="VBoxContainer" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("3")
 alignment = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/MarginContainer/Info"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Credits"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MarginContainer/Info/ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Credits/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_right = 5
 
-[node name="Label" type="RichTextLabel" parent="MarginContainer/MarginContainer/Info/ScrollContainer/MarginContainer"]
+[node name="Label" type="RichTextLabel" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Credits/ScrollContainer/MarginContainer"]
 layout_mode = 2
 theme = ExtResource("5_hmm2i")
-theme_override_fonts/normal_font = ExtResource("4_w8cqm")
-theme_override_font_sizes/normal_font_size = 20
+theme_override_fonts/bold_font = ExtResource("6_tewwi")
 bbcode_enabled = true
-text = "[p]Hello, glad you found your way to my game. It may not look like a big thing, but it's the first project I've finished, and it's given me the opportunity to learn a bit about gamedev and the Godot engine.[/p]
+text = "[center][b]Music[/b]
+\"Calm Ambient 1\" by cynicmusic [url=https://opengameart.org/users/cynicmusic]↗[/url]
 
-[p]It's a simplification of actual pool, since I didn't really care about the multiplayer functionality (I mean, why play this with a friend when there are tons of professional pool games out there).[/p]
-[p]So if you want to test it, you'll have to play it alone and therefore neither professional nor dirty street pool rules apply.[/p]
+[b]Sound[/b]
+\"billard ball clack\" by Za-Games [url=https://freesound.org/people/Za-Games/]↗[/url]
+\"Zippo Click Sound\" by dawith [url=https://opengameart.org/users/qubodup]↗[/url]
+\"Billiard balls single hit-dry\" by juskiddink [url=https://freesound.org/people/juskiddink/]↗[/url]
+\"Clanking sound\" by Ironlink15 [url=https://freesound.org/people/Ironlink15/]↗[/url]
+\"pool ball hitting pool ball 2\" by Hankof [url=https://freesound.org/people/Hankof/]↗[/url]
+\"WhiteBallHittingSolid\" by 150112 [url=https://freesound.org/people/150112/]↗[/url]
 
-General rules
-- The break is played from the head line.
-- The color of the ball does not matter in this case. Just try to get the balls into the pockets in any order.
-- After that, the 8 ball must be dumped into a pocket of your choice to win the game.
-- If the 8 ball lands in a pocket while there are still object balls left, the game is lost.
+[b]Graphics[/b]
+Timothy Miller [url=https://www.iconfinder.com/tmthymllr]↗[/url]
+Background Image by Joey Genovese [url=https://unsplash.com/de/@joeyguns]↗[/url]
 
-Fouls
-After a foul, you must play the cue ball from the head pocket
-- Cue ball in the pocket
-- No object ball hit
-[p]If you want to give me feedback (or just want someone to chat with otherwise) the easiest way to reach me is on Mastodon. The link is down here.[/p]"
+[b]Font[/b]
+Roboto by Google [url=https://fonts.google.com/specimen/Roboto]↗[/url][/center]"
 fit_content = true
 
-[node name="BackButton" type="Button" parent="MarginContainer/MarginContainer/Info"]
+[node name="BackButton" type="Button" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Credits"]
 layout_mode = 2
 theme = ExtResource("3")
 text = "Back"
 
-[node name="Credits" type="VBoxContainer" parent="MarginContainer/MarginContainer"]
-visible = false
+[node name="LogoContainer" type="VBoxContainer" parent="Menu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.55
+offset_left = -256.0
+offset_right = 256.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 2
+
+[node name="Logo" type="TextureRect" parent="Menu/LogoContainer"]
+custom_minimum_size = Vector2(512, 512)
 layout_mode = 2
-size_flags_vertical = 3
-theme = ExtResource("3")
-alignment = 1
-
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/MarginContainer/Credits"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MarginContainer/Credits/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_right = 5
-
-[node name="Label" type="RichTextLabel" parent="MarginContainer/MarginContainer/Credits/ScrollContainer/MarginContainer"]
-layout_mode = 2
-theme = ExtResource("5_hmm2i")
-bbcode_enabled = true
-text = "
-Music
-cynicmusic ↗
-
-Sound
-Za-Games ↗
-dawith ↗
-juskiddink ↗
-Ironlink15 ↗
-Hankof ↗
-150112 ↗
-
-Graphics
-Timothy Miller ↗
-Joey Genovese ↗
-"
-fit_content = true
-
-[node name="BackButton" type="Button" parent="MarginContainer/MarginContainer/Credits"]
-layout_mode = 2
-theme = ExtResource("3")
-text = "Back"
-
-[node name="TextureRect" type="TextureRect" parent="."]
-layout_mode = 2
-offset_left = 150.0
-offset_right = 662.0
-offset_bottom = 512.0
 size_flags_vertical = 0
-texture = ExtResource("2")
-stretch_mode = 1
+texture = ExtResource("7_7yp6y")
+expand_mode = 1
 
-[node name="ClickSound" parent="." instance=ExtResource("4")]
-
-[connection signal="pressed" from="MarginContainer/MarginContainer/SelectItem/PlayButton" to="." method="_on_Button_pressed"]
-[connection signal="pressed" from="MarginContainer/MarginContainer/SelectItem/InfoButton" to="." method="_on_InfoButton_pressed"]
-[connection signal="pressed" from="MarginContainer/MarginContainer/SelectItem/CreditsButton" to="." method="_on_CreditsButton_pressed"]
-[connection signal="pressed" from="MarginContainer/MarginContainer/SelectItem/QuitButton" to="." method="_on_QuitButton_pressed"]
-[connection signal="pressed" from="MarginContainer/MarginContainer/Info/BackButton" to="." method="_on_BackButton_pressed"]
-[connection signal="pressed" from="MarginContainer/MarginContainer/Credits/BackButton" to="." method="_on_BackButton_pressed"]
+[connection signal="pressed" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem/PlayButton" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem/OptionsButton" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem/InfoButton" to="." method="_on_InfoButton_pressed"]
+[connection signal="pressed" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem/CreditsButton" to="." method="_on_CreditsButton_pressed"]
+[connection signal="pressed" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem/QuitButton" to="." method="_on_QuitButton_pressed"]
+[connection signal="toggled" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Options/MusicButton" to="." method="_on_music_button_toggled"]
+[connection signal="pressed" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Options/BackButton" to="." method="_on_BackButton_pressed"]
+[connection signal="pressed" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Info/BackButton" to="." method="_on_BackButton_pressed"]
+[connection signal="meta_clicked" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Credits/ScrollContainer/MarginContainer/Label" to="." method="_on_link_clicked"]
+[connection signal="pressed" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Credits/BackButton" to="." method="_on_BackButton_pressed"]

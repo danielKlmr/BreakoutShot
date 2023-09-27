@@ -10,6 +10,7 @@ var circle_size = 7
 
 
 func _process(delta):
+	#rotation = -get_parent().get_rotation() # Ignore Parents rotation
 	for circle in self.get_children():
 		if circle.progress_ratio >= 1:
 			circle.queue_free()
@@ -25,12 +26,12 @@ func _process(delta):
 		current_rest += speed * delta	
 	
 func _draw():
-	#draw_line(get_curve().get_point_position(0), get_curve().get_point_position(1), Color.red, 5, true)
+	#draw_line(get_curve().get_point_position(0), get_curve().get_point_position(1), Color.RED, 5, true)
 	for circle in get_children():
 		draw_circle(circle.position, circle_size, Color.WHITE)
 		
 func draw_aim_line(ball : Vector2, target : Vector2, delta):
-	get_curve().set_point_position(0, ball)
+	get_curve().set_point_position(0, Vector2(0, 0))
 	get_curve().set_point_position(1, target)
 	
 	if get_child_count() > 0:

@@ -21,18 +21,21 @@ func init(ball):
 	return self
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
-	var mouse_position = get_global_mouse_position()
+	var mouse_position = get_parent().get_local_mouse_position() # On PlayingField
+
 	var linear_velocity
 	if mouse_position.x >= game_variables.head_string_position:
-		linear_velocity = (mouse_position - position)
+		# Move ball to mouse if mouse is in head field
+		linear_velocity = (get_global_mouse_position() - global_position)
 	else:
 		var projected_position = mouse_position
 		projected_position.x = game_variables.head_string_position
 		if (projected_position - game_variables.head_spot_position).length() < game_variables.SNAPPING_DISTANCE:
+			# Snap ball to head spot if it is close to it
 			set_position(game_variables.head_spot_position)
 			linear_velocity = Vector2(0, 0)
 		else:
-			linear_velocity = projected_position - position
+			linear_velocity = to_global(projected_position) - to_global(position)
 	linear_velocity *= mouse_drag_scale
 	set_velocity(linear_velocity * delta)
 	move_and_slide()

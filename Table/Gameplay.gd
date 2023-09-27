@@ -80,9 +80,11 @@ func set_turn_state(state):
 		self.cue_ball = Table.setup_cue_ball()
 		Table.set_balls_static(true)
 	elif state == turn_states.Play:
-		cue_ball.connect("hole_in", Callable(self, "_cue_ball_in")) # TODO called everytime gameplay gets set to Play
+		if !cue_ball.is_connected("hole_in", Callable(self, "_cue_ball_in")):
+			cue_ball.connect("hole_in", Callable(self, "_cue_ball_in")) # TODO called everytime gameplay gets set to Play
 		if current_game_state == game_states.Break:
 			set_game_state(game_states.Pocketing)
+		cue_ball.get_node("ReadyCircle").animate()
 	elif state == turn_states.Hit:
 		increase_attempts_counter()
 	elif state == turn_states.Foul:
@@ -116,7 +118,7 @@ func _input(event):
 			# TODO fix pause when aiming
 	if event is InputEventMouseMotion:
 		if(current_turn_state == turn_states.PlaceBall):
-			_project_to_head_string(event.position)
+			_project_to_head_string(Table.get_node('PlayingSurface').get_local_mouse_position())
 		elif(current_turn_state == turn_states.PlaceBallKitchen):
 			pass
 			#_place_in_kitchen(event.position)
@@ -126,7 +128,7 @@ func _input(event):
 				Table.set_balls_static(false)
 				current_turn_state = turn_states.Wait # Wait for a frame, so that the ball gets not played
 			elif current_turn_state == turn_states.PlaceBallKitchen:
-				var ball_positioner = Table.get_node("BallPositioner")
+				var ball_positioner = Table.get_node("PlayingSurface/BallPositioner")
 				var cue_ball_position = ball_positioner.get_position()
 				cue_ball.set_position(cue_ball_position)
 				cue_ball.get_node("CollisionShape2D").set_disabled(false)
@@ -138,6 +140,7 @@ func _input(event):
 				current_turn_state = turn_states.Wait
 
 func _project_to_head_string(position):
+	#position = Table.convert_global_position_to_scaled_position(position)
 	var projected_position = head_string.get_curve().get_closest_point(position)
 	if (projected_position - game_variables.head_spot_position).length() < game_variables.SNAPPING_DISTANCE:
 		cue_ball.set_position(game_variables.head_spot_position)

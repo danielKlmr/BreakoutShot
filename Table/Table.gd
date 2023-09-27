@@ -3,6 +3,16 @@ extends Node2D
 # Singleton
 @onready var game_variables = get_node("/root/GameVariables")
 
+const TABLE_COLORS = [
+	"yellow",
+	"violet",
+	"blue",
+	"red",
+	"orange",
+	"green",
+	"dark_red",
+]
+
 # Field size (mm)
 # https://de.wikipedia.org/wiki/Billardtisch_(Pool)
 var STANDARD_LENGTH = 2240
@@ -19,11 +29,13 @@ var table_color
 var border_color
 var cue_ball
 var eight_ball
+var camera_zoom = 1
 var hole_offset = 38
 var BORDER_SATURATION_SHIFT = 0.2
 @onready var GAMEPLAY = get_node("Gameplay")
 @onready var HeadString = get_node("PlayingSurface/HeadString")
 @onready var Ball = preload("res://Ball/Ball.tscn")
+@onready var CueBall = preload("res://Ball/CueBall.tscn")
 @onready var BallPositioner = preload("res://Ball/BallPositioner.tscn")
 @onready var playingSurface = get_node("PlayingSurface")
 @onready var camera = get_node("PlayingSurface/Camera3D")
@@ -39,29 +51,71 @@ func _ready():
 	GAMEPLAY.play_game(cue_ball)
 	
 func _draw():
-	draw_rect(Rect2(Vector2(0, 0), Vector2(game_variables.x_size, game_variables.y_size)), table_color)
+	var table_size = Vector2(game_variables.window_size.x, game_variables.window_size.y)
+	if game_variables.current_orientation == game_variables.orientation.Portrait:
+		table_size = Vector2(game_variables.window_size.y, game_variables.window_size.x)
+	draw_rect(Rect2(Vector2(0, 0), table_size), table_color)
 	draw_polyline(HeadString.get_curve().get_baked_points(), game_variables.COLORS["blue"], 2.0)
 	draw_circle(game_variables.food_spot_position, 5, border_color)
 	draw_circle(game_variables.head_spot_position, 5, border_color)
 	draw_circle(Vector2(playingSurface.position.x, playingSurface.position.y), 5, border_color)
 
+func _process(delta):
+	#print(get_global_mouse_position())
+	#print('curr' + str(game_variables.curre))
+	"""
+	Manual scales canvas items to window size, so that UI elements can stay the same size when window size is changed.
+	Therefore, stretch mode is disabled
+	"""
+	game_variables.current_window_size = Vector2(get_viewport().size)
+	var viewport_size = Vector2(game_variables.window_size)
+	if game_variables.current_orientation == game_variables.orientation.Portrait:
+		viewport_size = Vector2(game_variables.window_size.y, game_variables.window_size.x)
+	
+	if game_variables.current_window_size != viewport_size:
+		var x_scale = game_variables.current_window_size.x / viewport_size.x
+		var y_scale = game_variables.current_window_size.y / viewport_size.y
+		
+		camera_zoom = min(x_scale, y_scale)
+		
+		camera.set_zoom(Vector2(camera_zoom, camera_zoom))
+		# TODO make it work when paused
+		
+	if game_variables.current_orientation == game_variables.orientation.Landscape:
+		if game_variables.current_window_size.x * 1.1 < game_variables.current_window_size.y:
+			game_variables.current_orientation = game_variables.orientation.Portrait
+			playingSurface.set_rotation(PI/2)
+			playingSurface.position.x = game_variables.window_size.y / 2
+			playingSurface.position.y = game_variables.window_size.x / 2
+	else:
+		if game_variables.current_window_size.y * 1.1 < game_variables.current_window_size.x:
+			game_variables.current_orientation = game_variables.orientation.Landscape
+			playingSurface.set_rotation(0)
+			playingSurface.position.x = game_variables.window_size.x / 2
+			playingSurface.position.y = game_variables.window_size.y / 2
+
 func _set_color():
 	randomize()
-	var color_index:int = randi() % len(game_variables.TABLE_COLORS)
-	table_color = game_variables.TABLE_COLORS[color_index]
+	var color_index:int = randi() % len(TABLE_COLORS)
+	var color_name = TABLE_COLORS[color_index]
+	border_color = game_variables.COLORS[color_name]
 	
-	border_color = table_color
-	border_color.s += BORDER_SATURATION_SHIFT
+	table_color = border_color
+	table_color.s -= 0.1
+	table_color.r += BORDER_SATURATION_SHIFT
+	table_color.g += BORDER_SATURATION_SHIFT
+	table_color.b += BORDER_SATURATION_SHIFT
 	
 	RenderingServer.set_default_clear_color(border_color)
 
 func _check_table_size():
-	var window = get_window().get_size()
+	#var window = get_window().get_size()
+	var window = Vector2i(1920, 1080) # get_viewport().size
 
 	game_variables.x_size = window.x
 	game_variables.y_size = window.y
 	
-	game_variables.window_size = Vector2(
+	game_variables.window_size = Vector2i(
 			ProjectSettings.get("display/window/size/viewport_width"),
 			ProjectSettings.get("display/window/size/viewport_height"))
 			
@@ -72,13 +126,6 @@ func _check_table_size():
 	
 	playingSurface.position.x = game_variables.window_size.x / 2
 	playingSurface.position.y = game_variables.window_size.y / 2
-	
-	if(window.x * 1.1 > window.y):
-		game_variables.orientation = 0
-	elif(window.x < window.y * 1.1):
-		game_variables.orientation = 1
-	else:
-		game_variables.orientation = 2
 		
 func _setup_table():
 	# TODO CHECK https://github.com/vrojak/godot-multiplayer-billiards
@@ -91,30 +138,30 @@ func _setup_table():
 		hole.scale.y = mm_to_px_scaling_factor
 		pocket_node_overlap = floor(POCKET_NODE_SIZE * mm_to_px_scaling_factor / 2)
 	
-	var top = game_variables.middle_spot_position.y - (game_variables.table_size.y / 2)
-	var bottom = game_variables.middle_spot_position.y + (game_variables.table_size.y / 2)
-	var left = game_variables.middle_spot_position.x - (game_variables.table_size.x / 2)
-	var right = game_variables.middle_spot_position.x + (game_variables.table_size.x / 2)
+	var top =  - (game_variables.table_size.y / 2)
+	var bottom = (game_variables.table_size.y / 2)
+	var left = -(game_variables.table_size.x / 2)
+	var right = (game_variables.table_size.x / 2)
 	
 	get_node("PlayingSurface/Border").get_child(0).set_size(game_variables.table_size.y - 2 * pocket_node_overlap)
-	get_node("PlayingSurface/Border").get_child(0).position = Vector2(left, game_variables.middle_spot_position.y)
+	get_node("PlayingSurface/Border").get_child(0).position = Vector2(left, 0)
 	get_node("PlayingSurface/Border").get_child(2).set_size((game_variables.table_size.x - 4 * pocket_node_overlap) / 2)
-	get_node("PlayingSurface/Border").get_child(2).position = Vector2((game_variables.table_size.x - 4 * pocket_node_overlap) / 4 + pocket_node_overlap + game_variables.BORDER_THICKNESS, top)
+	get_node("PlayingSurface/Border").get_child(2).position = Vector2(-(game_variables.table_size.x - 4 * pocket_node_overlap) / 4 - pocket_node_overlap, top)
 	get_node("PlayingSurface/Border").get_child(4).set_size((game_variables.table_size.x - 4 * pocket_node_overlap) / 2)
-	get_node("PlayingSurface/Border").get_child(4).position = Vector2(game_variables.table_size.x - ((game_variables.table_size.x - 4 * pocket_node_overlap) / 4 + pocket_node_overlap) + game_variables.BORDER_THICKNESS, top)
+	get_node("PlayingSurface/Border").get_child(4).position = Vector2(((game_variables.table_size.x - 4 * pocket_node_overlap) / 4 + pocket_node_overlap), top)
 	get_node("PlayingSurface/Border").get_child(1).set_size(game_variables.table_size.y - 2 * pocket_node_overlap)
-	get_node("PlayingSurface/Border").get_child(1).position = Vector2(right, game_variables.middle_spot_position.y)
+	get_node("PlayingSurface/Border").get_child(1).position = Vector2(right, 0)
 	get_node("PlayingSurface/Border").get_child(3).set_size((game_variables.table_size.x - 4 * pocket_node_overlap) / 2)
-	get_node("PlayingSurface/Border").get_child(3).position = Vector2((game_variables.table_size.x - 4 * pocket_node_overlap) / 4 + pocket_node_overlap + game_variables.BORDER_THICKNESS, bottom)
+	get_node("PlayingSurface/Border").get_child(3).position = Vector2(-(game_variables.table_size.x - 4 * pocket_node_overlap) / 4 - pocket_node_overlap, bottom)
 	get_node("PlayingSurface/Border").get_child(5).set_size((game_variables.table_size.x - 4 * pocket_node_overlap) / 2)
-	get_node("PlayingSurface/Border").get_child(5).position = Vector2(game_variables.table_size.x - ((game_variables.table_size.x - 4 * pocket_node_overlap) / 4 + pocket_node_overlap) + game_variables.BORDER_THICKNESS, bottom)
+	get_node("PlayingSurface/Border").get_child(5).position = Vector2(((game_variables.table_size.x - 4 * pocket_node_overlap) / 4 + pocket_node_overlap), bottom)
 	
 	get_node("PlayingSurface/Holes").get_node("Cutout Corner").position = Vector2(left, top)
 	get_node("PlayingSurface/Holes").get_node("Cutout Corner2").position = Vector2(right, top)
-	get_node("PlayingSurface/Holes").get_node("Cutout Middle2").position = Vector2(game_variables.middle_spot_position.x, top)
+	get_node("PlayingSurface/Holes").get_node("Cutout Middle2").position = Vector2(0, top)
 	get_node("PlayingSurface/Holes").get_node("Cutout Corner4").position = Vector2(left, bottom)
 	get_node("PlayingSurface/Holes").get_node("Cutout Corner3").position = Vector2(right, bottom)
-	get_node("PlayingSurface/Holes").get_node("Cutout Middle").position = Vector2(game_variables.middle_spot_position.x, bottom)
+	get_node("PlayingSurface/Holes").get_node("Cutout Middle").position = Vector2(0, bottom)
 	
 	for border in get_node("PlayingSurface/Border").get_children():
 		border.set_color(border_color)
@@ -124,16 +171,16 @@ func _setup_table():
 		
 	ball_radius = round(mm_to_px_scaling_factor * STANDARD_BALL_DIAMETER / 2)
 		
-	game_variables.head_string_position = game_variables.table_size.x * 3 / 4 # 3/4 of the tables length
-	var head_line_top = game_variables.middle_spot_position.y - (game_variables.table_size.y / 2) + ball_radius
-	var head_line_bottom = game_variables.middle_spot_position.y + (game_variables.table_size.y / 2) - ball_radius
+	game_variables.head_string_position = game_variables.table_size.x * 1 / 4 # 3/4 of the tables length
+	var head_line_top =  - (game_variables.table_size.y / 2) + ball_radius
+	var head_line_bottom = (game_variables.table_size.y / 2) - ball_radius
 	HeadString.get_curve().clear_points()
 	HeadString.get_curve().add_point(Vector2(game_variables.head_string_position, head_line_top))
 	HeadString.get_curve().add_point(Vector2(game_variables.head_string_position, head_line_bottom))
 	queue_redraw() # TODO Remove
 	
-	game_variables.head_spot_position = Vector2(game_variables.head_string_position, game_variables.middle_spot_position.y)
-	game_variables.food_spot_position = Vector2(game_variables.table_size.x * 1 / 4, game_variables.middle_spot_position.y)
+	game_variables.head_spot_position = Vector2(game_variables.head_string_position, 0)
+	game_variables.food_spot_position = Vector2(-game_variables.table_size.x * 1 / 4, 0)
 	
 func _setup_gui():
 	pass#Gui.get_node("MenuButtonPositioner/MenuButton")
@@ -192,12 +239,12 @@ func _init_balls():
 			
 	
 func setup_cue_ball():
-	self.cue_ball = Ball.instantiate().init(ball_radius, 0, game_variables.COLORS["white"], game_variables.head_spot_position)
+	self.cue_ball = CueBall.instantiate().init(ball_radius, 0, game_variables.COLORS["white"], game_variables.head_spot_position)
 	cue_ball.set_rotation(randf_range(0, 2*PI)) # TODO: Randomize?
 	
 	if GAMEPLAY.current_turn_state == GAMEPLAY.turn_states.PlaceBallKitchen:
 		var cue_ball_positioner = BallPositioner.instantiate().init(self.cue_ball)
-		self.add_child(cue_ball_positioner)
+		get_node('PlayingSurface').add_child(cue_ball_positioner)
 	else:
 		print('Now??')
 		get_node("PlayingSurface/Balls").add_child(self.cue_ball)
@@ -235,3 +282,9 @@ func _unhandled_input(event):
 	if event is InputEventKey:
 		if event.pressed and event.keycode == KEY_ESCAPE:
 			get_node("GUI Layer").open_pause_menu()
+			
+func convert_global_position_to_scaled_position(position_global:Vector2i):
+	var position_scaled = Vector2i(position_global / camera_zoom)
+	#var position_scaled = get_viewport().get_viewport_transform() * Vector2(position_global)
+	
+	return position_scaled

@@ -9,8 +9,11 @@ collision_layer = 2
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 polygon = PackedVector2Array(-65, 0, -128, 0, -128, -128, 128, -128, 128, 0, 65, 0, 50, -63, 44, -77, 35, -89, 22, -96, 9, -98, -8, -98, -21, -96, -32, -91, -41, -81, -49, -66)
 
-[node name="Area2D" parent="." instance=ExtResource("2")]
+[node name="Pocket" parent="." instance=ExtResource("2")]
 position = Vector2(0, -110)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1")
+
+[node name="PocketCenter" type="Node2D" parent="."]
+position = Vector2(0, -60)

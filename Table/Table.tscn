@@ -1,17 +1,18 @@
-[gd_scene load_steps=14 format=3 uid="uid://bd64nbtrtx2d6"]
+[gd_scene load_steps=15 format=3 uid="uid://bd64nbtrtx2d6"]
 
 [ext_resource type="Script" path="res://Table/Table.gd" id="1"]
-[ext_resource type="FontFile" path="res://UI/Fonts/Franco.tres" id="2"]
+[ext_resource type="FontFile" uid="uid://dx5eda4uewcsn" path="res://UI/Fonts/Franco.tres" id="2"]
 [ext_resource type="PackedScene" path="res://UI/Sfx/ClickSound.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://c57db7lu6cfjp" path="res://Table/Border/Border.tscn" id="4"]
 [ext_resource type="Theme" uid="uid://dsxjacfs5pxiu" path="res://UI/ButtonTheme.tres" id="5"]
 [ext_resource type="Theme" uid="uid://cfxs4s6yhcvc1" path="res://UI/LabelTheme.tres" id="5_0tigx"]
-[ext_resource type="PackedScene" path="res://Player/Player.tscn" id="6"]
-[ext_resource type="PackedScene" path="res://Table/Border/Cutout Corner.tscn" id="7"]
+[ext_resource type="FontFile" uid="uid://c3a6ubp2mwy8r" path="res://addons/Roboto_Condensed/RobotoCondensed-Bold.ttf" id="5_y6qqf"]
+[ext_resource type="PackedScene" uid="uid://dnkv4u16wadh0" path="res://Player/Player.tscn" id="6"]
+[ext_resource type="PackedScene" uid="uid://cr70woew1j1sn" path="res://Table/Border/Cutout Corner.tscn" id="7"]
+[ext_resource type="Texture2D" uid="uid://dc7btekwa5xku" path="res://addons/tmthymllr/edited_Hamburger_icon.svg" id="7_mm3da"]
 [ext_resource type="PackedScene" uid="uid://c58kh7fy7d00h" path="res://Table/Border/Cutout Middle.tscn" id="8"]
 [ext_resource type="Script" path="res://UI/InGameMenu.gd" id="9"]
 [ext_resource type="Script" path="res://Table/Gameplay.gd" id="10"]
-[ext_resource type="Texture2D" uid="uid://cw5k3gihmw67t" path="res://addons/tmthymllr/Hamburger_icon.svg" id="11"]
 
 [sub_resource type="Curve2D" id="1"]
 _data = {
@@ -30,7 +31,6 @@ script = ExtResource("9")
 
 [node name="InGameMenu" type="MarginContainer" parent="GUI Layer"]
 process_mode = 2
-visible = false
 anchors_preset = 13
 anchor_left = 0.5
 anchor_right = 0.5
@@ -55,11 +55,15 @@ theme_override_constants/separation = 20
 
 [node name="Label" type="Label" parent="GUI Layer/InGameMenu/VBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("5_y6qqf")
+theme_override_font_sizes/font_size = 52
 text = "Popup"
+horizontal_alignment = 1
 
 [node name="Subtext" type="Label" parent="GUI Layer/InGameMenu/VBoxContainer"]
 layout_mode = 2
 text = "Popup Subtext"
+horizontal_alignment = 1
 
 [node name="ContinueButton" type="Button" parent="GUI Layer/InGameMenu/VBoxContainer"]
 layout_mode = 2
@@ -117,8 +121,10 @@ offset_right = 190.0
 offset_bottom = 80.0
 
 [node name="MenuButton" type="Button" parent="GUI Layer/MenuButtonPositioner"]
+custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
-icon = ExtResource("11")
+icon = ExtResource("7_mm3da")
+icon_alignment = 1
 
 [node name="ClickSound" parent="GUI Layer" instance=ExtResource("3")]
 
@@ -129,14 +135,15 @@ icon = ExtResource("11")
 [node name="PlayingSurface" type="Node2D" parent="."]
 
 [node name="Camera3D" type="Camera2D" parent="PlayingSurface"]
+process_mode = 3
 
 [node name="HeadString" type="Path2D" parent="PlayingSurface"]
 curve = SubResource("1")
 
-[node name="Border" type="Node" parent="PlayingSurface"]
+[node name="Border" type="Node2D" parent="PlayingSurface"]
 
 [node name="Border1" parent="PlayingSurface/Border" instance=ExtResource("4")]
-position = Vector2(0, 284.321)
+position = Vector2(70, 540)
 
 [node name="Border3" parent="PlayingSurface/Border" instance=ExtResource("4")]
 position = Vector2(1018.94, 294.474)
@@ -148,7 +155,7 @@ rotation = 1.5708
 
 [node name="Border4" parent="PlayingSurface/Border" instance=ExtResource("4")]
 position = Vector2(514.706, 596.606)
-rotation = 4.71239
+rotation = -1.5708
 
 [node name="Border5" parent="PlayingSurface/Border" instance=ExtResource("4")]
 position = Vector2(1416.69, -2.26276)
@@ -156,9 +163,9 @@ rotation = 1.5708
 
 [node name="Border6" parent="PlayingSurface/Border" instance=ExtResource("4")]
 position = Vector2(1465.06, 607.92)
-rotation = 4.71239
+rotation = -1.5708
 
-[node name="Holes" type="Node" parent="PlayingSurface"]
+[node name="Holes" type="Node2D" parent="PlayingSurface"]
 
 [node name="Cutout Corner" parent="PlayingSurface/Holes" instance=ExtResource("7")]
 scale = Vector2(0.5, 0.5)
@@ -187,7 +194,7 @@ scale = Vector2(0.5, 0.5)
 position = Vector2(960, 0)
 scale = Vector2(0.5, 0.5)
 
-[node name="Balls" type="Node" parent="PlayingSurface"]
+[node name="Balls" type="Node2D" parent="PlayingSurface"]
 
 [connection signal="pressed" from="GUI Layer/InGameMenu/VBoxContainer/ContinueButton" to="GUI Layer" method="_on_ContinueButton_pressed"]
 [connection signal="pressed" from="GUI Layer/InGameMenu/VBoxContainer/RestartButton" to="GUI Layer" method="_on_RestartButton_pressed"]

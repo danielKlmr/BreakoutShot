@@ -11,7 +11,6 @@ func _ready():
 	pass
 	
 func _draw():
-	print()
 	var direction = (get_points()[0] - get_points()[1]).normalized()
 	draw_circle(get_points()[0], 7, Color(1,1,1,1))
 	draw_circle(get_points()[0] + direction * 50, 7, Color(1,1,1,1))

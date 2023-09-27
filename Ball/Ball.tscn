@@ -51,4 +51,3 @@ stream = ExtResource("3")
 
 [connection signal="body_entered" from="." to="." method="_on_Ball_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_Ball_body_exited"]
-[connection signal="input_event" from="." to="." method="_on_Ball_input_event"]
