@@ -78,53 +78,43 @@ text = "Restart"
 layout_mode = 2
 text = "Back to Menu"
 
-[node name="GUI" type="MarginContainer" parent="GUI Layer"]
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
+[node name="HUD" type="MarginContainer" parent="GUI Layer"]
 offset_left = 150.0
-offset_top = -32.0
-offset_right = 414.0
-offset_bottom = -40.0
-grow_vertical = 0
+offset_top = 20.0
+offset_right = 478.0
+offset_bottom = 60.0
 
-[node name="Stats" type="HBoxContainer" parent="GUI Layer/GUI"]
+[node name="Stats" type="HBoxContainer" parent="GUI Layer/HUD"]
 layout_mode = 2
 theme = ExtResource("5_0tigx")
 
-[node name="Attempts" type="Label" parent="GUI Layer/GUI/Stats"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("2")
-text = "Attempts: "
-
-[node name="Attempts Value" type="Label" parent="GUI Layer/GUI/Stats"]
-custom_minimum_size = Vector2(50, 0)
-layout_mode = 2
-theme_override_fonts/font = ExtResource("2")
-text = "X"
-
-[node name="Fouls" type="Label" parent="GUI Layer/GUI/Stats"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("2")
-text = "Fouls: "
-
-[node name="Fouls Value" type="Label" parent="GUI Layer/GUI/Stats"]
-custom_minimum_size = Vector2(50, 0)
-layout_mode = 2
-theme_override_fonts/font = ExtResource("2")
-text = "X"
-
-[node name="MenuButtonPositioner" type="MarginContainer" parent="GUI Layer"]
-offset_left = 150.0
-offset_top = 40.0
-offset_right = 190.0
-offset_bottom = 80.0
-
-[node name="MenuButton" type="Button" parent="GUI Layer/MenuButtonPositioner"]
+[node name="MenuButton" type="Button" parent="GUI Layer/HUD/Stats"]
 custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 icon = ExtResource("7_mm3da")
 icon_alignment = 1
+
+[node name="Attempts" type="Label" parent="GUI Layer/HUD/Stats"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+text = "Attempts: "
+
+[node name="Attempts Value" type="Label" parent="GUI Layer/HUD/Stats"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+text = "X"
+
+[node name="Fouls" type="Label" parent="GUI Layer/HUD/Stats"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+text = "Fouls: "
+
+[node name="Fouls Value" type="Label" parent="GUI Layer/HUD/Stats"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+text = "X"
 
 [node name="ClickSound" parent="GUI Layer" instance=ExtResource("3")]
 
@@ -199,4 +189,4 @@ scale = Vector2(0.5, 0.5)
 [connection signal="pressed" from="GUI Layer/InGameMenu/VBoxContainer/ContinueButton" to="GUI Layer" method="_on_ContinueButton_pressed"]
 [connection signal="pressed" from="GUI Layer/InGameMenu/VBoxContainer/RestartButton" to="GUI Layer" method="_on_RestartButton_pressed"]
 [connection signal="pressed" from="GUI Layer/InGameMenu/VBoxContainer/BackToMenuButton" to="GUI Layer" method="_on_BackToMenuButton_pressed"]
-[connection signal="pressed" from="GUI Layer/MenuButtonPositioner/MenuButton" to="GUI Layer" method="open_pause_menu"]
+[connection signal="pressed" from="GUI Layer/HUD/Stats/MenuButton" to="GUI Layer" method="open_pause_menu"]

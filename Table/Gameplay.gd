@@ -29,8 +29,8 @@ var cue_ball
 @onready var head_string = get_node("/root/Table/PlayingSurface/HeadString")
 @onready var Gui = get_node("/root/Table/GUI Layer")
 @onready var Table = get_node("/root/Table")
-@onready var UIAttempts = get_node("/root/Table/GUI Layer/GUI/Stats/Attempts Value")
-@onready var UIFouls = get_node("/root/Table/GUI Layer/GUI/Stats/Fouls Value")
+@onready var UIAttempts = get_node("/root/Table/GUI Layer/HUD/Stats/Attempts Value")
+@onready var UIFouls = get_node("/root/Table/GUI Layer/HUD/Stats/Fouls Value")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

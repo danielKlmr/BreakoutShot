@@ -39,13 +39,14 @@ var BORDER_SATURATION_SHIFT = 0.2
 @onready var BallPositioner = preload("res://Ball/BallPositioner.tscn")
 @onready var playingSurface = get_node("PlayingSurface")
 @onready var camera = get_node("PlayingSurface/Camera3D")
-@onready var Gui = get_node("GUI Layer")
+@onready var GUI = get_node("GUI Layer/HUD")
 
 func _ready():
 	_set_color()
 	_check_table_size()
 	_setup_table()
 	_setup_gui()
+	_set_hud_space()
 	_init_balls()
 	setup_cue_ball()
 	GAMEPLAY.play_game(cue_ball)
@@ -71,10 +72,11 @@ func _process(delta):
 	var viewport_size = Vector2(game_variables.window_size)
 	if game_variables.current_orientation == game_variables.orientation.Portrait:
 		viewport_size = Vector2(game_variables.window_size.y, game_variables.window_size.x)
+	var current_window_height_without_hud = game_variables.current_window_size.y - game_variables.hud_height
 	
 	if game_variables.current_window_size != viewport_size:
 		var x_scale = game_variables.current_window_size.x / viewport_size.x
-		var y_scale = game_variables.current_window_size.y / viewport_size.y
+		var y_scale = current_window_height_without_hud / viewport_size.y
 		
 		camera_zoom = min(x_scale, y_scale)
 		
@@ -85,14 +87,14 @@ func _process(delta):
 		if game_variables.current_window_size.x * 1.1 < game_variables.current_window_size.y:
 			game_variables.current_orientation = game_variables.orientation.Portrait
 			playingSurface.set_rotation(PI/2)
-			playingSurface.position.x = game_variables.window_size.y / 2
-			playingSurface.position.y = game_variables.window_size.x / 2
+			#playingSurface.position.x = game_variables.window_size.y / 2
+			#playingSurface.position.y = game_variables.window_size.x / 2
 	else:
 		if game_variables.current_window_size.y * 1.1 < game_variables.current_window_size.x:
 			game_variables.current_orientation = game_variables.orientation.Landscape
 			playingSurface.set_rotation(0)
-			playingSurface.position.x = game_variables.window_size.x / 2
-			playingSurface.position.y = game_variables.window_size.y / 2
+			#playingSurface.position.x = game_variables.window_size.x / 2
+			#playingSurface.position.y = game_variables.window_size.y / 2
 
 func _set_color():
 	randomize()
@@ -183,7 +185,12 @@ func _setup_table():
 	game_variables.food_spot_position = Vector2(-game_variables.table_size.x * 1 / 4, 0)
 	
 func _setup_gui():
-	pass#Gui.get_node("MenuButtonPositioner/MenuButton")
+	game_variables.hud_height = GUI.get_size().y + game_variables.HUD_PADDING
+	
+func _set_hud_space():
+	camera.offset.y = - game_variables.hud_height / 2
+	# Only half because playing surface is scaled to window withoud hud. Therefore, half of the hud size is already free at top and bottom
+
 
 func _init_balls():
 	var colors = [

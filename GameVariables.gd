@@ -3,8 +3,10 @@ extends Node
 # Technical
 var SNAPPING_DISTANCE = 50
 var MINIMUM_WINDOW_SIZE = Vector2i(720, 720)
+var HUD_PADDING = 30
 enum orientation {Portrait, Landscape}
 var current_orientation = orientation.Landscape
+var hud_height = null
 
 # Options
 var MUSIC = true

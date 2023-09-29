@@ -7,7 +7,7 @@ var AUTOCLOSE_TIME = 2.0
 @onready var subtext = self.get_node("InGameMenu/VBoxContainer/Subtext")
 @onready var InGameMenu = $InGameMenu
 @onready var buttons = {
-	"menu": get_node("MenuButtonPositioner/MenuButton"),
+	"menu": get_node("HUD/Stats/MenuButton"),
 	"continue": vbox.get_node("ContinueButton"),
 	"restart": vbox.get_node("RestartButton"),
 	"back_to_menu": vbox.get_node("BackToMenuButton"),
