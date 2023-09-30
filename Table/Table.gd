@@ -49,11 +49,13 @@ func _ready():
 	_set_hud_space()
 	_init_balls()
 	setup_cue_ball()
+	GameEngine.connect(
+			"orientation_changed", Callable(self, "_change_table_orientation"))
 	GAMEPLAY.play_game(cue_ball)
 	
 func _draw():
 	var table_size = Vector2(game_variables.window_size.x, game_variables.window_size.y)
-	if game_variables.current_orientation == game_variables.orientation.Portrait:
+	if GameEngine.current_orientation == GameEngine.WindowOrientationModes.PORTRAIT:
 		table_size = Vector2(game_variables.window_size.y, game_variables.window_size.x)
 	draw_rect(Rect2(Vector2(0, 0), table_size), table_color)
 	draw_polyline(HeadString.get_curve().get_baked_points(), game_variables.COLORS["blue"], 2.0)
@@ -68,33 +70,20 @@ func _process(delta):
 	Manual scales canvas items to window size, so that UI elements can stay the same size when window size is changed.
 	Therefore, stretch mode is disabled
 	"""
-	game_variables.current_window_size = Vector2(get_viewport().size)
+	GameEngine.current_window_size = Vector2(get_viewport().size)
 	var viewport_size = Vector2(game_variables.window_size)
-	if game_variables.current_orientation == game_variables.orientation.Portrait:
+	if GameEngine.current_orientation == GameEngine.WindowOrientationModes.PORTRAIT:
 		viewport_size = Vector2(game_variables.window_size.y, game_variables.window_size.x)
-	var current_window_height_without_hud = game_variables.current_window_size.y - game_variables.hud_height
+	var current_window_height_without_hud = GameEngine.current_window_size.y - game_variables.hud_height
 	
-	if game_variables.current_window_size != viewport_size:
-		var x_scale = game_variables.current_window_size.x / viewport_size.x
+	if GameEngine.current_window_size != viewport_size:
+		var x_scale = GameEngine.current_window_size.x / viewport_size.x
 		var y_scale = current_window_height_without_hud / viewport_size.y
 		
 		camera_zoom = min(x_scale, y_scale)
 		
 		camera.set_zoom(Vector2(camera_zoom, camera_zoom))
 		# TODO make it work when paused
-		
-	if game_variables.current_orientation == game_variables.orientation.Landscape:
-		if game_variables.current_window_size.x * 1.1 < game_variables.current_window_size.y:
-			game_variables.current_orientation = game_variables.orientation.Portrait
-			playingSurface.set_rotation(PI/2)
-			#playingSurface.position.x = game_variables.window_size.y / 2
-			#playingSurface.position.y = game_variables.window_size.x / 2
-	else:
-		if game_variables.current_window_size.y * 1.1 < game_variables.current_window_size.x:
-			game_variables.current_orientation = game_variables.orientation.Landscape
-			playingSurface.set_rotation(0)
-			#playingSurface.position.x = game_variables.window_size.x / 2
-			#playingSurface.position.y = game_variables.window_size.y / 2
 
 func _set_color():
 	randomize()
@@ -256,6 +245,13 @@ func setup_cue_ball():
 		print('Now??')
 		get_node("PlayingSurface/Balls").add_child(self.cue_ball)
 	return self.cue_ball
+	
+
+func _change_table_orientation(new_orientation: GameEngine.WindowOrientationModes):
+	if new_orientation == GameEngine.WindowOrientationModes.PORTRAIT:
+		playingSurface.set_rotation(PI/2)
+	else:
+		playingSurface.set_rotation(0)
 	
 func delete_ball(ball):
 	var ball_number = ball.number

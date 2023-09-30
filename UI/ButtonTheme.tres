@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=2 format=3 uid="uid://dsxjacfs5pxiu"]
 
-[ext_resource type="FontFile" uid="uid://dx5eda4uewcsn" path="res://UI/Fonts/Franco.tres" id="1"]
+[ext_resource type="FontFile" uid="uid://dx5eda4uewcsn" path="res://ui/Fonts/Franco.tres" id="1"]
 
 [resource]
 default_font = ExtResource("1")

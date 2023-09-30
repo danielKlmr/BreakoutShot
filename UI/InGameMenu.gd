@@ -67,7 +67,7 @@ func show_foul():
 
 func _on_BackToMenuButton_pressed():
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://UI/Main Menu.tscn")
+	get_tree().change_scene_to_file("res://ui/main_menu.tscn")
 
 func _on_ContinueButton_pressed():
 	get_tree().paused = false

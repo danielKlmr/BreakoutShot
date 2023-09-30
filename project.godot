@@ -11,15 +11,16 @@ config_version=5
 [application]
 
 config/name="BreakoutShot"
-run/main_scene="res://UI/Main Menu.tscn"
+run/main_scene="res://ui/main_menu.tscn"
 config/features=PackedStringArray("4.0")
 config/icon="res://icon.png"
-config/version="0.1.2"
+config/version="0.1.3"
 
 [autoload]
 
 GameVariables="*res://GameVariables.gd"
 BackgroundMusic="*res://BackgroundMusic.tscn"
+GameEngine="*res://game_engine.gd"
 
 [display]
 

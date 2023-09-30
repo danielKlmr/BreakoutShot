@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://b6ke7niyultji"
-path="res://.godot/imported/Franco-C4SA.ttf-0027a294e95b0ade193eac76339e1ab9.fontdata"
+path="res://.godot/imported/Franco-C4SA.ttf-298326bf783dcd1298f7f5cd0446e24f.fontdata"
 
 [deps]
 
-source_file="res://UI/Fonts/Franco-C4SA.ttf"
-dest_files=["res://.godot/imported/Franco-C4SA.ttf-0027a294e95b0ade193eac76339e1ab9.fontdata"]
+source_file="res://ui/Fonts/Franco-C4SA.ttf"
+dest_files=["res://.godot/imported/Franco-C4SA.ttf-298326bf783dcd1298f7f5cd0446e24f.fontdata"]
 
 [params]
 

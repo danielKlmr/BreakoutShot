@@ -4,8 +4,6 @@ extends Node
 var SNAPPING_DISTANCE = 50
 var MINIMUM_WINDOW_SIZE = Vector2i(720, 720)
 var HUD_PADDING = 30
-enum orientation {Portrait, Landscape}
-var current_orientation = orientation.Landscape
 var hud_height = null
 
 # Options
@@ -26,7 +24,6 @@ var NUMBER_OBJECT_BALLS = 15
 enum suits {Stripe, Solid}
 
 var window_size = Vector2i(1920, 1080)
-var current_window_size = Vector2i(1920, 1080)
 var table_size = Vector2(0, 0)
 var ballradius = 20
 var BORDER_THICKNESS = 70

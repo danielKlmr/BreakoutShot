@@ -1,17 +1,17 @@
 [gd_scene load_steps=15 format=3 uid="uid://bd64nbtrtx2d6"]
 
 [ext_resource type="Script" path="res://Table/Table.gd" id="1"]
-[ext_resource type="FontFile" uid="uid://dx5eda4uewcsn" path="res://UI/Fonts/Franco.tres" id="2"]
 [ext_resource type="PackedScene" path="res://UI/Sfx/ClickSound.tscn" id="3"]
+[ext_resource type="Script" path="res://ui/InGameMenu.gd" id="3_no0ar"]
 [ext_resource type="PackedScene" uid="uid://c57db7lu6cfjp" path="res://Table/Border/Border.tscn" id="4"]
-[ext_resource type="Theme" uid="uid://dsxjacfs5pxiu" path="res://UI/ButtonTheme.tres" id="5"]
-[ext_resource type="Theme" uid="uid://cfxs4s6yhcvc1" path="res://UI/LabelTheme.tres" id="5_0tigx"]
+[ext_resource type="Theme" uid="uid://dsxjacfs5pxiu" path="res://ui/ButtonTheme.tres" id="4_4wso6"]
 [ext_resource type="FontFile" uid="uid://c3a6ubp2mwy8r" path="res://addons/Roboto_Condensed/RobotoCondensed-Bold.ttf" id="5_y6qqf"]
 [ext_resource type="PackedScene" uid="uid://dnkv4u16wadh0" path="res://Player/Player.tscn" id="6"]
+[ext_resource type="Theme" uid="uid://cfxs4s6yhcvc1" path="res://ui/LabelTheme.tres" id="6_wc42h"]
 [ext_resource type="PackedScene" uid="uid://cr70woew1j1sn" path="res://Table/Border/Cutout Corner.tscn" id="7"]
 [ext_resource type="Texture2D" uid="uid://dc7btekwa5xku" path="res://addons/tmthymllr/edited_Hamburger_icon.svg" id="7_mm3da"]
 [ext_resource type="PackedScene" uid="uid://c58kh7fy7d00h" path="res://Table/Border/Cutout Middle.tscn" id="8"]
-[ext_resource type="Script" path="res://UI/InGameMenu.gd" id="9"]
+[ext_resource type="FontFile" uid="uid://dx5eda4uewcsn" path="res://ui/Fonts/Franco.tres" id="8_wgq6n"]
 [ext_resource type="Script" path="res://Table/Gameplay.gd" id="10"]
 
 [sub_resource type="Curve2D" id="1"]
@@ -27,7 +27,7 @@ script = ExtResource("1")
 script = ExtResource("10")
 
 [node name="GUI Layer" type="CanvasLayer" parent="."]
-script = ExtResource("9")
+script = ExtResource("3_no0ar")
 
 [node name="InGameMenu" type="MarginContainer" parent="GUI Layer"]
 process_mode = 2
@@ -50,7 +50,7 @@ color = Color(0, 0, 0, 1)
 [node name="VBoxContainer" type="VBoxContainer" parent="GUI Layer/InGameMenu"]
 layout_mode = 2
 size_flags_vertical = 4
-theme = ExtResource("5")
+theme = ExtResource("4_4wso6")
 theme_override_constants/separation = 20
 
 [node name="Label" type="Label" parent="GUI Layer/InGameMenu/VBoxContainer"]
@@ -67,7 +67,7 @@ horizontal_alignment = 1
 
 [node name="ContinueButton" type="Button" parent="GUI Layer/InGameMenu/VBoxContainer"]
 layout_mode = 2
-theme = ExtResource("5")
+theme = ExtResource("4_4wso6")
 text = "Continue"
 
 [node name="RestartButton" type="Button" parent="GUI Layer/InGameMenu/VBoxContainer"]
@@ -86,7 +86,7 @@ offset_bottom = 60.0
 
 [node name="Stats" type="HBoxContainer" parent="GUI Layer/HUD"]
 layout_mode = 2
-theme = ExtResource("5_0tigx")
+theme = ExtResource("6_wc42h")
 
 [node name="MenuButton" type="Button" parent="GUI Layer/HUD/Stats"]
 custom_minimum_size = Vector2(60, 0)
@@ -96,24 +96,24 @@ icon_alignment = 1
 
 [node name="Attempts" type="Label" parent="GUI Layer/HUD/Stats"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2")
+theme_override_fonts/font = ExtResource("8_wgq6n")
 text = "Attempts: "
 
 [node name="Attempts Value" type="Label" parent="GUI Layer/HUD/Stats"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2")
+theme_override_fonts/font = ExtResource("8_wgq6n")
 text = "X"
 
 [node name="Fouls" type="Label" parent="GUI Layer/HUD/Stats"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2")
+theme_override_fonts/font = ExtResource("8_wgq6n")
 text = "Fouls: "
 
 [node name="Fouls Value" type="Label" parent="GUI Layer/HUD/Stats"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2")
+theme_override_fonts/font = ExtResource("8_wgq6n")
 text = "X"
 
 [node name="ClickSound" parent="GUI Layer" instance=ExtResource("3")]

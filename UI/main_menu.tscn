@@ -1,12 +1,12 @@
 [gd_scene load_steps=8 format=3 uid="uid://boj6s6stprxa3"]
 
-[ext_resource type="Script" path="res://UI/Menu.gd" id="1"]
-[ext_resource type="Texture2D" uid="uid://c1op815dvohk7" path="res://addons/joeyguns/Main Menu Background.jpg" id="2_fk4k3"]
-[ext_resource type="Theme" uid="uid://dsxjacfs5pxiu" path="res://UI/ButtonTheme.tres" id="3"]
-[ext_resource type="PackedScene" path="res://UI/Sfx/ClickSound.tscn" id="4"]
-[ext_resource type="Theme" uid="uid://cfxs4s6yhcvc1" path="res://UI/LabelTheme.tres" id="5_hmm2i"]
-[ext_resource type="FontFile" uid="uid://c3a6ubp2mwy8r" path="res://addons/Roboto_Condensed/RobotoCondensed-Bold.ttf" id="6_tewwi"]
-[ext_resource type="Texture2D" uid="uid://b6yr80cijrtp6" path="res://Logo/logo.png" id="7_7yp6y"]
+[ext_resource type="Script" path="res://ui/menu.gd" id="1_66ogs"]
+[ext_resource type="Texture2D" uid="uid://c1op815dvohk7" path="res://addons/joeyguns/Main Menu Background.jpg" id="2_1aqyp"]
+[ext_resource type="PackedScene" path="res://UI/Sfx/ClickSound.tscn" id="3_aajqa"]
+[ext_resource type="Theme" uid="uid://dsxjacfs5pxiu" path="res://ui/ButtonTheme.tres" id="4_tq2r0"]
+[ext_resource type="Theme" uid="uid://cfxs4s6yhcvc1" path="res://ui/LabelTheme.tres" id="5_vhall"]
+[ext_resource type="FontFile" uid="uid://c3a6ubp2mwy8r" path="res://addons/Roboto_Condensed/RobotoCondensed-Bold.ttf" id="6_6nei3"]
+[ext_resource type="Texture2D" uid="uid://b6yr80cijrtp6" path="res://Logo/logo.png" id="7_677sq"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -15,7 +15,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1")
+script = ExtResource("1_66ogs")
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
@@ -24,11 +24,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_fk4k3")
+texture = ExtResource("2_1aqyp")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="ClickSound" parent="." instance=ExtResource("4")]
+[node name="ClickSound" parent="." instance=ExtResource("3_aajqa")]
 
 [node name="Menu" type="Control" parent="."]
 clip_contents = true
@@ -70,62 +70,62 @@ theme_override_constants/margin_bottom = 30
 
 [node name="SelectItem" type="VBoxContainer" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer"]
 layout_mode = 2
-theme = ExtResource("3")
+theme = ExtResource("4_tq2r0")
 alignment = 1
 
 [node name="PlayButton" type="Button" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem"]
 layout_mode = 2
-theme = ExtResource("3")
+theme = ExtResource("4_tq2r0")
 text = "Play"
 
 [node name="OptionsButton" type="Button" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem"]
 layout_mode = 2
-theme = ExtResource("3")
+theme = ExtResource("4_tq2r0")
 text = "Options"
 
 [node name="InfoButton" type="Button" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem"]
 layout_mode = 2
-theme = ExtResource("3")
+theme = ExtResource("4_tq2r0")
 text = "Info & Rules"
 
 [node name="CreditsButton" type="Button" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem"]
 layout_mode = 2
-theme = ExtResource("3")
+theme = ExtResource("4_tq2r0")
 text = "Credits"
 
 [node name="QuitButton" type="Button" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem"]
 layout_mode = 2
-theme = ExtResource("3")
+theme = ExtResource("4_tq2r0")
 text = "Quit"
 
 [node name="Options" type="VBoxContainer" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer"]
 visible = false
 layout_mode = 2
-theme = ExtResource("3")
+theme = ExtResource("4_tq2r0")
 alignment = 1
 
 [node name="MusicButton" type="CheckButton" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Options"]
 layout_mode = 2
-theme = ExtResource("3")
+theme = ExtResource("4_tq2r0")
 text = "Music"
 alignment = 1
 
 [node name="HitStrenghButton" type="Button" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Options"]
 layout_mode = 2
-theme = ExtResource("3")
+theme = ExtResource("4_tq2r0")
 text = "Hit Strength"
 alignment = 0
 
 [node name="BackButton2" type="Button" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Options"]
 layout_mode = 2
-theme = ExtResource("3")
+theme = ExtResource("4_tq2r0")
 text = "Back"
 
 [node name="Info" type="VBoxContainer" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
-theme = ExtResource("3")
+theme = ExtResource("4_tq2r0")
 alignment = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Info"]
@@ -140,8 +140,8 @@ theme_override_constants/margin_right = 5
 
 [node name="Label" type="RichTextLabel" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Info/ScrollContainer/MarginContainer"]
 layout_mode = 2
-theme = ExtResource("5_hmm2i")
-theme_override_fonts/bold_font = ExtResource("6_tewwi")
+theme = ExtResource("5_vhall")
+theme_override_fonts/bold_font = ExtResource("6_6nei3")
 bbcode_enabled = true
 text = "Hello, glad you found your way to my game. It may not look like a big thing, but it's the first project I've finished, and it's given me the opportunity to learn a bit about gamedev and the Godot engine.
 
@@ -175,14 +175,14 @@ horizontal_alignment = 1
 
 [node name="BackButton" type="Button" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Info"]
 layout_mode = 2
-theme = ExtResource("3")
+theme = ExtResource("4_tq2r0")
 text = "Back"
 
 [node name="Credits" type="VBoxContainer" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
-theme = ExtResource("3")
+theme = ExtResource("4_tq2r0")
 alignment = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Credits"]
@@ -197,8 +197,8 @@ theme_override_constants/margin_right = 5
 
 [node name="Label" type="RichTextLabel" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Credits/ScrollContainer/MarginContainer"]
 layout_mode = 2
-theme = ExtResource("5_hmm2i")
-theme_override_fonts/bold_font = ExtResource("6_tewwi")
+theme = ExtResource("5_vhall")
+theme_override_fonts/bold_font = ExtResource("6_6nei3")
 bbcode_enabled = true
 text = "[center][b]Music[/b]
 \"Calm Ambient 1\" by cynicmusic [url=https://opengameart.org/users/cynicmusic]↗[/url]
@@ -221,7 +221,7 @@ fit_content = true
 
 [node name="BackButton" type="Button" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Credits"]
 layout_mode = 2
-theme = ExtResource("3")
+theme = ExtResource("4_tq2r0")
 text = "Back"
 
 [node name="LogoContainer" type="VBoxContainer" parent="Menu"]
@@ -240,7 +240,7 @@ alignment = 2
 custom_minimum_size = Vector2(512, 512)
 layout_mode = 2
 size_flags_vertical = 0
-texture = ExtResource("7_7yp6y")
+texture = ExtResource("7_677sq")
 expand_mode = 1
 
 [connection signal="pressed" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem/PlayButton" to="." method="_on_Button_pressed"]
