@@ -1,0 +1,44 @@
+[gd_scene load_steps=3 format=3 uid="uid://mwoc6ftik2w"]
+
+[ext_resource type="Theme" uid="uid://dsxjacfs5pxiu" path="res://ui/ButtonTheme.tres" id="1_dk8l6"]
+[ext_resource type="Script" path="res://ui/options_menu.gd" id="2_ors1m"]
+
+[node name="OptionsMenu" type="VBoxContainer"]
+theme = ExtResource("1_dk8l6")
+alignment = 1
+script = ExtResource("2_ors1m")
+
+[node name="MusicButton" type="CheckButton" parent="."]
+layout_mode = 2
+theme = ExtResource("1_dk8l6")
+text = "Music"
+
+[node name="Hit StrengthButton" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Hit StrengthButton"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Hit Strength"
+
+[node name="Button" type="OptionButton" parent="Hit StrengthButton"]
+custom_minimum_size = Vector2(100, 0)
+layout_direction = 2
+layout_mode = 2
+item_count = 3
+selected = 1
+popup/item_0/text = "x0.5"
+popup/item_0/id = 0
+popup/item_1/text = "x1"
+popup/item_1/id = 1
+popup/item_2/text = "x2"
+popup/item_2/id = 2
+
+[node name="BackButton" type="Button" parent="."]
+layout_mode = 2
+theme = ExtResource("1_dk8l6")
+text = "Back"
+
+[connection signal="toggled" from="MusicButton" to="." method="_on_music_button_toggled"]
+[connection signal="item_selected" from="Hit StrengthButton/Button" to="." method="_hit_strength_item_selected"]
+[connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]

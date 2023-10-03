@@ -2,7 +2,6 @@ extends Node
 
 # Technical
 var SNAPPING_DISTANCE = 50
-var MINIMUM_WINDOW_SIZE = Vector2i(720, 720)
 var HUD_PADDING = 30
 var hud_height = null
 
@@ -41,17 +40,6 @@ const COLORS = {
 	"green": Color(0.49, 0.62, 0.3, 1),
 	"dark_red": Color(0.72, 0.23, 0.36, 1),
 }
-"""const COLORS = {
-	"white": Color(0.75, 0.75, 0.75, 1),
-	"black": Color(0.15, 0.15, 0.15, 1),#
-	"yellow": Color(0.85, 0.65, 0.28, 1),#
-	"violet": Color(0.71, 0.22, 0.82, 1),#
-	"blue": Color(0.2, 0.35, 0.71, 1),#
-	"red": Color(0.78, 0.27, 0.38, 1),#
-	"orange": Color(0.66, 0.3, 0.19, 1),#
-	"green": Color(0.11, 0.35, 0.17, 1),#
-	"dark_red": Color(0.55, 0.2, 0.23, 1),#
-}"""
 var TABLE_COLORS = [
 	Color("mistyrose"),
 	Color("wheat"),
@@ -61,3 +49,5 @@ var TABLE_COLORS = [
 #https://www.reddit.com/r/godot/comments/bp9qsv/visualising_shot_preview_in_2d_snooker_game/
 
 var EIGHT_BALL_NUMBER = 8
+var HIT_STRENGTH = 5
+var hit_strength_multiplicator_index = 1

@@ -1,21 +1,22 @@
-[gd_scene load_steps=8 format=3 uid="uid://boj6s6stprxa3"]
+[gd_scene load_steps=9 format=3 uid="uid://boj6s6stprxa3"]
 
-[ext_resource type="Script" path="res://ui/menu.gd" id="1_66ogs"]
+[ext_resource type="Script" path="res://ui/main_menu.gd" id="1_36pkq"]
 [ext_resource type="Texture2D" uid="uid://c1op815dvohk7" path="res://addons/joeyguns/Main Menu Background.jpg" id="2_1aqyp"]
 [ext_resource type="PackedScene" path="res://UI/Sfx/ClickSound.tscn" id="3_aajqa"]
 [ext_resource type="Theme" uid="uid://dsxjacfs5pxiu" path="res://ui/ButtonTheme.tres" id="4_tq2r0"]
+[ext_resource type="PackedScene" uid="uid://mwoc6ftik2w" path="res://ui/options_menu.tscn" id="5_ryiaq"]
 [ext_resource type="Theme" uid="uid://cfxs4s6yhcvc1" path="res://ui/LabelTheme.tres" id="5_vhall"]
 [ext_resource type="FontFile" uid="uid://c3a6ubp2mwy8r" path="res://addons/Roboto_Condensed/RobotoCondensed-Bold.ttf" id="6_6nei3"]
 [ext_resource type="Texture2D" uid="uid://b6yr80cijrtp6" path="res://Logo/logo.png" id="7_677sq"]
 
-[node name="Control" type="Control"]
+[node name="Main Menu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_66ogs")
+script = ExtResource("1_36pkq")
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
@@ -32,11 +33,13 @@ stretch_mode = 6
 
 [node name="Menu" type="Control" parent="."]
 clip_contents = true
+custom_minimum_size = Vector2(512, 0)
 layout_mode = 1
-anchors_preset = 9
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = 200.0
-offset_right = 712.0
+grow_horizontal = 2
 grow_vertical = 2
 
 [node name="MenuItems" type="MarginContainer" parent="Menu"]
@@ -98,28 +101,9 @@ layout_mode = 2
 theme = ExtResource("4_tq2r0")
 text = "Quit"
 
-[node name="Options" type="VBoxContainer" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer"]
+[node name="Options" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer" instance=ExtResource("5_ryiaq")]
 visible = false
 layout_mode = 2
-theme = ExtResource("4_tq2r0")
-alignment = 1
-
-[node name="MusicButton" type="CheckButton" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Options"]
-layout_mode = 2
-theme = ExtResource("4_tq2r0")
-text = "Music"
-alignment = 1
-
-[node name="HitStrenghButton" type="Button" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Options"]
-layout_mode = 2
-theme = ExtResource("4_tq2r0")
-text = "Hit Strength"
-alignment = 0
-
-[node name="BackButton2" type="Button" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Options"]
-layout_mode = 2
-theme = ExtResource("4_tq2r0")
-text = "Back"
 
 [node name="Info" type="VBoxContainer" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer"]
 visible = false
@@ -248,9 +232,7 @@ expand_mode = 1
 [connection signal="pressed" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem/InfoButton" to="." method="_on_InfoButton_pressed"]
 [connection signal="pressed" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem/CreditsButton" to="." method="_on_CreditsButton_pressed"]
 [connection signal="pressed" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem/QuitButton" to="." method="_on_QuitButton_pressed"]
-[connection signal="toggled" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Options/MusicButton" to="." method="_on_music_button_toggled"]
-[connection signal="pressed" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Options/HitStrenghButton" to="." method="_on_BackButton_pressed"]
-[connection signal="pressed" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Options/BackButton2" to="." method="_on_BackButton_pressed"]
+[connection signal="go_back" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Options" to="." method="_on_BackButton_pressed"]
 [connection signal="pressed" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Info/BackButton" to="." method="_on_BackButton_pressed"]
 [connection signal="meta_clicked" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Credits/ScrollContainer/MarginContainer/Label" to="." method="_on_link_clicked"]
 [connection signal="pressed" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Credits/BackButton" to="." method="_on_BackButton_pressed"]

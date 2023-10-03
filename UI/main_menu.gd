@@ -4,7 +4,9 @@ extends Node
 ## Button functionality, switching between menus and changing to the game scene
 ## is handled here.
 
-@onready var ClickSound = get_node("ClickSound")
+const MENU_OFFSET_LEFT = 200
+
+@onready var Menu = get_node("Menu")
 @onready var SelectItemMenu = get_node(
 		"Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem")
 @onready var OptionsMenu = get_node(
@@ -18,17 +20,14 @@ extends Node
 
 
 func _ready():
-	_setup_game()
 	_setup_main_menu()
+	GameEngine.connect(
+			"orientation_changed", Callable(self, "_change_window_orientation"))
 	for button_list in [SelectItemMenu, InfoMenu, CreditsMenu]:
 		for button in button_list.get_children():
 			if button is Button:
 				button.connect("pressed", Callable(self, "_play_click_sound"))
 	OptionsMenu.get_node("MusicButton").set_pressed(GameVariables.MUSIC)
-
-
-func _setup_game():
-	DisplayServer.window_set_min_size(GameVariables.MINIMUM_WINDOW_SIZE)
 
 
 func _setup_main_menu():
@@ -56,7 +55,6 @@ func _on_CreditsButton_pressed():
 
 
 func _on_BackButton_pressed():
-	OptionsMenu.hide()
 	InfoMenu.hide()
 	CreditsMenu.hide()
 	SelectItemMenu.show()
@@ -72,11 +70,15 @@ func _on_link_clicked(meta):
 	OS.shell_open(str(meta))
 
 
-func _on_music_button_toggled(button_pressed):
-	BackgroundMusic.set_stream_paused(!button_pressed)
-	GameVariables.MUSIC = button_pressed
-
-
 func _on_options_button_pressed():
 	SelectItemMenu.hide()
 	OptionsMenu.show()
+
+func _change_window_orientation(
+		new_orientation: GameEngine.WindowOrientationModes):
+	if new_orientation == GameEngine.WindowOrientationModes.PORTRAIT:
+		Menu.set_anchors_preset(Menu.PRESET_VCENTER_WIDE)
+		Menu.position.x = GameEngine.current_window_size.x / 2 - 256 # TODO
+	else:
+		Menu.set_anchors_preset(Menu.PRESET_LEFT_WIDE)
+		Menu.position.x = MENU_OFFSET_LEFT

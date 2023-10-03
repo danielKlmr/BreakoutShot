@@ -6,11 +6,13 @@ var AUTOCLOSE_TIME = 2.0
 @onready var label = self.get_node("InGameMenu/VBoxContainer/Label")
 @onready var subtext = self.get_node("InGameMenu/VBoxContainer/Subtext")
 @onready var InGameMenu = $InGameMenu
+@onready var OptionsMenu = get_node("InGameMenu/OptionsMenu")
 @onready var buttons = {
 	"menu": get_node("HUD/Stats/MenuButton"),
 	"continue": vbox.get_node("ContinueButton"),
 	"restart": vbox.get_node("RestartButton"),
 	"back_to_menu": vbox.get_node("BackToMenuButton"),
+	"options": vbox.get_node("OptionsButton")
 }
 
 # Called when the node enters the scene tree for the first time.
@@ -39,6 +41,7 @@ func open_pause_menu():
 	buttons['continue'].show()
 	buttons['restart'].show()
 	buttons['back_to_menu'].show()
+	buttons['options'].show()
 	get_tree().paused = true
 	_open_popup("Pause")
 	
@@ -73,6 +76,17 @@ func _on_ContinueButton_pressed():
 	get_tree().paused = false
 	_close_popup()
 
+
 func _on_RestartButton_pressed():
 	get_tree().paused = false
 	get_tree().reload_current_scene()
+
+
+func _on_options_button_pressed():
+	vbox.hide()
+	OptionsMenu.show()
+
+
+func _on_back_button_pressed():
+	OptionsMenu.hide()
+	vbox.show()

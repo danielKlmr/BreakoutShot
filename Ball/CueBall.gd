@@ -1,5 +1,11 @@
 extends "res://Ball/Ball.gd"
 
+var hit_strength_values = {
+	0: 0.5,
+	1: 1,
+	2: 2,
+}
+
 var hit_direction = Vector2(0, 0)
 var target_d = Vector2(0, 0)
 
@@ -56,7 +62,8 @@ func _unhandled_input(event):
 					shoot_ball()
 
 func shoot_ball():
-	movement = hit_direction * 5
+	var hit_strength = GameVariables.HIT_STRENGTH * hit_strength_values[GameVariables.hit_strength_multiplicator_index]
+	movement = hit_direction * hit_strength
 	# Global position of movement vector minus position off cue ball to make it relative
 	var movement_global = to_global(movement) - global_position
 	apply_impulse(movement_global, Vector2(0, 0))

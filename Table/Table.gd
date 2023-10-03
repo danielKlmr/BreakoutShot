@@ -70,7 +70,6 @@ func _process(delta):
 	Manual scales canvas items to window size, so that UI elements can stay the same size when window size is changed.
 	Therefore, stretch mode is disabled
 	"""
-	GameEngine.current_window_size = Vector2(get_viewport().size)
 	var viewport_size = Vector2(game_variables.window_size)
 	if GameEngine.current_orientation == GameEngine.WindowOrientationModes.PORTRAIT:
 		viewport_size = Vector2(game_variables.window_size.y, game_variables.window_size.x)
@@ -247,7 +246,8 @@ func setup_cue_ball():
 	return self.cue_ball
 	
 
-func _change_table_orientation(new_orientation: GameEngine.WindowOrientationModes):
+func _change_table_orientation(
+		new_orientation: GameEngine.WindowOrientationModes):
 	if new_orientation == GameEngine.WindowOrientationModes.PORTRAIT:
 		playingSurface.set_rotation(PI/2)
 	else:

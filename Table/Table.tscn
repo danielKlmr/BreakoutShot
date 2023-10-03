@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bd64nbtrtx2d6"]
+[gd_scene load_steps=16 format=3 uid="uid://bd64nbtrtx2d6"]
 
 [ext_resource type="Script" path="res://Table/Table.gd" id="1"]
 [ext_resource type="PackedScene" path="res://UI/Sfx/ClickSound.tscn" id="3"]
@@ -7,6 +7,7 @@
 [ext_resource type="Theme" uid="uid://dsxjacfs5pxiu" path="res://ui/ButtonTheme.tres" id="4_4wso6"]
 [ext_resource type="FontFile" uid="uid://c3a6ubp2mwy8r" path="res://addons/Roboto_Condensed/RobotoCondensed-Bold.ttf" id="5_y6qqf"]
 [ext_resource type="PackedScene" uid="uid://dnkv4u16wadh0" path="res://Player/Player.tscn" id="6"]
+[ext_resource type="PackedScene" uid="uid://mwoc6ftik2w" path="res://ui/options_menu.tscn" id="6_06h2s"]
 [ext_resource type="Theme" uid="uid://cfxs4s6yhcvc1" path="res://ui/LabelTheme.tres" id="6_wc42h"]
 [ext_resource type="PackedScene" uid="uid://cr70woew1j1sn" path="res://Table/Border/Cutout Corner.tscn" id="7"]
 [ext_resource type="Texture2D" uid="uid://dc7btekwa5xku" path="res://addons/tmthymllr/edited_Hamburger_icon.svg" id="7_mm3da"]
@@ -74,9 +75,18 @@ text = "Continue"
 layout_mode = 2
 text = "Restart"
 
+[node name="OptionsButton" type="Button" parent="GUI Layer/InGameMenu/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_4wso6")
+text = "Options"
+
 [node name="BackToMenuButton" type="Button" parent="GUI Layer/InGameMenu/VBoxContainer"]
 layout_mode = 2
 text = "Back to Menu"
+
+[node name="OptionsMenu" parent="GUI Layer/InGameMenu" instance=ExtResource("6_06h2s")]
+visible = false
+layout_mode = 2
 
 [node name="HUD" type="MarginContainer" parent="GUI Layer"]
 offset_left = 150.0
@@ -188,5 +198,7 @@ scale = Vector2(0.5, 0.5)
 
 [connection signal="pressed" from="GUI Layer/InGameMenu/VBoxContainer/ContinueButton" to="GUI Layer" method="_on_ContinueButton_pressed"]
 [connection signal="pressed" from="GUI Layer/InGameMenu/VBoxContainer/RestartButton" to="GUI Layer" method="_on_RestartButton_pressed"]
+[connection signal="pressed" from="GUI Layer/InGameMenu/VBoxContainer/OptionsButton" to="GUI Layer" method="_on_options_button_pressed"]
 [connection signal="pressed" from="GUI Layer/InGameMenu/VBoxContainer/BackToMenuButton" to="GUI Layer" method="_on_BackToMenuButton_pressed"]
+[connection signal="go_back" from="GUI Layer/InGameMenu/OptionsMenu" to="GUI Layer" method="_on_back_button_pressed"]
 [connection signal="pressed" from="GUI Layer/HUD/Stats/MenuButton" to="GUI Layer" method="open_pause_menu"]
