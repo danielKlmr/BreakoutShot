@@ -5,6 +5,7 @@
 
 [node name="OptionsMenu" type="VBoxContainer"]
 theme = ExtResource("1_dk8l6")
+theme_override_constants/separation = 5
 alignment = 1
 script = ExtResource("2_ors1m")
 
@@ -16,10 +17,13 @@ text = "Music"
 [node name="Hit StrengthButton" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Hit StrengthButton"]
+[node name="Label" type="Button" parent="Hit StrengthButton"]
 layout_mode = 2
 size_flags_horizontal = 3
+button_mask = 0
 text = "Hit Strength"
+flat = true
+alignment = 0
 
 [node name="Button" type="OptionButton" parent="Hit StrengthButton"]
 custom_minimum_size = Vector2(100, 0)

@@ -1,15 +1,18 @@
-[p]Hello, glad you found your way to my game. It may not look like a big thing, but it's the first project I've finished, and it's given me the opportunity to learn a bit about gamedev and the Godot engine.[/p]
-[p]It's a simplification of actual pool, since I didn't really care about the multiplayer functionality (I mean, why play this with a friend when there are tons of professional pool games out there).[/p]
-[p]So if you want to test it, you'll have to play it alone and therefore neither professional nor dirty street pool rules apply.[/p]
+Hello, glad you found your way to my game. It may not look like a big deal, but it's the first project I've completed. It gave me the opportunity to learn a bit about gamedev and the Godot engine.
 
-General rules
-- The break is played from the head line.
-- The color of the ball does not matter in this case. Just try to get the balls into the pockets in any order.
-- After that, the 8 ball must be dumped into a pocket of your choice to win the game.
-- If the 8 ball lands in a pocket while there are still object balls left, the game is lost.
+It's a simplification of the actual billiards game, since I didn't really care about the multiplayer functionality (there are tons of professional billiards games out there that you can play with a friend).
 
-Fouls
-After a foul, you must play the cue ball from the head pocket
-- Cue ball in the pocket
-- No object ball hit
-[p]If you want to give me feedback (or just want someone to chat with otherwise) the easiest way to reach me is on Mastodon. The link is down here.[/p]
+So if you want to test it, you'll have to play it alone and therefore neither professional nor dirty street billiards rules apply.
+
+[b]General rules[/b][ul]
+The break is played from the head line.
+The color of the balls does not matter in this game. Just try to get the balls into the pockets in any order.
+After that, the 8 ball must be pocketed in a pocket of your choice to win the game.
+If the 8 ball lands in a pocket while there are still object balls left, the game is lost.[/ul]
+
+[b]Fouls[/b]
+After a foul, you must play the cue ball from the kitchen.[ul]
+Cue ball in the pocket
+No object ball hit[/ul]
+
+If you want to give me feedback and suggestions (or just want to have a chat), the easiest way to reach me is via Mastodon. The link is here below.

@@ -6,6 +6,12 @@ extends VBoxContainer
 signal go_back()
 
 
+func _ready():
+	get_node("MusicButton").set_pressed(GameVariables.MUSIC)
+	get_node("Hit StrengthButton/Button").select(
+			GameVariables.hit_strength_multiplicator_index)
+	
+	
 func _on_back_button_pressed():
 	ClickSound.play()
 	self.hide()

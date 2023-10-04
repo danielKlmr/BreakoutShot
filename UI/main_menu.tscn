@@ -1,13 +1,14 @@
-[gd_scene load_steps=9 format=3 uid="uid://boj6s6stprxa3"]
+[gd_scene load_steps=10 format=3 uid="uid://boj6s6stprxa3"]
 
 [ext_resource type="Script" path="res://ui/main_menu.gd" id="1_36pkq"]
 [ext_resource type="Texture2D" uid="uid://c1op815dvohk7" path="res://addons/joeyguns/Main Menu Background.jpg" id="2_1aqyp"]
-[ext_resource type="PackedScene" path="res://UI/Sfx/ClickSound.tscn" id="3_aajqa"]
 [ext_resource type="Theme" uid="uid://dsxjacfs5pxiu" path="res://ui/ButtonTheme.tres" id="4_tq2r0"]
 [ext_resource type="PackedScene" uid="uid://mwoc6ftik2w" path="res://ui/options_menu.tscn" id="5_ryiaq"]
 [ext_resource type="Theme" uid="uid://cfxs4s6yhcvc1" path="res://ui/LabelTheme.tres" id="5_vhall"]
 [ext_resource type="FontFile" uid="uid://c3a6ubp2mwy8r" path="res://addons/Roboto_Condensed/RobotoCondensed-Bold.ttf" id="6_6nei3"]
 [ext_resource type="Texture2D" uid="uid://b6yr80cijrtp6" path="res://Logo/logo.png" id="7_677sq"]
+[ext_resource type="Texture2D" uid="uid://b6mpxfh0hrs5q" path="res://addons/Mastodon/edited_logo-white.svg" id="7_qcrpe"]
+[ext_resource type="Texture2D" uid="uid://c1s5we5b4u00x" path="res://addons/github-mark/edited_github-mark-white.svg" id="7_qq3m7"]
 
 [node name="Main Menu" type="Control"]
 layout_mode = 3
@@ -29,20 +30,17 @@ texture = ExtResource("2_1aqyp")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="ClickSound" parent="." instance=ExtResource("3_aajqa")]
-
 [node name="Menu" type="Control" parent="."]
 clip_contents = true
 custom_minimum_size = Vector2(512, 0)
 layout_mode = 1
-anchors_preset = 13
-anchor_left = 0.5
-anchor_right = 0.5
+anchors_preset = 9
 anchor_bottom = 1.0
-grow_horizontal = 2
+offset_left = 200.0
+offset_right = 712.0
 grow_vertical = 2
 
-[node name="MenuItems" type="MarginContainer" parent="Menu"]
+[node name="MenuHMargin" type="MarginContainer" parent="Menu"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -52,15 +50,15 @@ grow_vertical = 2
 theme_override_constants/margin_left = 60
 theme_override_constants/margin_right = 60
 
-[node name="Dimming" type="ColorRect" parent="Menu/MenuItems"]
+[node name="Dimming" type="ColorRect" parent="Menu/MenuHMargin"]
 modulate = Color(1, 1, 1, 0.121569)
 layout_mode = 2
 color = Color(0, 0, 0, 1)
 
-[node name="ButtonNode" type="Control" parent="Menu/MenuItems"]
+[node name="ButtonNode" type="Control" parent="Menu/MenuHMargin"]
 layout_mode = 2
 
-[node name="ButtonMarginContainer" type="MarginContainer" parent="Menu/MenuItems/ButtonNode"]
+[node name="ButtonTopMargin" type="MarginContainer" parent="Menu/MenuHMargin/ButtonNode"]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.55
@@ -71,115 +69,133 @@ grow_vertical = 2
 theme_override_constants/margin_top = 30
 theme_override_constants/margin_bottom = 30
 
-[node name="SelectItem" type="VBoxContainer" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer"]
+[node name="SelectItem" type="VBoxContainer" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin"]
 layout_mode = 2
 theme = ExtResource("4_tq2r0")
+theme_override_constants/separation = 5
 alignment = 1
 
-[node name="PlayButton" type="Button" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem"]
+[node name="PlayButton" type="Button" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/SelectItem"]
 layout_mode = 2
 theme = ExtResource("4_tq2r0")
 text = "Play"
 
-[node name="OptionsButton" type="Button" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem"]
+[node name="OptionsButton" type="Button" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/SelectItem"]
 layout_mode = 2
 theme = ExtResource("4_tq2r0")
 text = "Options"
 
-[node name="InfoButton" type="Button" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem"]
+[node name="InfoButton" type="Button" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/SelectItem"]
 layout_mode = 2
 theme = ExtResource("4_tq2r0")
 text = "Info & Rules"
 
-[node name="CreditsButton" type="Button" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem"]
+[node name="CreditsButton" type="Button" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/SelectItem"]
 layout_mode = 2
 theme = ExtResource("4_tq2r0")
 text = "Credits"
 
-[node name="QuitButton" type="Button" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem"]
+[node name="QuitButton" type="Button" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/SelectItem"]
 layout_mode = 2
 theme = ExtResource("4_tq2r0")
 text = "Quit"
 
-[node name="Options" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer" instance=ExtResource("5_ryiaq")]
+[node name="Options" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin" instance=ExtResource("5_ryiaq")]
 visible = false
 layout_mode = 2
 
-[node name="Info" type="VBoxContainer" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer"]
+[node name="Info" type="VBoxContainer" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("4_tq2r0")
 alignment = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Info"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/Info"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Info/ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/Info/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_right = 5
 
-[node name="Label" type="RichTextLabel" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Info/ScrollContainer/MarginContainer"]
+[node name="Label" type="RichTextLabel" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/Info/ScrollContainer/MarginContainer"]
 layout_mode = 2
 theme = ExtResource("5_vhall")
 theme_override_fonts/bold_font = ExtResource("6_6nei3")
 bbcode_enabled = true
-text = "Hello, glad you found your way to my game. It may not look like a big thing, but it's the first project I've finished, and it's given me the opportunity to learn a bit about gamedev and the Godot engine.
+text = "Hello, glad you found your way to my game. It may not look like a big deal, but it's the first project I've completed. It gave me the opportunity to learn a bit about gamedev and the Godot engine.
 
-It's a simplification of actual pool, since I didn't really care about the multiplayer functionality (I mean, why play this with a friend when there are tons of professional pool games out there).
+It's a simplification of the actual billiards game, since I didn't really care about the multiplayer functionality (there are tons of professional billiards games out there that you can play with a friend).
 
-So if you want to test it, you'll have to play it alone and therefore neither professional nor dirty street pool rules apply.
+So if you want to test it, you'll have to play it alone and therefore neither professional nor dirty street billiards rules apply.
 
 [b]General rules[/b][ul]
 The break is played from the head line.
-The color of the ball does not matter in this case. Just try to get the balls into the pockets in any order.
-After that, the 8 ball must be dumped into a pocket of your choice to win the game.
+The color of the balls does not matter in this game. Just try to get the balls into the pockets in any order.
+After that, the 8 ball must be pocketed in a pocket of your choice to win the game.
 If the 8 ball lands in a pocket while there are still object balls left, the game is lost.[/ul]
 
 [b]Fouls[/b]
-After a foul, you must play the cue ball from the head pocket[ul]
+After a foul, you must play the cue ball from the kitchen.[ul]
 Cue ball in the pocket
 No object ball hit[/ul]
 
-If you want to give me feedback (or just want someone to chat with otherwise) the easiest way to reach me is on Mastodon. The link is down here."
+If you want to give me feedback and suggestions (or just want to have a chat), the easiest way to reach me is via Mastodon. The link is here below."
 fit_content = true
 
-[node name="HSeparator" type="HSeparator" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Info"]
+[node name="HSeparator" type="HSeparator" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/Info"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="VersionLabel" type="Label" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Info"]
+[node name="VersionAndLinks" type="HBoxContainer" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/Info"]
 layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="VersionLabel" type="Label" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/Info/VersionAndLinks"]
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 20
 text = "Version: "
 horizontal_alignment = 1
 
-[node name="BackButton" type="Button" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Info"]
+[node name="GitHub" type="Button" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/Info/VersionAndLinks"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+icon = ExtResource("7_qq3m7")
+icon_alignment = 1
+
+[node name="Mastodon" type="Button" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/Info/VersionAndLinks"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+icon = ExtResource("7_qcrpe")
+icon_alignment = 1
+
+[node name="BackButton" type="Button" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/Info"]
 layout_mode = 2
 theme = ExtResource("4_tq2r0")
 text = "Back"
 
-[node name="Credits" type="VBoxContainer" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer"]
+[node name="Credits" type="VBoxContainer" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("4_tq2r0")
 alignment = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Credits"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/Credits"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Credits/ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/Credits/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_right = 5
 
-[node name="Label" type="RichTextLabel" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Credits/ScrollContainer/MarginContainer"]
+[node name="Label" type="RichTextLabel" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/Credits/ScrollContainer/MarginContainer"]
 layout_mode = 2
 theme = ExtResource("5_vhall")
 theme_override_fonts/bold_font = ExtResource("6_6nei3")
@@ -203,7 +219,7 @@ Background Image by Joey Genovese [url=https://unsplash.com/de/@joeyguns]↗[/ur
 Roboto by Google [url=https://fonts.google.com/specimen/Roboto]↗[/url][/center]"
 fit_content = true
 
-[node name="BackButton" type="Button" parent="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Credits"]
+[node name="BackButton" type="Button" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/Credits"]
 layout_mode = 2
 theme = ExtResource("4_tq2r0")
 text = "Back"
@@ -227,12 +243,14 @@ size_flags_vertical = 0
 texture = ExtResource("7_677sq")
 expand_mode = 1
 
-[connection signal="pressed" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem/PlayButton" to="." method="_on_Button_pressed"]
-[connection signal="pressed" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem/OptionsButton" to="." method="_on_options_button_pressed"]
-[connection signal="pressed" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem/InfoButton" to="." method="_on_InfoButton_pressed"]
-[connection signal="pressed" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem/CreditsButton" to="." method="_on_CreditsButton_pressed"]
-[connection signal="pressed" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/SelectItem/QuitButton" to="." method="_on_QuitButton_pressed"]
-[connection signal="go_back" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Options" to="." method="_on_BackButton_pressed"]
-[connection signal="pressed" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Info/BackButton" to="." method="_on_BackButton_pressed"]
-[connection signal="meta_clicked" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Credits/ScrollContainer/MarginContainer/Label" to="." method="_on_link_clicked"]
-[connection signal="pressed" from="Menu/MenuItems/ButtonNode/ButtonMarginContainer/Credits/BackButton" to="." method="_on_BackButton_pressed"]
+[connection signal="pressed" from="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/SelectItem/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/SelectItem/OptionsButton" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/SelectItem/InfoButton" to="." method="_on_info_button_pressed"]
+[connection signal="pressed" from="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/SelectItem/CreditsButton" to="." method="_on_credits_button_pressed"]
+[connection signal="pressed" from="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/SelectItem/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="go_back" from="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/Options" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/Info/VersionAndLinks/GitHub" to="." method="_on_github_button_pressed"]
+[connection signal="pressed" from="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/Info/VersionAndLinks/Mastodon" to="." method="_on_mastodon_button_pressed"]
+[connection signal="pressed" from="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/Info/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="meta_clicked" from="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/Credits/ScrollContainer/MarginContainer/Label" to="." method="_on_link_clicked"]
+[connection signal="pressed" from="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/Credits/BackButton" to="." method="_on_back_button_pressed"]
