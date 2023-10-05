@@ -10,19 +10,22 @@ func _ready():
 	get_node("MusicButton").set_pressed(GameVariables.MUSIC)
 	get_node("Hit StrengthButton/Button").select(
 			GameVariables.hit_strength_multiplicator_index)
-	
-	
+
+
+## Hide menu and emit signal when back button is pressed
 func _on_back_button_pressed():
 	ClickSound.play()
 	self.hide()
 	emit_signal("go_back")
 
 
+## Turn background music on or off
 func _on_music_button_toggled(button_pressed):
 	ClickSound.play()
 	BackgroundMusic.set_stream_paused(!button_pressed)
 	GameVariables.MUSIC = button_pressed
 
 
+## Set hit strength
 func _hit_strength_item_selected(index):
 	GameVariables.hit_strength_multiplicator_index = index

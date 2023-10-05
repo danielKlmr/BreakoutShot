@@ -30,7 +30,7 @@ func _physics_process(delta):
 func aiming(delta):
 	var space_state = get_world_2d().direct_space_state # Returns the state of the space of the current World_2D, to make an intersection query for the prediction
 	var hit_global = to_global(hit_direction) - global_position#self.transform.basis_xform(hit_direction)
-	var target = global_position + (hit_global.normalized() * (game_variables.window_size.x + game_variables.window_size.y)) # Defined als the hit direction scaled to a length that is bigger than the table
+	var target = global_position + (hit_global.normalized() * (GameEngine.original_window_size.x + GameEngine.original_window_size.y)) # Defined als the hit direction scaled to a length that is bigger than the table
 	target_d = target
 	
 	var intersect_ray_params = PhysicsRayQueryParameters2D.create(global_position, target)

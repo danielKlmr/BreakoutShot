@@ -1,25 +1,17 @@
-[gd_scene load_steps=16 format=3 uid="uid://bd64nbtrtx2d6"]
+[gd_scene load_steps=13 format=3 uid="uid://bd64nbtrtx2d6"]
 
 [ext_resource type="Script" path="res://Table/Table.gd" id="1"]
 [ext_resource type="PackedScene" path="res://UI/Sfx/ClickSound.tscn" id="3"]
 [ext_resource type="Script" path="res://ui/InGameMenu.gd" id="3_no0ar"]
-[ext_resource type="PackedScene" uid="uid://c57db7lu6cfjp" path="res://Table/Border/Border.tscn" id="4"]
 [ext_resource type="Theme" uid="uid://dsxjacfs5pxiu" path="res://ui/ButtonTheme.tres" id="4_4wso6"]
 [ext_resource type="FontFile" uid="uid://c3a6ubp2mwy8r" path="res://addons/Roboto_Condensed/RobotoCondensed-Bold.ttf" id="5_y6qqf"]
 [ext_resource type="PackedScene" uid="uid://dnkv4u16wadh0" path="res://Player/Player.tscn" id="6"]
 [ext_resource type="PackedScene" uid="uid://mwoc6ftik2w" path="res://ui/options_menu.tscn" id="6_06h2s"]
 [ext_resource type="Theme" uid="uid://cfxs4s6yhcvc1" path="res://ui/LabelTheme.tres" id="6_wc42h"]
-[ext_resource type="PackedScene" uid="uid://cr70woew1j1sn" path="res://Table/Border/Cutout Corner.tscn" id="7"]
 [ext_resource type="Texture2D" uid="uid://dc7btekwa5xku" path="res://addons/tmthymllr/edited_Hamburger_icon.svg" id="7_mm3da"]
-[ext_resource type="PackedScene" uid="uid://c58kh7fy7d00h" path="res://Table/Border/Cutout Middle.tscn" id="8"]
 [ext_resource type="FontFile" uid="uid://dx5eda4uewcsn" path="res://ui/Fonts/Franco.tres" id="8_wgq6n"]
 [ext_resource type="Script" path="res://Table/Gameplay.gd" id="10"]
-
-[sub_resource type="Curve2D" id="1"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, 1434.16, 100.879, 0, 0, 0, 0, 1436.47, 996.74)
-}
-point_count = 2
+[ext_resource type="PackedScene" uid="uid://bpq0ad2e8wwh5" path="res://Table/playing_surface.tscn" id="12_uwwht"]
 
 [node name="Table" type="Node2D"]
 script = ExtResource("1")
@@ -132,69 +124,7 @@ text = "X"
 
 [node name="Player" parent="Players" instance=ExtResource("6")]
 
-[node name="PlayingSurface" type="Node2D" parent="."]
-
-[node name="Camera3D" type="Camera2D" parent="PlayingSurface"]
-process_mode = 3
-
-[node name="HeadString" type="Path2D" parent="PlayingSurface"]
-curve = SubResource("1")
-
-[node name="Border" type="Node2D" parent="PlayingSurface"]
-
-[node name="Border1" parent="PlayingSurface/Border" instance=ExtResource("4")]
-position = Vector2(70, 540)
-
-[node name="Border3" parent="PlayingSurface/Border" instance=ExtResource("4")]
-position = Vector2(1018.94, 294.474)
-rotation = 3.14159
-
-[node name="Border2" parent="PlayingSurface/Border" instance=ExtResource("4")]
-position = Vector2(493.489, 0)
-rotation = 1.5708
-
-[node name="Border4" parent="PlayingSurface/Border" instance=ExtResource("4")]
-position = Vector2(514.706, 596.606)
-rotation = -1.5708
-
-[node name="Border5" parent="PlayingSurface/Border" instance=ExtResource("4")]
-position = Vector2(1416.69, -2.26276)
-rotation = 1.5708
-
-[node name="Border6" parent="PlayingSurface/Border" instance=ExtResource("4")]
-position = Vector2(1465.06, 607.92)
-rotation = -1.5708
-
-[node name="Holes" type="Node2D" parent="PlayingSurface"]
-
-[node name="Cutout Corner" parent="PlayingSurface/Holes" instance=ExtResource("7")]
-scale = Vector2(0.5, 0.5)
-
-[node name="Cutout Corner2" parent="PlayingSurface/Holes" instance=ExtResource("7")]
-position = Vector2(1920, 0)
-rotation = 1.5708
-scale = Vector2(0.5, 0.5)
-
-[node name="Cutout Corner3" parent="PlayingSurface/Holes" instance=ExtResource("7")]
-position = Vector2(1920, 1080)
-rotation = 3.14159
-scale = Vector2(0.5, 0.5)
-
-[node name="Cutout Corner4" parent="PlayingSurface/Holes" instance=ExtResource("7")]
-position = Vector2(0, 1080)
-rotation = -1.5708
-scale = Vector2(0.5, 0.5)
-
-[node name="Cutout Middle" parent="PlayingSurface/Holes" instance=ExtResource("8")]
-position = Vector2(960, 1080)
-rotation = 3.14159
-scale = Vector2(0.5, 0.5)
-
-[node name="Cutout Middle2" parent="PlayingSurface/Holes" instance=ExtResource("8")]
-position = Vector2(960, 0)
-scale = Vector2(0.5, 0.5)
-
-[node name="Balls" type="Node2D" parent="PlayingSurface"]
+[node name="PlayingSurface" parent="." instance=ExtResource("12_uwwht")]
 
 [connection signal="pressed" from="GUI Layer/InGameMenu/VBoxContainer/ContinueButton" to="GUI Layer" method="_on_ContinueButton_pressed"]
 [connection signal="pressed" from="GUI Layer/InGameMenu/VBoxContainer/RestartButton" to="GUI Layer" method="_on_RestartButton_pressed"]

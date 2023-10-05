@@ -3,6 +3,7 @@ extends CharacterBody2D
 # Uses Kinematicbody instead of Rigidbody to be able to follow mouse
 
 @onready var game_variables = get_node("/root/GameVariables")
+@onready var Table = get_node("/root/Table")
 # var a = 2
 # var b = "text"
 
@@ -30,9 +31,9 @@ func _physics_process(delta):
 	else:
 		var projected_position = mouse_position
 		projected_position.x = game_variables.head_string_position
-		if (projected_position - game_variables.head_spot_position).length() < game_variables.SNAPPING_DISTANCE:
+		if (projected_position - Vector2(Table.head_spot_position)).length() < game_variables.SNAPPING_DISTANCE:
 			# Snap ball to head spot if it is close to it
-			set_position(game_variables.head_spot_position)
+			set_position(Table.head_spot_position)
 			linear_velocity = Vector2(0, 0)
 		else:
 			linear_velocity = to_global(projected_position) - to_global(position)

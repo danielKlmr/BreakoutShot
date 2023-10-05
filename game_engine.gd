@@ -12,7 +12,8 @@ const MINIMUM_WINDOW_SIZE = Vector2i(720, 720)
 const STANDARD_MODE_CHANGE_TOLERANCE = 1.1
 
 var current_orientation: WindowOrientationModes = WindowOrientationModes.LANDSCAPE
-var current_window_size = Vector2i(1920, 1080)
+var current_window_size
+var original_window_size
 
 
 func _ready():
@@ -20,6 +21,12 @@ func _ready():
 
 
 func _setup_window():
+	# Set original window size, which is the basis for the game scene
+	original_window_size = Vector2i(
+			ProjectSettings.get("display/window/size/viewport_width"),
+			ProjectSettings.get("display/window/size/viewport_height"))
+	# Initialize the current window size
+	current_window_size = original_window_size
 	# Set minimum window size
 	DisplayServer.window_set_min_size(MINIMUM_WINDOW_SIZE)
 	# Fires when the window size is changed

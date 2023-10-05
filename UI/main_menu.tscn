@@ -201,22 +201,22 @@ theme = ExtResource("5_vhall")
 theme_override_fonts/bold_font = ExtResource("6_6nei3")
 bbcode_enabled = true
 text = "[center][b]Music[/b]
-\"Calm Ambient 1\" by cynicmusic [url=https://opengameart.org/users/cynicmusic]↗[/url]
+\"Calm Ambient 1\" by cynicmusic [url=https://opengameart.org/users/cynicmusic]🔗[/url]
 
 [b]Sound[/b]
-\"billard ball clack\" by Za-Games [url=https://freesound.org/people/Za-Games/]↗[/url]
-\"Zippo Click Sound\" by dawith [url=https://opengameart.org/users/qubodup]↗[/url]
-\"Billiard balls single hit-dry\" by juskiddink [url=https://freesound.org/people/juskiddink/]↗[/url]
-\"Clanking sound\" by Ironlink15 [url=https://freesound.org/people/Ironlink15/]↗[/url]
-\"pool ball hitting pool ball 2\" by Hankof [url=https://freesound.org/people/Hankof/]↗[/url]
-\"WhiteBallHittingSolid\" by 150112 [url=https://freesound.org/people/150112/]↗[/url]
+\"billard ball clack\" by Za-Games [url=https://freesound.org/people/Za-Games/]🔗[/url]
+\"Zippo Click Sound\" by dawith [url=https://opengameart.org/users/qubodup]🔗[/url]
+\"Billiard balls single hit-dry\" by juskiddink [url=https://freesound.org/people/juskiddink/]🔗[/url]
+\"Clanking sound\" by Ironlink15 [url=https://freesound.org/people/Ironlink15/]🔗[/url]
+\"pool ball hitting pool ball 2\" by Hankof [url=https://freesound.org/people/Hankof/]🔗[/url]
+\"WhiteBallHittingSolid\" by 150112 [url=https://freesound.org/people/150112/]🔗[/url]
 
 [b]Graphics[/b]
-Timothy Miller [url=https://www.iconfinder.com/tmthymllr]↗[/url]
-Background Image by Joey Genovese [url=https://unsplash.com/de/@joeyguns]↗[/url]
+Hamburger Icon by Timothy Miller [url=https://www.iconfinder.com/tmthymllr]🔗[/url]
+Background Image by Joey Genovese [url=https://unsplash.com/de/@joeyguns]🔗[/url]
 
 [b]Font[/b]
-Roboto by Google [url=https://fonts.google.com/specimen/Roboto]↗[/url][/center]"
+Roboto by Google [url=https://fonts.google.com/specimen/Roboto]🔗[/url][/center]"
 fit_content = true
 
 [node name="BackButton" type="Button" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/Credits"]

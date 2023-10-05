@@ -1,0 +1,75 @@
+[gd_scene load_steps=5 format=3 uid="uid://bpq0ad2e8wwh5"]
+
+[ext_resource type="PackedScene" uid="uid://c57db7lu6cfjp" path="res://Table/Border/Border.tscn" id="1_qwwih"]
+[ext_resource type="PackedScene" uid="uid://cr70woew1j1sn" path="res://Table/Border/Cutout Corner.tscn" id="2_0gmye"]
+[ext_resource type="PackedScene" uid="uid://c58kh7fy7d00h" path="res://Table/Border/Cutout Middle.tscn" id="3_25xpv"]
+
+[sub_resource type="Curve2D" id="1"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 1434.16, 100.879, 0, 0, 0, 0, 1436.47, 996.74)
+}
+point_count = 2
+
+[node name="PlayingSurface" type="Node2D"]
+
+[node name="Camera3D" type="Camera2D" parent="."]
+process_mode = 3
+
+[node name="HeadString" type="Path2D" parent="."]
+curve = SubResource("1")
+
+[node name="Border" type="Node2D" parent="."]
+
+[node name="Border1" parent="Border" instance=ExtResource("1_qwwih")]
+position = Vector2(70, 540)
+
+[node name="Border3" parent="Border" instance=ExtResource("1_qwwih")]
+position = Vector2(1018.94, 294.474)
+rotation = 3.14159
+
+[node name="Border2" parent="Border" instance=ExtResource("1_qwwih")]
+position = Vector2(493.489, 0)
+rotation = 1.5708
+
+[node name="Border4" parent="Border" instance=ExtResource("1_qwwih")]
+position = Vector2(514.706, 596.606)
+rotation = -1.5708
+
+[node name="Border5" parent="Border" instance=ExtResource("1_qwwih")]
+position = Vector2(1416.69, -2.26276)
+rotation = 1.5708
+
+[node name="Border6" parent="Border" instance=ExtResource("1_qwwih")]
+position = Vector2(1465.06, 607.92)
+rotation = -1.5708
+
+[node name="Holes" type="Node2D" parent="."]
+
+[node name="Cutout Corner" parent="Holes" instance=ExtResource("2_0gmye")]
+scale = Vector2(0.5, 0.5)
+
+[node name="Cutout Corner2" parent="Holes" instance=ExtResource("2_0gmye")]
+position = Vector2(1920, 0)
+rotation = 1.5708
+scale = Vector2(0.5, 0.5)
+
+[node name="Cutout Corner3" parent="Holes" instance=ExtResource("2_0gmye")]
+position = Vector2(1920, 1080)
+rotation = 3.14159
+scale = Vector2(0.5, 0.5)
+
+[node name="Cutout Corner4" parent="Holes" instance=ExtResource("2_0gmye")]
+position = Vector2(0, 1080)
+rotation = -1.5708
+scale = Vector2(0.5, 0.5)
+
+[node name="Cutout Middle" parent="Holes" instance=ExtResource("3_25xpv")]
+position = Vector2(960, 1080)
+rotation = 3.14159
+scale = Vector2(0.5, 0.5)
+
+[node name="Cutout Middle2" parent="Holes" instance=ExtResource("3_25xpv")]
+position = Vector2(960, 0)
+scale = Vector2(0.5, 0.5)
+
+[node name="Balls" type="Node2D" parent="."]

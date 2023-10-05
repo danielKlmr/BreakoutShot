@@ -13,8 +13,6 @@ var x_size = 0
 var y_size = 0
 var middle_spot_position = null
 var head_string_position = null
-var head_spot_position = null
-var food_spot_position = null
 
 # Game
 var NUMBER_OBJECT_BALLS = 15
@@ -22,13 +20,18 @@ var NUMBER_OBJECT_BALLS = 15
 # Statics
 enum suits {Stripe, Solid}
 
-var window_size = Vector2i(1920, 1080)
 var table_size = Vector2(0, 0)
 var ballradius = 20
 var BORDER_THICKNESS = 70
 var CUTOUT_OVERLAP = 38
 var BORDER_SCALE = 0.5
 var OUTSIDE_DRAWING = 5000 # How much should be drawn outside of the intended window
+var TABLE_COLORS = [
+	Color("mistyrose"),
+	Color("wheat"),
+	Color("lemonchiffon"),
+	Color("lightblue"),
+	Color("lavender")]
 const COLORS = {
 	"white": Color(0.9, 0.9, 0.9, 1),
 	"black": Color(0.29, 0.29, 0.29, 1),
@@ -40,12 +43,6 @@ const COLORS = {
 	"green": Color(0.49, 0.62, 0.3, 1),
 	"dark_red": Color(0.72, 0.23, 0.36, 1),
 }
-var TABLE_COLORS = [
-	Color("mistyrose"),
-	Color("wheat"),
-	Color("lemonchiffon"),
-	Color("lightblue"),
-	Color("lavender")]
 #https://www.reddit.com/r/godot/comments/bp9qsv/visualising_shot_preview_in_2d_snooker_game/
 
 var EIGHT_BALL_NUMBER = 8

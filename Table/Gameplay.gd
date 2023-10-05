@@ -142,8 +142,8 @@ func _input(event):
 func _project_to_head_string(position):
 	#position = Table.convert_global_position_to_scaled_position(position)
 	var projected_position = head_string.get_curve().get_closest_point(position)
-	if (projected_position - game_variables.head_spot_position).length() < game_variables.SNAPPING_DISTANCE:
-		cue_ball.set_position(game_variables.head_spot_position)
+	if (projected_position - Vector2(Table.head_spot_position)).length() < game_variables.SNAPPING_DISTANCE:
+		cue_ball.set_position(Table.head_spot_position)
 	else:
 		cue_ball.set_position(projected_position)
 
