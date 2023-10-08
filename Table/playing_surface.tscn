@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://bpq0ad2e8wwh5"]
+[gd_scene load_steps=6 format=3 uid="uid://bpq0ad2e8wwh5"]
 
-[ext_resource type="PackedScene" uid="uid://c57db7lu6cfjp" path="res://Table/Border/Border.tscn" id="1_qwwih"]
-[ext_resource type="PackedScene" uid="uid://cr70woew1j1sn" path="res://Table/Border/Cutout Corner.tscn" id="2_0gmye"]
-[ext_resource type="PackedScene" uid="uid://c58kh7fy7d00h" path="res://Table/Border/Cutout Middle.tscn" id="3_25xpv"]
+[ext_resource type="PackedScene" uid="uid://c57db7lu6cfjp" path="res://Table/rail/rail.tscn" id="1_qwwih"]
+[ext_resource type="Script" path="res://Table/playing_surface.gd" id="1_wp57s"]
+[ext_resource type="PackedScene" uid="uid://cr70woew1j1sn" path="res://Table/rail/pocket_corner.tscn" id="2_0gmye"]
+[ext_resource type="PackedScene" uid="uid://c58kh7fy7d00h" path="res://Table/rail/pocket_middle.tscn" id="3_25xpv"]
 
 [sub_resource type="Curve2D" id="1"]
 _data = {
@@ -11,6 +12,7 @@ _data = {
 point_count = 2
 
 [node name="PlayingSurface" type="Node2D"]
+script = ExtResource("1_wp57s")
 
 [node name="Camera3D" type="Camera2D" parent="."]
 process_mode = 3
@@ -18,58 +20,59 @@ process_mode = 3
 [node name="HeadString" type="Path2D" parent="."]
 curve = SubResource("1")
 
-[node name="Border" type="Node2D" parent="."]
+[node name="Rails" type="Node2D" parent="."]
 
-[node name="Border1" parent="Border" instance=ExtResource("1_qwwih")]
-position = Vector2(70, 540)
+[node name="Rail L" parent="Rails" instance=ExtResource("1_qwwih")]
+position = Vector2(-890, 0)
 
-[node name="Border3" parent="Border" instance=ExtResource("1_qwwih")]
-position = Vector2(1018.94, 294.474)
+[node name="Rail R" parent="Rails" instance=ExtResource("1_qwwih")]
+position = Vector2(890, 0)
 rotation = 3.14159
 
-[node name="Border2" parent="Border" instance=ExtResource("1_qwwih")]
-position = Vector2(493.489, 0)
+[node name="Rail TL" parent="Rails" instance=ExtResource("1_qwwih")]
+position = Vector2(-402, -445)
 rotation = 1.5708
 
-[node name="Border4" parent="Border" instance=ExtResource("1_qwwih")]
-position = Vector2(514.706, 596.606)
+[node name="Rail BL" parent="Rails" instance=ExtResource("1_qwwih")]
+position = Vector2(-521, 445)
 rotation = -1.5708
 
-[node name="Border5" parent="Border" instance=ExtResource("1_qwwih")]
-position = Vector2(1416.69, -2.26276)
+[node name="Rail TR" parent="Rails" instance=ExtResource("1_qwwih")]
+position = Vector2(409, -445)
 rotation = 1.5708
 
-[node name="Border6" parent="Border" instance=ExtResource("1_qwwih")]
-position = Vector2(1465.06, 607.92)
+[node name="Rail BR" parent="Rails" instance=ExtResource("1_qwwih")]
+position = Vector2(522, 445)
 rotation = -1.5708
 
-[node name="Holes" type="Node2D" parent="."]
+[node name="Pockets" type="Node2D" parent="."]
 
-[node name="Cutout Corner" parent="Holes" instance=ExtResource("2_0gmye")]
+[node name="Pocket TL" parent="Pockets" instance=ExtResource("2_0gmye")]
+position = Vector2(-890, -445)
 scale = Vector2(0.5, 0.5)
 
-[node name="Cutout Corner2" parent="Holes" instance=ExtResource("2_0gmye")]
-position = Vector2(1920, 0)
+[node name="Pocket TC" parent="Pockets" instance=ExtResource("3_25xpv")]
+position = Vector2(0, -445)
+scale = Vector2(0.5, 0.5)
+
+[node name="Pocket TR" parent="Pockets" instance=ExtResource("2_0gmye")]
+position = Vector2(890, -445)
 rotation = 1.5708
 scale = Vector2(0.5, 0.5)
 
-[node name="Cutout Corner3" parent="Holes" instance=ExtResource("2_0gmye")]
-position = Vector2(1920, 1080)
-rotation = 3.14159
-scale = Vector2(0.5, 0.5)
-
-[node name="Cutout Corner4" parent="Holes" instance=ExtResource("2_0gmye")]
-position = Vector2(0, 1080)
-rotation = -1.5708
-scale = Vector2(0.5, 0.5)
-
-[node name="Cutout Middle" parent="Holes" instance=ExtResource("3_25xpv")]
-position = Vector2(960, 1080)
+[node name="Pocket BR" parent="Pockets" instance=ExtResource("2_0gmye")]
+position = Vector2(890, 445)
 rotation = 3.14159
 scale = Vector2(0.5, 0.5)
 
-[node name="Cutout Middle2" parent="Holes" instance=ExtResource("3_25xpv")]
-position = Vector2(960, 0)
+[node name="Pocket BC" parent="Pockets" instance=ExtResource("3_25xpv")]
+position = Vector2(0, 445)
+rotation = 3.14159
+scale = Vector2(0.5, 0.5)
+
+[node name="Pocket BL" parent="Pockets" instance=ExtResource("2_0gmye")]
+position = Vector2(-890, 445)
+rotation = -1.5708
 scale = Vector2(0.5, 0.5)
 
 [node name="Balls" type="Node2D" parent="."]

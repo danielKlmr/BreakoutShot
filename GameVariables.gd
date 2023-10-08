@@ -12,19 +12,13 @@ var MUSIC = true
 var x_size = 0
 var y_size = 0
 var middle_spot_position = null
-var head_string_position = null
 
 # Game
-var NUMBER_OBJECT_BALLS = 15
 
-# Statics
-enum suits {Stripe, Solid}
-
-var table_size = Vector2(0, 0)
 var ballradius = 20
-var BORDER_THICKNESS = 70
+var RAIL_THICKNESS = 70
 var CUTOUT_OVERLAP = 38
-var BORDER_SCALE = 0.5
+var RAIL_SCALE = 0.5
 var OUTSIDE_DRAWING = 5000 # How much should be drawn outside of the intended window
 var TABLE_COLORS = [
 	Color("mistyrose"),
@@ -45,6 +39,5 @@ const COLORS = {
 }
 #https://www.reddit.com/r/godot/comments/bp9qsv/visualising_shot_preview_in_2d_snooker_game/
 
-var EIGHT_BALL_NUMBER = 8
 var HIT_STRENGTH = 5
 var hit_strength_multiplicator_index = 1

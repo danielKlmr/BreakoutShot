@@ -14,12 +14,15 @@ const STANDARD_MODE_CHANGE_TOLERANCE = 1.1
 var current_orientation: WindowOrientationModes = WindowOrientationModes.LANDSCAPE
 var current_window_size
 var original_window_size
+var fullscreen: bool
 
 
 func _ready():
 	_setup_window()
+	_check_fullscreen()
 
 
+## Set original and current window sizes and check orientation mode
 func _setup_window():
 	# Set original window size, which is the basis for the game scene
 	original_window_size = Vector2i(
@@ -34,6 +37,11 @@ func _setup_window():
 			"size_changed", Callable(self, "_check_window_orientation"))
 	# Initially check and set orientation mode when starting the game
 	_check_window_orientation(1)
+
+
+## Check, if game runs in fullscreen and save in variable
+func _check_fullscreen():
+	fullscreen = DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN
 
 
 func _check_window_orientation(

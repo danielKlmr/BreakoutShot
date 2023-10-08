@@ -9,15 +9,20 @@ theme_override_constants/separation = 5
 alignment = 1
 script = ExtResource("2_ors1m")
 
+[node name="FullscreenButton" type="CheckButton" parent="."]
+layout_mode = 2
+theme = ExtResource("1_dk8l6")
+text = "Fullscreen"
+
 [node name="MusicButton" type="CheckButton" parent="."]
 layout_mode = 2
 theme = ExtResource("1_dk8l6")
 text = "Music"
 
-[node name="Hit StrengthButton" type="HBoxContainer" parent="."]
+[node name="HitStrengthButton" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="Label" type="Button" parent="Hit StrengthButton"]
+[node name="Label" type="Button" parent="HitStrengthButton"]
 layout_mode = 2
 size_flags_horizontal = 3
 button_mask = 0
@@ -25,7 +30,7 @@ text = "Hit Strength"
 flat = true
 alignment = 0
 
-[node name="Button" type="OptionButton" parent="Hit StrengthButton"]
+[node name="Button" type="OptionButton" parent="HitStrengthButton"]
 custom_minimum_size = Vector2(100, 0)
 layout_direction = 2
 layout_mode = 2
@@ -43,6 +48,7 @@ layout_mode = 2
 theme = ExtResource("1_dk8l6")
 text = "Back"
 
+[connection signal="toggled" from="FullscreenButton" to="." method="_on_fullscreen_button_toggled"]
 [connection signal="toggled" from="MusicButton" to="." method="_on_music_button_toggled"]
-[connection signal="item_selected" from="Hit StrengthButton/Button" to="." method="_hit_strength_item_selected"]
+[connection signal="item_selected" from="HitStrengthButton/Button" to="." method="_hit_strength_item_selected"]
 [connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]

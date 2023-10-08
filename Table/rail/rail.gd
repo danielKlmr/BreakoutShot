@@ -14,10 +14,10 @@ func _draw():
 	
 func set_size(length):
 	drawing_length = length
-	get_node("CollisionShape2D").scale.x = game_variables.BORDER_THICKNESS
-	get_node("CollisionShape2D").position.x = -game_variables.BORDER_THICKNESS / 2
+	get_node("CollisionShape2D").scale.x = game_variables.RAIL_THICKNESS
+	get_node("CollisionShape2D").position.x = -game_variables.RAIL_THICKNESS / 2
 	get_node("CollisionShape2D").scale.y = length
-#	get_node("CollisionShape2D").shape = RectangleShape2D.new().set_extents(Vector2(game_variables.BORDER_THICKNESS, length))
+#	get_node("CollisionShape2D").shape = RectangleShape2D.new().set_extents(Vector2(game_variables.RAIL_THICKNESS, length))
 	queue_redraw()
 	
 func set_color(color):

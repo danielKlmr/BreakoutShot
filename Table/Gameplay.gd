@@ -29,6 +29,7 @@ var cue_ball
 @onready var head_string = get_node("/root/Table/PlayingSurface/HeadString")
 @onready var Gui = get_node("/root/Table/GUI Layer")
 @onready var Table = get_node("/root/Table")
+@onready var PlayingSurface = get_node("/root/Table/PlayingSurface")
 @onready var UIAttempts = get_node("/root/Table/GUI Layer/HUD/Stats/Attempts Value")
 @onready var UIFouls = get_node("/root/Table/GUI Layer/HUD/Stats/Fouls Value")
 
@@ -78,6 +79,7 @@ func set_turn_state(state):
 		if self.cue_ball:
 			Table.delete_ball(self.cue_ball)
 		self.cue_ball = Table.setup_cue_ball()
+		print("Cb setup")
 		Table.set_balls_static(true)
 	elif state == turn_states.Play:
 		if !cue_ball.is_connected("hole_in", Callable(self, "_cue_ball_in")):
@@ -96,6 +98,7 @@ func play_game(cue_ball):
 	set_game_state(game_states.Break)
 	set_turn_state(turn_states.PlaceBall)
 	self.cue_ball = cue_ball
+	print(self.cue_ball)
 	
 func increase_attempts_counter():
 	if attempts != null:
@@ -142,10 +145,10 @@ func _input(event):
 func _project_to_head_string(position):
 	#position = Table.convert_global_position_to_scaled_position(position)
 	var projected_position = head_string.get_curve().get_closest_point(position)
-	if (projected_position - Vector2(Table.head_spot_position)).length() < game_variables.SNAPPING_DISTANCE:
-		cue_ball.set_position(Table.head_spot_position)
+	if (projected_position - Vector2(PlayingSurface.head_spot_position)).length() < game_variables.SNAPPING_DISTANCE:
+		self.cue_ball.set_position(PlayingSurface.head_spot_position)
 	else:
-		cue_ball.set_position(projected_position)
+		self.cue_ball.set_position(projected_position)
 
 func _cue_ball_in(ball_number):
 	set_turn_state(turn_states.Foul)

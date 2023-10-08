@@ -6,19 +6,20 @@ var AUTOCLOSE_TIME = 2.0
 @onready var label = self.get_node("InGameMenu/VBoxContainer/Label")
 @onready var subtext = self.get_node("InGameMenu/VBoxContainer/Subtext")
 @onready var InGameMenu = $InGameMenu
+@onready var PopupMenuVbox = get_node("InGameMenu/VBoxContainer/PopupMenu")
 @onready var OptionsMenu = get_node("InGameMenu/OptionsMenu")
 @onready var buttons = {
 	"menu": get_node("HUD/Stats/MenuButton"),
-	"continue": vbox.get_node("ContinueButton"),
-	"restart": vbox.get_node("RestartButton"),
-	"back_to_menu": vbox.get_node("BackToMenuButton"),
-	"options": vbox.get_node("OptionsButton")
+	"continue": PopupMenuVbox.get_node("ContinueButton"),
+	"restart": PopupMenuVbox.get_node("RestartButton"),
+	"back_to_menu": PopupMenuVbox.get_node("BackToMenuButton"),
+	"options": PopupMenuVbox.get_node("OptionsButton")
 }
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_close_popup()
-	for button in buttons.values():
+	for button in PopupMenuVbox.get_children():
 		button.connect("pressed", Callable(self, "_play_click_sound"))
 		
 func _play_click_sound():
@@ -32,16 +33,12 @@ func _open_popup(title):
 	
 func _close_popup():
 	subtext.hide()
-	for button in buttons.values():
-		button.hide()
+	PopupMenuVbox.hide()
 	InGameMenu.hide()
 	buttons["menu"].show()
 
 func open_pause_menu():
-	buttons['continue'].show()
-	buttons['restart'].show()
-	buttons['back_to_menu'].show()
-	buttons['options'].show()
+	PopupMenuVbox.show()
 	get_tree().paused = true
 	_open_popup("Pause")
 	

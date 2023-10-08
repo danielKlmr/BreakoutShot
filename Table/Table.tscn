@@ -58,21 +58,25 @@ layout_mode = 2
 text = "Popup Subtext"
 horizontal_alignment = 1
 
-[node name="ContinueButton" type="Button" parent="GUI Layer/InGameMenu/VBoxContainer"]
+[node name="PopupMenu" type="VBoxContainer" parent="GUI Layer/InGameMenu/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="ContinueButton" type="Button" parent="GUI Layer/InGameMenu/VBoxContainer/PopupMenu"]
 layout_mode = 2
 theme = ExtResource("4_4wso6")
 text = "Continue"
 
-[node name="RestartButton" type="Button" parent="GUI Layer/InGameMenu/VBoxContainer"]
+[node name="RestartButton" type="Button" parent="GUI Layer/InGameMenu/VBoxContainer/PopupMenu"]
 layout_mode = 2
 text = "Restart"
 
-[node name="OptionsButton" type="Button" parent="GUI Layer/InGameMenu/VBoxContainer"]
+[node name="OptionsButton" type="Button" parent="GUI Layer/InGameMenu/VBoxContainer/PopupMenu"]
 layout_mode = 2
 theme = ExtResource("4_4wso6")
 text = "Options"
 
-[node name="BackToMenuButton" type="Button" parent="GUI Layer/InGameMenu/VBoxContainer"]
+[node name="BackToMenuButton" type="Button" parent="GUI Layer/InGameMenu/VBoxContainer/PopupMenu"]
 layout_mode = 2
 text = "Back to Menu"
 
@@ -126,9 +130,9 @@ text = "X"
 
 [node name="PlayingSurface" parent="." instance=ExtResource("12_uwwht")]
 
-[connection signal="pressed" from="GUI Layer/InGameMenu/VBoxContainer/ContinueButton" to="GUI Layer" method="_on_ContinueButton_pressed"]
-[connection signal="pressed" from="GUI Layer/InGameMenu/VBoxContainer/RestartButton" to="GUI Layer" method="_on_RestartButton_pressed"]
-[connection signal="pressed" from="GUI Layer/InGameMenu/VBoxContainer/OptionsButton" to="GUI Layer" method="_on_options_button_pressed"]
-[connection signal="pressed" from="GUI Layer/InGameMenu/VBoxContainer/BackToMenuButton" to="GUI Layer" method="_on_BackToMenuButton_pressed"]
+[connection signal="pressed" from="GUI Layer/InGameMenu/VBoxContainer/PopupMenu/ContinueButton" to="GUI Layer" method="_on_ContinueButton_pressed"]
+[connection signal="pressed" from="GUI Layer/InGameMenu/VBoxContainer/PopupMenu/RestartButton" to="GUI Layer" method="_on_RestartButton_pressed"]
+[connection signal="pressed" from="GUI Layer/InGameMenu/VBoxContainer/PopupMenu/OptionsButton" to="GUI Layer" method="_on_options_button_pressed"]
+[connection signal="pressed" from="GUI Layer/InGameMenu/VBoxContainer/PopupMenu/BackToMenuButton" to="GUI Layer" method="_on_BackToMenuButton_pressed"]
 [connection signal="go_back" from="GUI Layer/InGameMenu/OptionsMenu" to="GUI Layer" method="_on_back_button_pressed"]
 [connection signal="pressed" from="GUI Layer/HUD/Stats/MenuButton" to="GUI Layer" method="open_pause_menu"]

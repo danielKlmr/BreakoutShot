@@ -7,7 +7,7 @@ var radius = 100
 
 func _draw():
 	#draw_circle(Vector2(0,0), radius, Color(0.27, 0.2, 0.2, 1))
-	if get_parent().get_scene_file_path() == "res://Table/Border/Cutout Corner.tscn":
+	if get_parent().get_scene_file_path() == "res://Table/rail/pocket_corner.tscn":
 		draw_circle_arc_poly(Vector2(0, 0), radius, 45, 225, Color(0.27, 0.2, 0.2, 1)) # Drawed center at a different location than pocket center
 	else:
 		draw_circle_arc_poly(Vector2(0, 0), radius, 90, 270, Color(0.27, 0.2, 0.2, 1))

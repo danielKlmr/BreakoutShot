@@ -5,11 +5,25 @@ extends VBoxContainer
 
 signal go_back()
 
+@onready var FullscreenButton = get_node("FullscreenButton")
+@onready var MusicButton = get_node("MusicButton")
+@onready var HitStrengthButton = get_node("HitStrengthButton/Button")
+
 
 func _ready():
-	get_node("MusicButton").set_pressed(GameVariables.MUSIC)
-	get_node("Hit StrengthButton/Button").select(
+	FullscreenButton.set_pressed(GameEngine.fullscreen)
+	MusicButton.set_pressed(GameVariables.MUSIC)
+	HitStrengthButton.select(
 			GameVariables.hit_strength_multiplicator_index)
+
+
+## Switches between fullscreen and windowed
+func _on_fullscreen_button_toggled(button_pressed):
+	if button_pressed:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	else:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+	GameEngine.fullscreen = button_pressed
 
 
 ## Hide menu and emit signal when back button is pressed

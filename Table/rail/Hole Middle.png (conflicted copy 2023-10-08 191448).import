@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://btk25th5y6jmg"
-path="res://.godot/imported/Corner Mask.png-d2747d18626b979645c7f4ebcde9b093.ctex"
+uid="uid://k63drbrh04em"
+path="res://.godot/imported/Hole Middle.png-d3c9266d4e4d4779afbd3d165886326c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Table/Border/Corner Mask.png"
-dest_files=["res://.godot/imported/Corner Mask.png-d2747d18626b979645c7f4ebcde9b093.ctex"]
+source_file="res://Table/rail/Hole Middle.png"
+dest_files=["res://.godot/imported/Hole Middle.png-d3c9266d4e4d4779afbd3d165886326c.ctex"]
 
 [params]
 

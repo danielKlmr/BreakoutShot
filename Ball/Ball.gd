@@ -1,5 +1,7 @@
 extends RigidBody2D
 
+enum Suits {Stripe, Solid}
+
 # Member Variables
 var radius
 var number # Number displayed on the ball
@@ -70,7 +72,7 @@ func _ready():
 func _draw():
 	draw_circle(Vector2(0,0), self.radius, color)
 	draw_circle(Vector2(0,0), self.radius / 2, game_variables.COLORS["white"])
-	if suit == game_variables.suits.Stripe:
+	if suit == Suits.Stripe:
 		draw_circle_arc_poly(Vector2(0, 0), self.radius, -STRIPED_ANGLE_FROM_CENTER, STRIPED_ANGLE_FROM_CENTER, game_variables.COLORS["white"])
 		draw_circle_arc_poly(Vector2(0, 0), self.radius, 180-STRIPED_ANGLE_FROM_CENTER, 180+STRIPED_ANGLE_FROM_CENTER, game_variables.COLORS["white"])
 	
