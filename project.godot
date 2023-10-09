@@ -13,8 +13,8 @@ config_version=5
 config/name="BreakoutShot"
 run/main_scene="res://ui/main_menu.tscn"
 config/features=PackedStringArray("4.1")
-config/icon="res://icon.png"
-config/version="0.2.0"
+config/icon="res://Logo/icon.png"
+config/version="0.2.1"
 
 [autoload]
 

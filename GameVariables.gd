@@ -1,17 +1,9 @@
 extends Node
 
 # Technical
-var SNAPPING_DISTANCE = 50
-var HUD_PADDING = 30
-var hud_height = null
 
 # Options
 var MUSIC = true
-
-# Table
-var x_size = 0
-var y_size = 0
-var middle_spot_position = null
 
 # Game
 

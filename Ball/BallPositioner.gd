@@ -32,7 +32,7 @@ func _physics_process(delta):
 	else:
 		var projected_position = mouse_position
 		projected_position.x = PlayingSurface.head_string_x_position
-		if (projected_position - Vector2(PlayingSurface.head_spot_position)).length() < game_variables.SNAPPING_DISTANCE:
+		if (projected_position - Vector2(PlayingSurface.head_spot_position)).length() < PlayingSurface.SNAPPING_DISTANCE:
 			# Snap ball to head spot if it is close to it
 			set_position(Table.get_node("PlayingSurface").head_spot_position)
 			linear_velocity = Vector2(0, 0)

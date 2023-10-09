@@ -3,11 +3,13 @@ extends Node2D
 ##
 ## Holding the tables rails, holes, balls and the camera
 
+signal ball_removed(ball_number: int, number_object_balls: int)
+
 const NUMBER_OBJECT_BALLS = 15
 const EIGHT_BALL_NUMBER = 8
 const NUMBER_BALL_COLUMNS = 5
-const RACK_BALL_OFFSET_ROWS = 2
-const RACK_BALL_OFFSET_COLUMNS = -2
+const RACK_BALL_OFFSET_ROWS = 3
+const RACK_BALL_OFFSET_COLUMNS = -1
 const RAIL_COLOR_SHIFT = 0.2
 const RAIL_SATURATION_SHIFT = -0.1
 const COLORS_TABLE = [
@@ -20,6 +22,7 @@ const COLORS_TABLE = [
 	"dark_red",
 ]
 const SPOT_DRAWING_SIZE = 5
+const SNAPPING_DISTANCE = 50
 # Field size (mm)
 # https://de.wikipedia.org/wiki/Billardtisch_(Pool)
 const POCKET_NODE_SIZE = 256
@@ -27,8 +30,16 @@ const STANDARD_BALL_DIAMETER = 57.2
 const STANDARD_LENGTH = 2240
 const STANDARD_WIDTH = 1120
 
+var head_spot_position: Vector2i
+var center_spot_position = Vector2i(0, 0)
+var foot_spot_position: Vector2i
+var head_string_x_position
+
 var _balls = []
+var _cue_ball
 var _eight_ball
+var _cue_ball_positioner
+var _number_object_balls
 var _ball_radius
 var _rail_color
 var _mm_to_px_scaling_factor
@@ -36,12 +47,10 @@ var _mm_to_px_scaling_factor
 var _pocket_node_overlap
 var _table_color
 var _table_size: Vector2i
-var head_spot_position: Vector2i
-var center_spot_position = Vector2i(0, 0)
-var foot_spot_position: Vector2i
-var head_string_x_position
 
 @onready var Ball = preload("res://Ball/Ball.tscn")
+@onready var CueBall = preload("res://Ball/CueBall.tscn")
+@onready var BallPositioner = preload("res://Ball/BallPositioner.tscn")
 @onready var Balls = get_node("Balls")
 @onready var HeadString = get_node("HeadString")
 @onready var Pockets = get_node("Pockets")
@@ -55,6 +64,7 @@ func _ready():
 	_setup_table()
 	_setup_play_field()
 	_init_balls()
+	setup_cue_ball(false)
 
 
 func _draw():
@@ -70,6 +80,70 @@ func _draw():
 	draw_circle(foot_spot_position, SPOT_DRAWING_SIZE, _rail_color)
 	draw_circle(head_spot_position, SPOT_DRAWING_SIZE, _rail_color)
 	draw_circle(center_spot_position, SPOT_DRAWING_SIZE, _rail_color)
+
+
+## Place cue ball in head field
+## If kitchen is true, the cue ball is placed in the kitchen, otherwise it is
+## placed on the head string
+func setup_cue_ball(kitchen):
+	# Remove cue ball if it already exists (in case of foul)
+	if _cue_ball:
+		delete_ball(_cue_ball, false)
+	var Gameplay = get_parent().get_node("Gameplay")
+	_cue_ball = CueBall.instantiate().init(
+			_ball_radius,
+			0,
+			GameVariables.COLORS["white"],
+			head_spot_position)
+	randomize()
+	_cue_ball.set_rotation(randf_range(0, 2*PI))
+	
+	if kitchen:
+		_cue_ball_positioner = BallPositioner.instantiate().init(_cue_ball)
+		add_child(_cue_ball_positioner)
+	else:
+		Balls.add_child(_cue_ball)
+
+
+## Use mouse position to project the cue ball to the head string
+func project_cue_ball_to_head_string():
+	var mouse_position = get_local_mouse_position()
+	var projected_position = HeadString.get_curve().get_closest_point(mouse_position)
+	
+	# Check if projected position is in snapping distance to head spot
+	var vector_to_head_spot = projected_position - Vector2(head_spot_position)
+	if vector_to_head_spot.length() < SNAPPING_DISTANCE:
+		_cue_ball.set_position(head_spot_position)
+	else:
+		_cue_ball.set_position(projected_position)
+
+
+# Klicking in the kitchen while placing the cue ball removes the ball positioner
+# and activates the cue ball
+func place_cue_ball_in_kitchen():
+	var cue_ball_position = _cue_ball_positioner.get_position()
+	_cue_ball.set_position(cue_ball_position)
+	_cue_ball.get_node("CollisionShape2D").set_disabled(false)
+	_cue_ball.set_freeze_enabled(false)
+	_cue_ball_positioner.remove_child(_cue_ball)
+	Balls.add_child(_cue_ball)
+	_cue_ball_positioner.queue_free()
+	get_parent().set_balls_static(false) # TODO move
+
+
+## Delete a given ball
+func delete_ball(ball, in_pocket = true):
+	var ball_number = ball.number
+	_balls.erase(ball)
+	ball.queue_free()
+	
+	_count_object_balls()
+	
+	if in_pocket:
+		emit_signal("ball_removed", ball_number, _number_object_balls)
+	
+	if ball_number == 0:
+		_cue_ball = null
 
 
 ## Set the colors of the table rails and the playing surface
@@ -109,11 +183,9 @@ func _convert_mm_to_px():
 	_ball_radius = round(_mm_to_px_scaling_factor * STANDARD_BALL_DIAMETER / 2)
 
 
-## Set playing surface position and pocket and rail locations
+## Set pocket and rail locations
 ## Position of corners: Half of the table size in each direction for corners
 func _setup_table():
-	set_position(GameEngine.original_window_size / 2)
-	
 	var top = -(_table_size.y / 2)
 	var bottom = (_table_size.y / 2)
 	var left = -(_table_size.x / 2)
@@ -224,3 +296,10 @@ func _init_balls():
 			ball.set_rotation(randf_range(0, 2*PI))
 			Balls.add_child(ball)
 			assignment_iterator += 1
+	
+	_count_object_balls()
+
+
+## Count the number of object balls
+func _count_object_balls():
+	_number_object_balls = len(_balls)
