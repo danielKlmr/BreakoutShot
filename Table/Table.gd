@@ -6,13 +6,13 @@ extends Node2D
 const HUD_PADDING = 30
 
 var _camera_zoom = 1
-var _hole_offset = 38
 var _hud_height
 
-@onready var Gameplay = get_node("Gameplay")
-@onready var PlayingSurface = get_node("PlayingSurface")
-@onready var Camera = get_node("PlayingSurface/Camera3D")
-@onready var GUI = get_node("GUI Layer/HUD")
+@onready var gameplay = get_node("Gameplay")
+@onready var playing_surface = get_node("PlayingSurface")
+@onready var camera = get_node("PlayingSurface/Camera3D")
+@onready var gui = get_node("GUI Layer")
+@onready var hud = gui.get_node("HUD")
 
 
 func _ready():
@@ -20,7 +20,7 @@ func _ready():
 	_setup_gui()
 	_setup_playing_surface()
 	_update_camera()
-	Gameplay.set_game_state(Gameplay.game_states.Start)
+	gameplay.set_game_state(gameplay.GameStates.START)
 
 
 ## Get signals when window size or orientation changes
@@ -33,16 +33,23 @@ func _setup_window():
 
 ## Set height of the hud and scale camera to fit the screen
 func _setup_gui():
-	_hud_height = GUI.get_size().y + HUD_PADDING
+	_hud_height = hud.get_size().y + HUD_PADDING
 	# Offset is only half of hud height because playing surface is scaled to
 	# window withoud hud. Therefore, half of the hud size is already free at top
 	# and bottom
-	Camera.offset.y = -_hud_height / 2
+	camera.offset.y = -_hud_height / 2
+	gameplay.connect("place_cue_ball", Callable(gui, "show_place_cue"))
+	gameplay.connect("hit_ball", Callable(gui, "hit_ball"))
+	gameplay.connect("foul", Callable(gui, "foul"))
+	gameplay.connect("lost", Callable(gui, "open_lost_menu"))
+	gameplay.connect("win", Callable(gui, "open_win_menu"))
 
 
 ## Set playing surface position
 func _setup_playing_surface():
-	PlayingSurface.set_position(GameEngine.original_window_size / 2)
+	playing_surface.set_position(GameEngine.original_window_size / 2)
+	gameplay.connect("play", Callable(playing_surface, "play"))
+	gameplay.connect("hit_ball", Callable(playing_surface, "hit_ball"))
 
 
 ## Manual scales canvas items to window size, so that UI elements can stay the
@@ -58,31 +65,13 @@ func _update_camera():
 	
 	_camera_zoom = min(x_scale, y_scale)
 	
-	Camera.set_zoom(Vector2(_camera_zoom, _camera_zoom))
+	camera.set_zoom(Vector2(_camera_zoom, _camera_zoom))
 
 
-	
-
+## Change table orientation if signal to do so is received
 func _change_table_orientation(
 		new_orientation: GameEngine.WindowOrientationModes):
 	if new_orientation == GameEngine.WindowOrientationModes.PORTRAIT:
-		PlayingSurface.set_rotation(PI/2)
+		playing_surface.set_rotation(PI/2)
 	else:
-		PlayingSurface.set_rotation(0)
-	
-
-	
-func set_balls_static(value: bool):
-	for ball in PlayingSurface._balls:
-		ball.set_freeze_enabled(value)
-
-func _unhandled_input(event):
-	if event is InputEventKey:
-		if event.pressed and event.keycode == KEY_ESCAPE:
-			get_node("GUI Layer").open_pause_menu()
-			
-func convert_global_position_to_scaled_position(position_global:Vector2i):
-	var position_scaled = Vector2i(position_global / _camera_zoom)
-	#var position_scaled = get_viewport().get_viewport_transform() * Vector2(position_global)
-	
-	return position_scaled
+		playing_surface.set_rotation(0)

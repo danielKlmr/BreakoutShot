@@ -1,29 +1,29 @@
 [gd_scene load_steps=13 format=3 uid="uid://bd64nbtrtx2d6"]
 
-[ext_resource type="Script" path="res://Table/Table.gd" id="1"]
-[ext_resource type="PackedScene" path="res://UI/Sfx/ClickSound.tscn" id="3"]
-[ext_resource type="Script" path="res://ui/InGameMenu.gd" id="3_no0ar"]
-[ext_resource type="Theme" uid="uid://dsxjacfs5pxiu" path="res://ui/ButtonTheme.tres" id="4_4wso6"]
-[ext_resource type="FontFile" uid="uid://c3a6ubp2mwy8r" path="res://addons/Roboto_Condensed/RobotoCondensed-Bold.ttf" id="5_y6qqf"]
-[ext_resource type="PackedScene" uid="uid://dnkv4u16wadh0" path="res://Player/Player.tscn" id="6"]
-[ext_resource type="PackedScene" uid="uid://mwoc6ftik2w" path="res://ui/options_menu.tscn" id="6_06h2s"]
-[ext_resource type="Theme" uid="uid://cfxs4s6yhcvc1" path="res://ui/LabelTheme.tres" id="6_wc42h"]
-[ext_resource type="Texture2D" uid="uid://dc7btekwa5xku" path="res://addons/tmthymllr/edited_Hamburger_icon.svg" id="7_mm3da"]
-[ext_resource type="FontFile" uid="uid://dx5eda4uewcsn" path="res://ui/Fonts/Franco.tres" id="8_wgq6n"]
-[ext_resource type="Script" path="res://Table/Gameplay.gd" id="10"]
-[ext_resource type="PackedScene" uid="uid://bpq0ad2e8wwh5" path="res://Table/playing_surface.tscn" id="12_uwwht"]
+[ext_resource type="Script" path="res://table/table.gd" id="1_1eqaa"]
+[ext_resource type="Script" path="res://table/gameplay.gd" id="2_uvrwa"]
+[ext_resource type="Script" path="res://ui/in_game_menu.gd" id="3_tbk2y"]
+[ext_resource type="Theme" uid="uid://dsxjacfs5pxiu" path="res://ui/ButtonTheme.tres" id="4_0cqqv"]
+[ext_resource type="FontFile" uid="uid://c3a6ubp2mwy8r" path="res://addons/Roboto_Condensed/RobotoCondensed-Bold.ttf" id="5_n1vki"]
+[ext_resource type="PackedScene" uid="uid://mwoc6ftik2w" path="res://ui/options_menu.tscn" id="6_g447t"]
+[ext_resource type="Theme" uid="uid://cfxs4s6yhcvc1" path="res://ui/LabelTheme.tres" id="7_15vxc"]
+[ext_resource type="Texture2D" uid="uid://dc7btekwa5xku" path="res://addons/tmthymllr/edited_Hamburger_icon.svg" id="8_tvftr"]
+[ext_resource type="FontFile" uid="uid://dx5eda4uewcsn" path="res://ui/Fonts/Franco.tres" id="9_v7pcs"]
+[ext_resource type="PackedScene" uid="uid://r014ahp4qcuf" path="res://UI/Sfx/ClickSound.tscn" id="10_fahll"]
+[ext_resource type="PackedScene" uid="uid://dnkv4u16wadh0" path="res://Player/Player.tscn" id="11_d1k18"]
+[ext_resource type="PackedScene" uid="uid://bpq0ad2e8wwh5" path="res://table/playing_surface.tscn" id="12_jxi4u"]
 
 [node name="Table" type="Node2D"]
-script = ExtResource("1")
+script = ExtResource("1_1eqaa")
 
 [node name="Gameplay" type="Node" parent="."]
-script = ExtResource("10")
+script = ExtResource("2_uvrwa")
 
 [node name="GUI Layer" type="CanvasLayer" parent="."]
-script = ExtResource("3_no0ar")
+process_mode = 3
+script = ExtResource("3_tbk2y")
 
-[node name="InGameMenu" type="MarginContainer" parent="GUI Layer"]
-process_mode = 2
+[node name="Popup" type="MarginContainer" parent="GUI Layer"]
 anchors_preset = 13
 anchor_left = 0.5
 anchor_right = 0.5
@@ -35,52 +35,73 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="ColorRect" type="ColorRect" parent="GUI Layer/InGameMenu"]
+[node name="ColorRect" type="ColorRect" parent="GUI Layer/Popup"]
 modulate = Color(1, 1, 1, 0.121569)
 layout_mode = 2
 color = Color(0, 0, 0, 1)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="GUI Layer/InGameMenu"]
+[node name="PopupElements" type="VBoxContainer" parent="GUI Layer/Popup"]
 layout_mode = 2
 size_flags_vertical = 4
-theme = ExtResource("4_4wso6")
+theme = ExtResource("4_0cqqv")
 theme_override_constants/separation = 20
 
-[node name="Label" type="Label" parent="GUI Layer/InGameMenu/VBoxContainer"]
+[node name="LabelMargin" type="MarginContainer" parent="GUI Layer/Popup/PopupElements"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("5_y6qqf")
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_right = 5
+
+[node name="LabelVBox" type="VBoxContainer" parent="GUI Layer/Popup/PopupElements/LabelMargin"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="GUI Layer/Popup/PopupElements/LabelMargin/LabelVBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_n1vki")
 theme_override_font_sizes/font_size = 52
 text = "Popup"
 horizontal_alignment = 1
 
-[node name="Subtext" type="Label" parent="GUI Layer/InGameMenu/VBoxContainer"]
+[node name="Subtext" type="Label" parent="GUI Layer/Popup/PopupElements/LabelMargin/LabelVBox"]
 layout_mode = 2
 text = "Popup Subtext"
 horizontal_alignment = 1
+autowrap_mode = 2
 
-[node name="PopupMenu" type="VBoxContainer" parent="GUI Layer/InGameMenu/VBoxContainer"]
+[node name="PopupMenu" type="VBoxContainer" parent="GUI Layer/Popup/PopupElements"]
 layout_mode = 2
 theme_override_constants/separation = 5
 
-[node name="ContinueButton" type="Button" parent="GUI Layer/InGameMenu/VBoxContainer/PopupMenu"]
+[node name="ContinueButton" type="Button" parent="GUI Layer/Popup/PopupElements/PopupMenu"]
 layout_mode = 2
-theme = ExtResource("4_4wso6")
+theme = ExtResource("4_0cqqv")
 text = "Continue"
 
-[node name="RestartButton" type="Button" parent="GUI Layer/InGameMenu/VBoxContainer/PopupMenu"]
+[node name="RestartButton" type="Button" parent="GUI Layer/Popup/PopupElements/PopupMenu"]
 layout_mode = 2
 text = "Restart"
 
-[node name="OptionsButton" type="Button" parent="GUI Layer/InGameMenu/VBoxContainer/PopupMenu"]
+[node name="OptionsButton" type="Button" parent="GUI Layer/Popup/PopupElements/PopupMenu"]
 layout_mode = 2
-theme = ExtResource("4_4wso6")
+theme = ExtResource("4_0cqqv")
 text = "Options"
 
-[node name="BackToMenuButton" type="Button" parent="GUI Layer/InGameMenu/VBoxContainer/PopupMenu"]
+[node name="BackToMenuButton" type="Button" parent="GUI Layer/Popup/PopupElements/PopupMenu"]
 layout_mode = 2
 text = "Back to Menu"
 
-[node name="OptionsMenu" parent="GUI Layer/InGameMenu" instance=ExtResource("6_06h2s")]
+[node name="WinLostButtons" type="VBoxContainer" parent="GUI Layer/Popup/PopupElements"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="RestartButton" type="Button" parent="GUI Layer/Popup/PopupElements/WinLostButtons"]
+layout_mode = 2
+text = "Restart"
+
+[node name="BackToMenuButton" type="Button" parent="GUI Layer/Popup/PopupElements/WinLostButtons"]
+layout_mode = 2
+text = "Back to Menu"
+
+[node name="OptionsMenu" parent="GUI Layer/Popup/PopupElements" instance=ExtResource("6_g447t")]
 visible = false
 layout_mode = 2
 
@@ -92,47 +113,49 @@ offset_bottom = 60.0
 
 [node name="Stats" type="HBoxContainer" parent="GUI Layer/HUD"]
 layout_mode = 2
-theme = ExtResource("6_wc42h")
+theme = ExtResource("7_15vxc")
 
 [node name="MenuButton" type="Button" parent="GUI Layer/HUD/Stats"]
 custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
-icon = ExtResource("7_mm3da")
+icon = ExtResource("8_tvftr")
 icon_alignment = 1
 
 [node name="Attempts" type="Label" parent="GUI Layer/HUD/Stats"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("8_wgq6n")
+theme_override_fonts/font = ExtResource("9_v7pcs")
 text = "Attempts: "
 
 [node name="Attempts Value" type="Label" parent="GUI Layer/HUD/Stats"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("8_wgq6n")
+theme_override_fonts/font = ExtResource("9_v7pcs")
 text = "X"
 
 [node name="Fouls" type="Label" parent="GUI Layer/HUD/Stats"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("8_wgq6n")
+theme_override_fonts/font = ExtResource("9_v7pcs")
 text = "Fouls: "
 
 [node name="Fouls Value" type="Label" parent="GUI Layer/HUD/Stats"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("8_wgq6n")
+theme_override_fonts/font = ExtResource("9_v7pcs")
 text = "X"
 
-[node name="ClickSound" parent="GUI Layer" instance=ExtResource("3")]
+[node name="ClickSound" parent="GUI Layer" instance=ExtResource("10_fahll")]
 
 [node name="Players" type="Node" parent="."]
 
-[node name="Player" parent="Players" instance=ExtResource("6")]
+[node name="Player" parent="Players" instance=ExtResource("11_d1k18")]
 
-[node name="PlayingSurface" parent="." instance=ExtResource("12_uwwht")]
+[node name="PlayingSurface" parent="." instance=ExtResource("12_jxi4u")]
 
-[connection signal="pressed" from="GUI Layer/InGameMenu/VBoxContainer/PopupMenu/ContinueButton" to="GUI Layer" method="_on_ContinueButton_pressed"]
-[connection signal="pressed" from="GUI Layer/InGameMenu/VBoxContainer/PopupMenu/RestartButton" to="GUI Layer" method="_on_RestartButton_pressed"]
-[connection signal="pressed" from="GUI Layer/InGameMenu/VBoxContainer/PopupMenu/OptionsButton" to="GUI Layer" method="_on_options_button_pressed"]
-[connection signal="pressed" from="GUI Layer/InGameMenu/VBoxContainer/PopupMenu/BackToMenuButton" to="GUI Layer" method="_on_BackToMenuButton_pressed"]
-[connection signal="go_back" from="GUI Layer/InGameMenu/OptionsMenu" to="GUI Layer" method="_on_back_button_pressed"]
-[connection signal="pressed" from="GUI Layer/HUD/Stats/MenuButton" to="GUI Layer" method="open_pause_menu"]
+[connection signal="pressed" from="GUI Layer/Popup/PopupElements/PopupMenu/ContinueButton" to="GUI Layer" method="_toggle_pause_menu"]
+[connection signal="pressed" from="GUI Layer/Popup/PopupElements/PopupMenu/RestartButton" to="GUI Layer" method="_on_RestartButton_pressed"]
+[connection signal="pressed" from="GUI Layer/Popup/PopupElements/PopupMenu/OptionsButton" to="GUI Layer" method="_on_options_button_pressed"]
+[connection signal="pressed" from="GUI Layer/Popup/PopupElements/PopupMenu/BackToMenuButton" to="GUI Layer" method="_on_BackToMenuButton_pressed"]
+[connection signal="pressed" from="GUI Layer/Popup/PopupElements/WinLostButtons/RestartButton" to="GUI Layer" method="_on_RestartButton_pressed"]
+[connection signal="pressed" from="GUI Layer/Popup/PopupElements/WinLostButtons/BackToMenuButton" to="GUI Layer" method="_on_BackToMenuButton_pressed"]
+[connection signal="go_back" from="GUI Layer/Popup/PopupElements/OptionsMenu" to="GUI Layer" method="_on_back_button_pressed"]
+[connection signal="pressed" from="GUI Layer/HUD/Stats/MenuButton" to="GUI Layer" method="_toggle_pause_menu"]

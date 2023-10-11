@@ -37,13 +37,13 @@ func aiming(delta):
 	var result = space_state.intersect_ray(intersect_ray_params)
 	if result:
 		var local_target_position = to_local(result.position)#self.transform.basis_xform_inv(result.position - global_position)
-		self.get_node("AimLine").draw_aim_line(position, local_target_position, delta)
+		self.get_node("AimLine").draw_aim_line(local_target_position, delta)
 			
 # Player Input
 func _on_Ball_input_event(viewport, event, shape_idx):
-	if GAMEPLAY.current_turn_state == GAMEPLAY.turn_states.Play:
+	if GAMEPLAY.current_turn_state == GAMEPLAY.TurnStates.PLAY:
 		if event is InputEventMouseButton:
-			if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			if event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 				current_ball_state = ball_states.Aiming
 				var new_aim_line = aim_line.instantiate()
 				self.add_child(new_aim_line)
@@ -55,10 +55,17 @@ func _input(event):
 
 func _unhandled_input(event):
 	# When ball is shot
-	if(current_ball_state == ball_states.Aiming and GAMEPLAY.current_turn_state == GAMEPLAY.turn_states.Play):
+	if(
+		current_ball_state == ball_states.Aiming
+		and GAMEPLAY.current_turn_state == GAMEPLAY.TurnStates.PLAY
+	):
+		# TODO: dont hit when placing
 		if event is InputEventMouseButton:
-			if event.button_index == MOUSE_BUTTON_LEFT:
-				if !event.pressed:
+			if (
+					event.button_index == MOUSE_BUTTON_LEFT
+					and !event.is_pressed()
+			):
+					print("shoot!")
 					shoot_ball()
 
 func shoot_ball():
@@ -67,8 +74,9 @@ func shoot_ball():
 	# Global position of movement vector minus position off cue ball to make it relative
 	var movement_global = to_global(movement) - global_position
 	apply_impulse(movement_global, Vector2(0, 0))
+	print(movement_global)
 	set_sleeping(false) # So ball is not detected as idle when checked next frame by gameplay
 	self.get_node("AimLine").queue_free()
 	Audio.get_node("Hit").play()
 	current_ball_state = ball_states.Normal
-	GAMEPLAY.set_turn_state(GAMEPLAY.turn_states.Hit)
+	GAMEPLAY.set_turn_state(GAMEPLAY.TurnStates.HIT)

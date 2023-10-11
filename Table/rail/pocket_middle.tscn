@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://c58kh7fy7d00h"]
 
-[ext_resource type="PackedScene" path="res://Table/rail/Hole.tscn" id="1_47d71"]
-[ext_resource type="Texture2D" uid="uid://k63drbrh04em" path="res://Table/rail/Hole Middle.png" id="2_pnpdl"]
+[ext_resource type="PackedScene" path="res://table/rail/Hole.tscn" id="1_47d71"]
+[ext_resource type="Texture2D" uid="uid://k63drbrh04em" path="res://table/rail/Hole Middle.png" id="2_pnpdl"]
 
 [node name="PocketMiddle" type="StaticBody2D"]
 collision_layer = 2

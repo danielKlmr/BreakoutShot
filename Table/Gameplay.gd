@@ -1,145 +1,123 @@
 extends Node
+## Gameplay
+##
+## Handles game states and turn states to keep the game running after the
+## ruleset
 
-# Singleton
-@onready var game_variables = get_node("/root/GameVariables")
+signal place_cue_ball()
+signal play()
+signal hit_ball(number_attempts)
+signal foul(number_fouls)
+signal lost()
+signal win()
 
-enum game_states {
-	Start,
-	Break,
-	Pocketing,
-	PocketingEightBall,
-	Lost,
-	Win
+enum GameStates {
+	START,
+	BREAK,
+	POCKET,
+	POCKET_EIGHT_BALL,
+	LOST,
+	WIN,
 }
+enum TurnStates {
+	NONE, # 0
+	PLACE_BALL, # 1 Place cue ball on line
+	PLACE_BALL_KITCHEN, # 2 Place cue ball in kitchen
+	PLAY, # 3
+	HIT, # 4 Ball is moving
+	CORRECT_HIT, # 5
+	FOUL # 6
+}
+
 var current_game_state
-enum turn_states {
-	None, # 0
-	PlaceBall, # 1 Place cue ball on line
-	PlaceBallKitchen, # 2 Place cue ball in kitchen
-	Wait, # 3 Wait for one frame, then play
-	Play, # 4
-	Hit, # 5 Ball is moving
-	CorrectHit, # 6
-	Foul # 7
-	}
-var current_turn_state = turn_states.None
+var current_turn_state = TurnStates.NONE
 var attempts
 var fouls
 
-@onready var head_string = get_node("/root/Table/PlayingSurface/HeadString")
-@onready var Gui = get_node("/root/Table/GUI Layer")
-@onready var Table = get_node("/root/Table")
-@onready var PlayingSurface = get_node("/root/Table/PlayingSurface")
-@onready var UIAttempts = get_node("/root/Table/GUI Layer/HUD/Stats/Attempts Value")
-@onready var UIFouls = get_node("/root/Table/GUI Layer/HUD/Stats/Fouls Value")
+@onready var playing_surface = get_parent().get_node("PlayingSurface")
 
 
-func _physics_process(delta):
-	if current_turn_state == turn_states.Wait:
-		set_turn_state(turn_states.Play)
-	elif current_turn_state == turn_states.CorrectHit:
-		if !_balls_moving():
-			set_turn_state(turn_states.Play)
-	elif current_turn_state == turn_states.Hit:
-		if !_balls_moving():
-			increase_fouls_counter() # TODO set to foul instead?
-			Gui.show_foul()
-			set_turn_state(turn_states.PlaceBallKitchen)
-	elif current_turn_state == turn_states.Foul:
-		print("jemals?")
-		if !_balls_moving():
-			Gui.show_foul()
+func _physics_process(_delta):
+	if current_turn_state == TurnStates.CORRECT_HIT:
+		if !playing_surface.balls_moving:
+			set_turn_state(TurnStates.PLAY)
+	elif current_turn_state == TurnStates.HIT:
+		# When no ball is pocketed
+		if !playing_surface.balls_moving:
+			set_turn_state(TurnStates.FOUL)
+	elif current_turn_state == TurnStates.FOUL:
+		# Check if balls are moving in case of cue ball in foul
+		if !playing_surface.balls_moving:
+			fouls += 1
+			emit_signal("foul", fouls)
+			set_turn_state(TurnStates.PLACE_BALL_KITCHEN)
 
-func _balls_moving():
-	var moving = false
 
-	for ball in Table.get_node("PlayingSurface/Balls").get_children():			#if ball.linear_velocity.length_squared() > 5:
-		if !ball.is_sleeping():
-			moving = true
-			break
-	
-	return moving
-			
+func _input(event):
+	# Place cue ball along head string
+	if (
+			event is InputEventMouseMotion
+			and current_turn_state == TurnStates.PLACE_BALL
+	):
+		playing_surface.project_cue_ball_to_head_string()
+	elif (
+			event is InputEventMouseButton
+			and event.button_index == MOUSE_BUTTON_LEFT
+			and !event.is_pressed()
+	):
+		# Place ball along headstring
+		if current_turn_state == TurnStates.PLACE_BALL:
+			set_turn_state(TurnStates.PLAY)
+		# Place ball in kitchen
+		elif current_turn_state == TurnStates.PLACE_BALL_KITCHEN:
+			playing_surface.place_cue_ball_in_kitchen()
+			set_turn_state(TurnStates.PLAY)
+
+
+## Triggers actions when the game state is changed
 func set_game_state(state):
 	current_game_state = state
-	if state == game_states.Start:
-		PlayingSurface.connect("ball_removed", Callable(self, "_ball_removed"))
-		increase_attempts_counter()
-		increase_fouls_counter()
-		set_game_state(game_states.Break)
-		set_turn_state(turn_states.PlaceBall)
-	elif state == game_states.Lost:
-		Gui.open_lost_menu()
-	elif state == game_states.Win:
-		Gui.open_win_menu()
-		
+	
+	if state == GameStates.START:
+		playing_surface.connect("ball_removed", Callable(self, "_ball_removed"))
+		attempts = 0
+		fouls = 0
+		set_game_state(GameStates.BREAK)
+		set_turn_state(TurnStates.PLACE_BALL)
+	elif state == GameStates.LOST:
+		emit_signal("lost")
+	elif state == GameStates.WIN:
+		emit_signal("win")
+
+
+## Triggers actions when the turn state is changed
 func set_turn_state(state):
 	current_turn_state = state
-	if state == turn_states.PlaceBall:
-		Gui.show_place_cue()
-		Table.set_balls_static(true)
-	elif state == turn_states.PlaceBallKitchen:
-		PlayingSurface.setup_cue_ball(true)
-		Table.set_balls_static(true)
-	elif state == turn_states.Play:
-		if current_game_state == game_states.Break:
-			set_game_state(game_states.Pocketing)
-		PlayingSurface._cue_ball.get_node("ReadyCircle").animate() # Private call
-	elif state == turn_states.Hit:
-		increase_attempts_counter()
-	elif state == turn_states.Foul:
-		increase_fouls_counter()
-		set_turn_state(turn_states.PlaceBallKitchen)
-
-
-func increase_attempts_counter():
-	if attempts != null:
+	
+	if state == TurnStates.PLACE_BALL:
+		emit_signal("place_cue_ball")
+		playing_surface.set_balls_static(true)
+	elif state == TurnStates.PLACE_BALL_KITCHEN:
+		playing_surface.setup_cue_ball(true)
+	elif state == TurnStates.PLAY:
+		if current_game_state == GameStates.BREAK:
+			set_game_state(GameStates.POCKET)
+		emit_signal("play")
+		print("playwuhu")
+	elif state == TurnStates.HIT:
 		attempts += 1
-	else:
-		attempts = 0
-	UIAttempts.set_text(str(attempts))
-	
-func increase_fouls_counter():
-	if fouls != null:
-		fouls += 1
-	else:
-		fouls = 0
-	UIFouls.set_text(str(fouls))
-	
-func _input(event):
-	if event is InputEventKey:
-		if event.is_action_pressed("debug"):
-			print("GameState: " + str(current_turn_state))
-			# TODO fix pause when aiming
-	if event is InputEventMouseMotion:
-		if(current_turn_state == turn_states.PlaceBall):
-			PlayingSurface.project_cue_ball_to_head_string()
-		elif(current_turn_state == turn_states.PlaceBallKitchen):
-			pass
-			#_place_in_kitchen(event.position)
-	elif event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and !event.pressed:
-			if current_turn_state == turn_states.PlaceBall:
-				Table.set_balls_static(false)
-				current_turn_state = turn_states.Wait # Wait for a frame, so that the ball gets not played
-			elif current_turn_state == turn_states.PlaceBallKitchen:
-				PlayingSurface.place_cue_ball_in_kitchen()
-				current_turn_state = turn_states.Wait
+		emit_signal("hit_ball", attempts)
 
 
-func _cue_ball_in():
-	set_turn_state(turn_states.Foul)
-
-
-## Change game state to PocketingEightBall when only 1 ball, which must be the
+## Change game state to POCKET_EIGHT_BALL when only 1 ball, which must be the
 ## eight ball, is left.
 func _ball_removed(ball_number, number_object_balls):
 	if ball_number == 0:
-		_cue_ball_in()
-	elif ball_number == PlayingSurface.EIGHT_BALL_NUMBER:
-			if current_game_state != game_states.PocketingEightBall:
-				set_game_state(game_states.Lost)
+		set_turn_state(TurnStates.FOUL)
+	elif ball_number == playing_surface.EIGHT_BALL_NUMBER:
+			if current_game_state != GameStates.POCKET_EIGHT_BALL:
+				set_game_state(GameStates.LOST)
 			else:
-				set_game_state(game_states.Win)
+				set_game_state(GameStates.WIN)
 	elif number_object_balls == 1:
-		set_game_state(game_states.PocketingEightBall)
+		set_game_state(GameStates.POCKET_EIGHT_BALL)

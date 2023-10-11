@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dj0t4ltd7ss6x"
-path="res://.godot/imported/Hole Middle.svg-edb98d2feb3f936954cb643228c7a862.ctex"
+path="res://.godot/imported/Hole Middle.svg-2b247002340943c2d9576d0fd157fe44.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Table/rail/Hole Middle.svg"
-dest_files=["res://.godot/imported/Hole Middle.svg-edb98d2feb3f936954cb643228c7a862.ctex"]
+source_file="res://table/rail/Hole Middle.svg"
+dest_files=["res://.godot/imported/Hole Middle.svg-2b247002340943c2d9576d0fd157fe44.ctex"]
 
 [params]
 

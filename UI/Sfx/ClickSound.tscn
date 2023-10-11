@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=2 format=3 uid="uid://r014ahp4qcuf"]
 
-[ext_resource path="res://addons/dawith/zipclick.wav" type="AudioStream" id=1]
+[ext_resource type="AudioStream" uid="uid://bboafcp30yvt5" path="res://addons/dawith/zipclick.wav" id="1"]
 
 [node name="ClickSound" type="AudioStreamPlayer"]
-stream = ExtResource( 1 )
+process_mode = 3
+stream = ExtResource("1")

@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://0sqrqe0y66kg"
-path="res://.godot/imported/felt_grey.jpg-cdcc0e2701b6400cce5f2018bf41278a.ctex"
+path="res://.godot/imported/felt_grey.jpg-ec2b2bd960945faf385b2adfddcb457e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Table/felt/felt_grey.jpg"
-dest_files=["res://.godot/imported/felt_grey.jpg-cdcc0e2701b6400cce5f2018bf41278a.ctex"]
+source_file="res://table/felt/felt_grey.jpg"
+dest_files=["res://.godot/imported/felt_grey.jpg-ec2b2bd960945faf385b2adfddcb457e.ctex"]
 
 [params]
 

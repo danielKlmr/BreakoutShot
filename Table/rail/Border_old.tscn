@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=3]
 
-[ext_resource type="Texture2D" uid="uid://cdu1neijj2xuj" path="res://Table/wood/wood1.jpg" id="1"]
-[ext_resource type="Texture2D" uid="uid://0sqrqe0y66kg" path="res://Table/felt/felt_grey.jpg" id="2"]
+[ext_resource type="Texture2D" uid="uid://cdu1neijj2xuj" path="res://table/wood/wood1.jpg" id="1"]
+[ext_resource type="Texture2D" uid="uid://0sqrqe0y66kg" path="res://table/felt/felt_grey.jpg" id="2"]
 [ext_resource type="Script" path="res://Table/rail/Border.gd" id="3"]
-[ext_resource type="Texture2D" uid="uid://btk25th5y6jmg" path="res://Table/rail/Corner Mask.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://btk25th5y6jmg" path="res://table/rail/Corner Mask.png" id="4"]
 
 [sub_resource type="RectangleShape2D" id=1]
 size = Vector2( 1, 1 )

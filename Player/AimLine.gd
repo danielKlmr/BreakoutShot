@@ -30,7 +30,7 @@ func _draw():
 	for circle in get_children():
 		draw_circle(circle.position, circle_size, Color.WHITE)
 		
-func draw_aim_line(ball : Vector2, target : Vector2, delta):
+func draw_aim_line(target : Vector2, delta):
 	get_curve().set_point_position(0, Vector2(0, 0))
 	get_curve().set_point_position(1, target)
 	

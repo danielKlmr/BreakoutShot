@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://Table/rail/Hole.gd" id="1"]
+[ext_resource type="Script" path="res://table/rail/Hole.gd" id="1"]
 
 [sub_resource type="CircleShape2D" id=1]
 

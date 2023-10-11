@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=3 uid="uid://bpq0ad2e8wwh5"]
 
-[ext_resource type="PackedScene" uid="uid://c57db7lu6cfjp" path="res://Table/rail/rail.tscn" id="1_qwwih"]
-[ext_resource type="Script" path="res://Table/playing_surface.gd" id="1_wp57s"]
-[ext_resource type="PackedScene" uid="uid://cr70woew1j1sn" path="res://Table/rail/pocket_corner.tscn" id="2_0gmye"]
-[ext_resource type="PackedScene" uid="uid://c58kh7fy7d00h" path="res://Table/rail/pocket_middle.tscn" id="3_25xpv"]
+[ext_resource type="Script" path="res://table/playing_surface.gd" id="1_jml8b"]
+[ext_resource type="PackedScene" uid="uid://c57db7lu6cfjp" path="res://table/rail/rail.tscn" id="2_xrsnp"]
+[ext_resource type="PackedScene" uid="uid://cr70woew1j1sn" path="res://table/rail/pocket_corner.tscn" id="3_2eyna"]
+[ext_resource type="PackedScene" uid="uid://c58kh7fy7d00h" path="res://table/rail/pocket_middle.tscn" id="4_pqxfx"]
 
 [sub_resource type="Curve2D" id="1"]
 _data = {
@@ -12,7 +12,7 @@ _data = {
 point_count = 2
 
 [node name="PlayingSurface" type="Node2D"]
-script = ExtResource("1_wp57s")
+script = ExtResource("1_jml8b")
 
 [node name="Camera3D" type="Camera2D" parent="."]
 process_mode = 3
@@ -22,55 +22,55 @@ curve = SubResource("1")
 
 [node name="Rails" type="Node2D" parent="."]
 
-[node name="Rail L" parent="Rails" instance=ExtResource("1_qwwih")]
+[node name="Rail L" parent="Rails" instance=ExtResource("2_xrsnp")]
 position = Vector2(-890, 0)
 
-[node name="Rail R" parent="Rails" instance=ExtResource("1_qwwih")]
+[node name="Rail R" parent="Rails" instance=ExtResource("2_xrsnp")]
 position = Vector2(890, 0)
 rotation = 3.14159
 
-[node name="Rail TL" parent="Rails" instance=ExtResource("1_qwwih")]
+[node name="Rail TL" parent="Rails" instance=ExtResource("2_xrsnp")]
 position = Vector2(-402, -445)
 rotation = 1.5708
 
-[node name="Rail BL" parent="Rails" instance=ExtResource("1_qwwih")]
+[node name="Rail BL" parent="Rails" instance=ExtResource("2_xrsnp")]
 position = Vector2(-521, 445)
 rotation = -1.5708
 
-[node name="Rail TR" parent="Rails" instance=ExtResource("1_qwwih")]
+[node name="Rail TR" parent="Rails" instance=ExtResource("2_xrsnp")]
 position = Vector2(409, -445)
 rotation = 1.5708
 
-[node name="Rail BR" parent="Rails" instance=ExtResource("1_qwwih")]
+[node name="Rail BR" parent="Rails" instance=ExtResource("2_xrsnp")]
 position = Vector2(522, 445)
 rotation = -1.5708
 
 [node name="Pockets" type="Node2D" parent="."]
 
-[node name="Pocket TL" parent="Pockets" instance=ExtResource("2_0gmye")]
+[node name="Pocket TL" parent="Pockets" instance=ExtResource("3_2eyna")]
 position = Vector2(-890, -445)
 scale = Vector2(0.5, 0.5)
 
-[node name="Pocket TC" parent="Pockets" instance=ExtResource("3_25xpv")]
+[node name="Pocket TC" parent="Pockets" instance=ExtResource("4_pqxfx")]
 position = Vector2(0, -445)
 scale = Vector2(0.5, 0.5)
 
-[node name="Pocket TR" parent="Pockets" instance=ExtResource("2_0gmye")]
+[node name="Pocket TR" parent="Pockets" instance=ExtResource("3_2eyna")]
 position = Vector2(890, -445)
 rotation = 1.5708
 scale = Vector2(0.5, 0.5)
 
-[node name="Pocket BR" parent="Pockets" instance=ExtResource("2_0gmye")]
+[node name="Pocket BR" parent="Pockets" instance=ExtResource("3_2eyna")]
 position = Vector2(890, 445)
 rotation = 3.14159
 scale = Vector2(0.5, 0.5)
 
-[node name="Pocket BC" parent="Pockets" instance=ExtResource("3_25xpv")]
+[node name="Pocket BC" parent="Pockets" instance=ExtResource("4_pqxfx")]
 position = Vector2(0, 445)
 rotation = 3.14159
 scale = Vector2(0.5, 0.5)
 
-[node name="Pocket BL" parent="Pockets" instance=ExtResource("2_0gmye")]
+[node name="Pocket BL" parent="Pockets" instance=ExtResource("3_2eyna")]
 position = Vector2(-890, 445)
 rotation = -1.5708
 scale = Vector2(0.5, 0.5)

@@ -3,12 +3,12 @@ extends RigidBody2D
 enum Suits {Stripe, Solid}
 
 # Member Variables
-var radius
+var _radius
 var number # Number displayed on the ball
 var suit
 var pocket # Pocket the ball is inside
 var movement = Vector2(0, 0)
-var color = Color("white")
+var _color = Color("white")
 var HIT_STRENGTH = 5 # Scalar to balance the intensity of the impuls that is given to a ball
 var mouse_drag_scale = 10
 var first_collider = true
@@ -51,18 +51,18 @@ signal hole_in(ball_number)
 
 func init(
 	radius:int = 20,
-	number:int = 0,
+	init_number:int = 0,
 	color:Color = Color("white"),
 	pos:Vector2 = Vector2(0, 0),
-	suit = null
+	init_suit = null
 	):
-	self.radius = radius
-	self.number = number
-	self.color = color
+	self._radius = radius
+	self.number = init_number
+	self._color = color
 	self.position = pos
-	self.suit = suit
+	self.suit = init_suit
 	
-	get_node("CollisionShape2D").shape.radius = self.radius
+	get_node("CollisionShape2D").shape.radius = self._radius
 	
 	return self
 	
@@ -70,11 +70,11 @@ func _ready():
 	get_node("Label").text = str(number)
 	
 func _draw():
-	draw_circle(Vector2(0,0), self.radius, color)
-	draw_circle(Vector2(0,0), self.radius / 2, game_variables.COLORS["white"])
+	draw_circle(Vector2(0,0), self._radius, _color)
+	draw_circle(Vector2(0,0), self._radius / 2, game_variables.COLORS["white"])
 	if suit == Suits.Stripe:
-		draw_circle_arc_poly(Vector2(0, 0), self.radius, -STRIPED_ANGLE_FROM_CENTER, STRIPED_ANGLE_FROM_CENTER, game_variables.COLORS["white"])
-		draw_circle_arc_poly(Vector2(0, 0), self.radius, 180-STRIPED_ANGLE_FROM_CENTER, 180+STRIPED_ANGLE_FROM_CENTER, game_variables.COLORS["white"])
+		draw_circle_arc_poly(Vector2(0, 0), self._radius, -STRIPED_ANGLE_FROM_CENTER, STRIPED_ANGLE_FROM_CENTER, game_variables.COLORS["white"])
+		draw_circle_arc_poly(Vector2(0, 0), self._radius, 180-STRIPED_ANGLE_FROM_CENTER, 180+STRIPED_ANGLE_FROM_CENTER, game_variables.COLORS["white"])
 	
 func draw_circle_arc_poly(center, radius, angle_from, angle_to, color): # TODO Rename
 	var nb_points = 32
@@ -99,8 +99,8 @@ func ball_in_pocket(delta):
 		intersect_point_params.collide_with_areas = true
 		intersect_point_params.collide_with_bodies = false
 		
-		var hole_in = get_world_2d().direct_space_state.intersect_point(intersect_point_params)
-		for area in hole_in:
+		var intersecting_areas = get_world_2d().direct_space_state.intersect_point(intersect_point_params)
+		for area in intersecting_areas:
 			if(area.collider.name == "Pocket"): # Can collide with itself
  # TODO bug wenn ball nicht aus der pocket rausprallt
 				
@@ -110,7 +110,7 @@ func ball_in_pocket(delta):
 				emit_signal("hole_in", self.number)
 				Audio.get_node("PocketSound").play()
 				await Audio.get_node("PocketSound").finished
-				table.delete_ball(self)
+				table.get_node("PlayingSurface").delete_ball(self)
 	else:
 		# Slow ball
 		set_linear_damp(15)
@@ -151,5 +151,5 @@ func _on_Ball_body_entered(body):
 					GAMEPLAY.set_turn_state(GAMEPLAY.turn_states.CorrectHit)
 
 
-func _on_Ball_body_exited(body):
+func _on_Ball_body_exited(_body):
 	first_collider = true

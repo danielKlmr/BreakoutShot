@@ -8,18 +8,18 @@ const LINK_GITHUB = "https://github.com/danielKlmr/BreakoutShot"
 const LINK_MASTODON = "https://mastodon.social/@Daniero"
 const MENU_OFFSET_LEFT = 200
 const MENU_WIDTH = 512
-const TABLE_SCENE_LOCATION = "res://Table/Table.tscn"
+const TABLE_SCENE_LOCATION = "res://table/table.tscn"
 
-@onready var Menu = get_node("Menu")
-@onready var SelectItemMenu = Menu.get_node(
+@onready var menu = get_node("Menu")
+@onready var select_item_menu = menu.get_node(
 		"MenuHMargin/ButtonNode/ButtonTopMargin/SelectItem")
-@onready var OptionsMenu = Menu.get_node(
+@onready var options_menu = menu.get_node(
 		"MenuHMargin/ButtonNode/ButtonTopMargin/Options")
-@onready var InfoMenu = Menu.get_node(
+@onready var info_menu = menu.get_node(
 		"MenuHMargin/ButtonNode/ButtonTopMargin/Info")
-@onready var InfoBox = InfoMenu.get_node(
+@onready var info_box = info_menu.get_node(
 		"ScrollContainer/MarginContainer/Label")
-@onready var CreditsMenu = Menu.get_node(
+@onready var credits_menu = menu.get_node(
 		"MenuHMargin/ButtonNode/ButtonTopMargin/Credits")
 
 
@@ -34,13 +34,13 @@ func _ready():
 ## Fill in game version to Info menu
 func _setup_game_version():
 	var version = ProjectSettings.get("application/config/version")
-	var VersionLabel = InfoMenu.get_node("VersionAndLinks/VersionLabel")
+	var VersionLabel = info_menu.get_node("VersionAndLinks/VersionLabel")
 	VersionLabel.set_text(VersionLabel.get_text() + version)
 
 
 ## Connect every button to play click sound when pressed
 func _setup_button_click_sound():
-	for button_list in [SelectItemMenu, InfoMenu, CreditsMenu]:
+	for button_list in [select_item_menu, info_menu, credits_menu]:
 			for button in button_list.get_children():
 				if button is Button:
 					button.connect("pressed", Callable(self, "_play_click_sound"))
@@ -48,6 +48,7 @@ func _setup_button_click_sound():
 
 ## Plays click sound when button is pressed
 func _play_click_sound():
+	print("signal??")
 	ClickSound.play()
 
 
@@ -58,27 +59,27 @@ func _on_play_button_pressed():
 
 ## Change to options menu
 func _on_options_button_pressed():
-	SelectItemMenu.hide()
-	OptionsMenu.show()
+	select_item_menu.hide()
+	options_menu.show()
 
 
 ## Change to info menu
 func _on_info_button_pressed():
-	SelectItemMenu.hide()
-	InfoMenu.show()
+	select_item_menu.hide()
+	info_menu.show()
 
 
 ## Change to credits menu
 func _on_credits_button_pressed():
-	SelectItemMenu.hide()
-	CreditsMenu.show()
+	select_item_menu.hide()
+	credits_menu.show()
 
 
 ## Go back to SelectItemsMenu
 func _on_back_button_pressed():
-	InfoMenu.hide()
-	CreditsMenu.hide()
-	SelectItemMenu.show()
+	info_menu.hide()
+	credits_menu.hide()
+	select_item_menu.show()
 
 
 ## Exit game
@@ -107,8 +108,8 @@ func _on_link_clicked(meta):
 func _change_window_orientation(
 		new_orientation: GameEngine.WindowOrientationModes):
 	if new_orientation == GameEngine.WindowOrientationModes.PORTRAIT:
-		Menu.set_anchors_preset(Menu.PRESET_VCENTER_WIDE)
-		Menu.position.x = int((GameEngine.current_window_size.x / 2.0) - (MENU_WIDTH / 2.0))
+		menu.set_anchors_preset(menu.PRESET_VCENTER_WIDE)
+		menu.position.x = int((GameEngine.current_window_size.x / 2.0) - (MENU_WIDTH / 2.0))
 	else:
-		Menu.set_anchors_preset(Menu.PRESET_LEFT_WIDE)
-		Menu.position.x = MENU_OFFSET_LEFT
+		menu.set_anchors_preset(menu.PRESET_LEFT_WIDE)
+		menu.position.x = MENU_OFFSET_LEFT

@@ -34,6 +34,7 @@ var head_spot_position: Vector2i
 var center_spot_position = Vector2i(0, 0)
 var foot_spot_position: Vector2i
 var head_string_x_position
+var balls_moving = false
 
 var _balls = []
 var _cue_ball
@@ -51,10 +52,10 @@ var _table_size: Vector2i
 @onready var Ball = preload("res://Ball/Ball.tscn")
 @onready var CueBall = preload("res://Ball/CueBall.tscn")
 @onready var BallPositioner = preload("res://Ball/BallPositioner.tscn")
-@onready var Balls = get_node("Balls")
-@onready var HeadString = get_node("HeadString")
-@onready var Pockets = get_node("Pockets")
-@onready var Rails = get_node("Rails")
+@onready var balls = get_node("Balls")
+@onready var head_string = get_node("HeadString")
+@onready var pockets = get_node("Pockets")
+@onready var rails = get_node("Rails")
 
 
 func _ready():
@@ -65,6 +66,10 @@ func _ready():
 	_setup_play_field()
 	_init_balls()
 	setup_cue_ball(false)
+
+
+func _process(_delta):
+	_check_balls_moving()
 
 
 func _draw():
@@ -102,13 +107,15 @@ func setup_cue_ball(kitchen):
 		_cue_ball_positioner = BallPositioner.instantiate().init(_cue_ball)
 		add_child(_cue_ball_positioner)
 	else:
-		Balls.add_child(_cue_ball)
+		balls.add_child(_cue_ball)
+	
+	set_balls_static(true)
 
 
 ## Use mouse position to project the cue ball to the head string
 func project_cue_ball_to_head_string():
 	var mouse_position = get_local_mouse_position()
-	var projected_position = HeadString.get_curve().get_closest_point(mouse_position)
+	var projected_position = head_string.get_curve().get_closest_point(mouse_position)
 	
 	# Check if projected position is in snapping distance to head spot
 	var vector_to_head_spot = projected_position - Vector2(head_spot_position)
@@ -126,9 +133,25 @@ func place_cue_ball_in_kitchen():
 	_cue_ball.get_node("CollisionShape2D").set_disabled(false)
 	_cue_ball.set_freeze_enabled(false)
 	_cue_ball_positioner.remove_child(_cue_ball)
-	Balls.add_child(_cue_ball)
+	balls.add_child(_cue_ball)
 	_cue_ball_positioner.queue_free()
-	get_parent().set_balls_static(false) # TODO move
+
+
+## Balls can be set static so they are not moved when positioning the cue ball
+func set_balls_static(value: bool):
+	for ball in _balls:
+		ball.set_freeze_enabled(value)
+
+
+## Called, when game state is changed to play
+func play():
+	# Relevant, if cue ball was placed before
+	set_balls_static(false)
+	_cue_ball.get_node("ReadyCircle").animate()
+
+## Called, when hit_ball signal is received from gameplay
+func hit_ball(_attempts):
+	balls_moving = true
 
 
 ## Delete a given ball
@@ -174,7 +197,7 @@ func _setup_table_size():
 func _convert_mm_to_px():
 	_mm_to_px_scaling_factor = float(_table_size.x) / STANDARD_LENGTH
 	
-	for hole in Pockets.get_children():
+	for hole in pockets.get_children():
 		hole.set_scale(
 				Vector2(_mm_to_px_scaling_factor, _mm_to_px_scaling_factor))
 		_pocket_node_overlap = floor(
@@ -191,36 +214,36 @@ func _setup_table():
 	var left = -(_table_size.x / 2)
 	var right = (_table_size.x / 2)
 	
-	Rails.get_node("Rail TL").set_position(Vector2(
+	rails.get_node("Rail TL").set_position(Vector2(
 			-(_table_size.x - 4 * _pocket_node_overlap) / 4 - _pocket_node_overlap,
 			top))
-	Rails.get_node("Rail TR").set_position(Vector2(
+	rails.get_node("Rail TR").set_position(Vector2(
 			((_table_size.x - 4 * _pocket_node_overlap) / 4 + _pocket_node_overlap),
 			top))
-	Rails.get_node("Rail BL").set_position(Vector2(
+	rails.get_node("Rail BL").set_position(Vector2(
 			-(_table_size.x - 4 * _pocket_node_overlap) / 4 - _pocket_node_overlap,
 			bottom))
-	Rails.get_node("Rail BR").set_position(Vector2(
+	rails.get_node("Rail BR").set_position(Vector2(
 			((_table_size.x - 4 * _pocket_node_overlap) / 4 + _pocket_node_overlap),
 			bottom))
 
-	Rails.get_node("Rail L").set_size(
+	rails.get_node("Rail L").set_size(
 			_table_size.y - 2 * _pocket_node_overlap)
-	Rails.get_node("Rail TL").set_size(
+	rails.get_node("Rail TL").set_size(
 			(_table_size.x - 4 * _pocket_node_overlap) / 2)
-	Rails.get_node("Rail TR").set_size(
+	rails.get_node("Rail TR").set_size(
 			(_table_size.x - 4 * _pocket_node_overlap) / 2)
-	Rails.get_node("Rail R").set_size(
+	rails.get_node("Rail R").set_size(
 			_table_size.y - 2 * _pocket_node_overlap)
-	Rails.get_node("Rail BL").set_size(
+	rails.get_node("Rail BL").set_size(
 			(_table_size.x - 4 * _pocket_node_overlap) / 2)
-	Rails.get_node("Rail BR").set_size(
+	rails.get_node("Rail BR").set_size(
 			(_table_size.x - 4 * _pocket_node_overlap) / 2)
 	
-	for rail in Rails.get_children():
+	for rail in rails.get_children():
 		rail.set_color(_rail_color)
 		
-	for pocket in get_node("Pockets").get_children():
+	for pocket in pockets.get_children():
 		pocket.get_node("Surface").set_modulate(_rail_color)
 
 
@@ -234,10 +257,10 @@ func _setup_play_field():
 	head_string_x_position = head_spot_position.x
 	var head_line_top = -(_table_size.y / 2) + _ball_radius
 	var head_line_bottom = (_table_size.y / 2) - _ball_radius
-	HeadString.get_curve().clear_points()
-	HeadString.get_curve().add_point(Vector2(
+	head_string.get_curve().clear_points()
+	head_string.get_curve().add_point(Vector2(
 			head_string_x_position, head_line_top))
-	HeadString.get_curve().add_point(Vector2(
+	head_string.get_curve().add_point(Vector2(
 			head_string_x_position, head_line_bottom))
 
 
@@ -294,7 +317,7 @@ func _init_balls():
 			var ball = _balls[assignment_iterator]
 			ball.set_position(Vector2(x_position, y_position))
 			ball.set_rotation(randf_range(0, 2*PI))
-			Balls.add_child(ball)
+			balls.add_child(ball)
 			assignment_iterator += 1
 	
 	_count_object_balls()
@@ -303,3 +326,16 @@ func _init_balls():
 ## Count the number of object balls
 func _count_object_balls():
 	_number_object_balls = len(_balls)
+
+
+## Check, if there are moving balls on the field
+func _check_balls_moving():
+	if balls_moving:
+		var moving = false
+		
+		for single_ball in balls.get_children():			
+			if !single_ball.is_sleeping():
+				moving = true
+				break
+		
+		balls_moving = moving

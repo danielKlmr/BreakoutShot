@@ -1,9 +1,9 @@
 extends Node
 
-# Technical
+const LOCATION_MAIN_MENU = "res://ui/main_menu.tscn"
 
 # Options
-var MUSIC = true
+var music = true
 
 # Game
 
