@@ -9,7 +9,7 @@
 [ext_resource type="Theme" uid="uid://cfxs4s6yhcvc1" path="res://ui/LabelTheme.tres" id="7_15vxc"]
 [ext_resource type="Texture2D" uid="uid://dc7btekwa5xku" path="res://addons/tmthymllr/edited_Hamburger_icon.svg" id="8_tvftr"]
 [ext_resource type="FontFile" uid="uid://dx5eda4uewcsn" path="res://ui/Fonts/Franco.tres" id="9_v7pcs"]
-[ext_resource type="PackedScene" uid="uid://r014ahp4qcuf" path="res://UI/Sfx/ClickSound.tscn" id="10_fahll"]
+[ext_resource type="PackedScene" uid="uid://r014ahp4qcuf" path="res://ui/Sfx/ClickSound.tscn" id="10_fahll"]
 [ext_resource type="PackedScene" uid="uid://dnkv4u16wadh0" path="res://Player/Player.tscn" id="11_d1k18"]
 [ext_resource type="PackedScene" uid="uid://bpq0ad2e8wwh5" path="res://table/playing_surface.tscn" id="12_jxi4u"]
 

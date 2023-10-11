@@ -8,10 +8,8 @@ var music = true
 # Game
 
 var ballradius = 20
-var RAIL_THICKNESS = 70
 var CUTOUT_OVERLAP = 38
 var RAIL_SCALE = 0.5
-var OUTSIDE_DRAWING = 5000 # How much should be drawn outside of the intended window
 var TABLE_COLORS = [
 	Color("mistyrose"),
 	Color("wheat"),
@@ -31,5 +29,6 @@ const COLORS = {
 }
 #https://www.reddit.com/r/godot/comments/bp9qsv/visualising_shot_preview_in_2d_snooker_game/
 
+# Scalar to balance the intensity of the impuls that is given to a ball
 var HIT_STRENGTH = 5
 var hit_strength_multiplicator_index = 1

@@ -48,7 +48,6 @@ func _setup_button_click_sound():
 
 ## Plays click sound when button is pressed
 func _play_click_sound():
-	print("signal??")
 	ClickSound.play()
 
 

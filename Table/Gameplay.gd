@@ -75,7 +75,7 @@ func _input(event):
 
 
 ## Triggers actions when the game state is changed
-func set_game_state(state):
+func set_game_state(state: GameStates):
 	current_game_state = state
 	
 	if state == GameStates.START:
@@ -91,7 +91,7 @@ func set_game_state(state):
 
 
 ## Triggers actions when the turn state is changed
-func set_turn_state(state):
+func set_turn_state(state: TurnStates):
 	current_turn_state = state
 	
 	if state == TurnStates.PLACE_BALL:
@@ -107,6 +107,21 @@ func set_turn_state(state):
 	elif state == TurnStates.HIT:
 		attempts += 1
 		emit_signal("hit_ball", attempts)
+
+
+## When signal is received, that the cue ball stroke an object ball
+func strike_object_ball(other_ball_number):
+	# Relevant if turn state is a (yet invalid) hit
+	if current_turn_state == TurnStates.HIT:
+		if current_game_state != GameStates.POCKET_EIGHT_BALL:
+			# Not valid if other ball is eight ball
+			if other_ball_number != playing_surface.EIGHT_BALL_NUMBER:
+				set_turn_state(TurnStates.CORRECT_HIT)
+			else:
+				set_turn_state(TurnStates.FOUL)
+		# Correct hit if only eight ball is left
+		else:
+			set_turn_state(TurnStates.CORRECT_HIT)
 
 
 ## Change game state to POCKET_EIGHT_BALL when only 1 ball, which must be the

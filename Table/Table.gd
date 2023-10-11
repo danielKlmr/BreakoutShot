@@ -50,6 +50,7 @@ func _setup_playing_surface():
 	playing_surface.set_position(GameEngine.original_window_size / 2)
 	gameplay.connect("play", Callable(playing_surface, "play"))
 	gameplay.connect("hit_ball", Callable(playing_surface, "hit_ball"))
+	playing_surface.connect("strike_object_ball", Callable(gameplay, "strike_object_ball"))
 
 
 ## Manual scales canvas items to window size, so that UI elements can stay the

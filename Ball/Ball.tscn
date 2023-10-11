@@ -1,23 +1,23 @@
 [gd_scene load_steps=9 format=3 uid="uid://cayjxa407by1a"]
 
-[ext_resource type="Script" path="res://Ball/Ball.gd" id="1"]
-[ext_resource type="PhysicsMaterial" path="res://Ball/Ball - Physics.tres" id="2"]
-[ext_resource type="AudioStream" uid="uid://caaahcdpk38v2" path="res://addons/juskiddink/Rail.wav" id="3"]
-[ext_resource type="AudioStream" uid="uid://dhqwya3kmm2cu" path="res://addons/Za-Games/539854__za-games__billiard-ball-clack.wav" id="4"]
-[ext_resource type="AudioStream" uid="uid://but7prsdmh0dh" path="res://addons/Ironlink15/Clack2.wav" id="5"]
-[ext_resource type="AudioStream" uid="uid://wplysff04sh6" path="res://addons/Hankof/ClackSilent.wav" id="6"]
-[ext_resource type="AudioStream" uid="uid://ixqipwklcnhy" path="res://addons/150112/Hit.wav" id="7"]
+[ext_resource type="PhysicsMaterial" path="res://ball/ball_physics.tres" id="1_lgep6"]
+[ext_resource type="Script" path="res://ball/ball.gd" id="2_txf3n"]
+[ext_resource type="AudioStream" uid="uid://wplysff04sh6" path="res://addons/Hankof/ClackSilent.wav" id="3_5m5c4"]
+[ext_resource type="AudioStream" uid="uid://ixqipwklcnhy" path="res://addons/150112/Hit.wav" id="4_tdvkn"]
+[ext_resource type="AudioStream" uid="uid://dhqwya3kmm2cu" path="res://addons/Za-Games/539854__za-games__billiard-ball-clack.wav" id="5_fk22f"]
+[ext_resource type="AudioStream" uid="uid://but7prsdmh0dh" path="res://addons/Ironlink15/Clack2.wav" id="6_ax88f"]
+[ext_resource type="AudioStream" uid="uid://caaahcdpk38v2" path="res://addons/juskiddink/Rail.wav" id="7_idffq"]
 
 [sub_resource type="CircleShape2D" id="1"]
 
 [node name="Ball" type="RigidBody2D"]
 collision_mask = 3
 input_pickable = true
-physics_material_override = ExtResource("2")
+physics_material_override = ExtResource("1_lgep6")
 max_contacts_reported = 5
 contact_monitor = true
 linear_damp = 0.7
-script = ExtResource("1")
+script = ExtResource("2_txf3n")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("1")
@@ -34,20 +34,20 @@ vertical_alignment = 1
 [node name="Audio" type="Node" parent="."]
 
 [node name="PocketSound" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("6")
+stream = ExtResource("3_5m5c4")
 volume_db = 10.0
 
 [node name="Hit" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("7")
+stream = ExtResource("4_tdvkn")
 
 [node name="Clack2" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("4")
+stream = ExtResource("5_fk22f")
 
 [node name="Clack3" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("5")
+stream = ExtResource("6_ax88f")
 
 [node name="Clack1" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("3")
+stream = ExtResource("7_idffq")
 
 [connection signal="body_entered" from="." to="." method="_on_Ball_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_Ball_body_exited"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bwun66iaha7p3"]
 
-[ext_resource type="Script" path="res://Ball/BallPositioner.gd" id="1"]
+[ext_resource type="Script" path="res://ball/BallPositioner.gd" id="1"]
 
 [node name="BallPositioner" type="CharacterBody2D"]
 collision_layer = 0

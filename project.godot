@@ -14,7 +14,7 @@ config/name="BreakoutShot"
 run/main_scene="res://ui/main_menu.tscn"
 config/features=PackedStringArray("4.1")
 config/icon="res://Logo/icon.png"
-config/version="0.2.3"
+config/version="0.2.4"
 
 [autoload]
 

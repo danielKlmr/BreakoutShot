@@ -3,6 +3,7 @@ extends Node2D
 ##
 ## Holding the tables rails, holes, balls and the camera
 
+signal strike_object_ball(other_ball_number)
 signal ball_removed(ball_number: int, number_object_balls: int)
 
 const NUMBER_OBJECT_BALLS = 15
@@ -10,6 +11,7 @@ const EIGHT_BALL_NUMBER = 8
 const NUMBER_BALL_COLUMNS = 5
 const RACK_BALL_OFFSET_ROWS = 3
 const RACK_BALL_OFFSET_COLUMNS = -1
+const RAIL_THICKNESS = 70
 const RAIL_COLOR_SHIFT = 0.2
 const RAIL_SATURATION_SHIFT = -0.1
 const COLORS_TABLE = [
@@ -93,7 +95,7 @@ func _draw():
 func setup_cue_ball(kitchen):
 	# Remove cue ball if it already exists (in case of foul)
 	if _cue_ball:
-		delete_ball(_cue_ball, false)
+		delete_ball(_cue_ball)
 	var Gameplay = get_parent().get_node("Gameplay")
 	_cue_ball = CueBall.instantiate().init(
 			_ball_radius,
@@ -108,6 +110,9 @@ func setup_cue_ball(kitchen):
 		add_child(_cue_ball_positioner)
 	else:
 		balls.add_child(_cue_ball)
+	
+	_cue_ball.connect("strike_object_ball", Callable(self, "strike_object_ball"))
+	_cue_ball.connect("ball_in_pocket", Callable(self, "ball_in_pocket"))
 	
 	set_balls_static(true)
 
@@ -154,16 +159,24 @@ func hit_ball(_attempts):
 	balls_moving = true
 
 
+## Removes ball that was pocketed
+func ball_in_pocket(ball):
+	var pocket_sound = ball.Audio.get_node("PocketSound")
+	pocket_sound.play()
+	await pocket_sound.finished
+	
+	# Emitted here, because its only relevant for pocketed balls
+	emit_signal("ball_removed", ball.number, _number_object_balls - 1)
+	
+	delete_ball(ball)
+
 ## Delete a given ball
-func delete_ball(ball, in_pocket = true):
+func delete_ball(ball):
 	var ball_number = ball.number
 	_balls.erase(ball)
 	ball.queue_free()
 	
 	_count_object_balls()
-	
-	if in_pocket:
-		emit_signal("ball_removed", ball_number, _number_object_balls)
 	
 	if ball_number == 0:
 		_cue_ball = null
@@ -187,7 +200,7 @@ func _set_table_color():
 
 ## Calculate the size of the table in pixels in landscape mode
 func _setup_table_size():
-	var table_length = GameEngine.original_window_size.x - (2 * GameVariables.RAIL_THICKNESS)
+	var table_length = GameEngine.original_window_size.x - (2 * RAIL_THICKNESS)
 	_table_size = Vector2i(
 			table_length,
 			round(table_length / 2))
@@ -228,17 +241,17 @@ func _setup_table():
 			bottom))
 
 	rails.get_node("Rail L").set_size(
-			_table_size.y - 2 * _pocket_node_overlap)
+			_table_size.y - 2 * _pocket_node_overlap, RAIL_THICKNESS)
 	rails.get_node("Rail TL").set_size(
-			(_table_size.x - 4 * _pocket_node_overlap) / 2)
+			(_table_size.x - 4 * _pocket_node_overlap) / 2, RAIL_THICKNESS)
 	rails.get_node("Rail TR").set_size(
-			(_table_size.x - 4 * _pocket_node_overlap) / 2)
+			(_table_size.x - 4 * _pocket_node_overlap) / 2, RAIL_THICKNESS)
 	rails.get_node("Rail R").set_size(
-			_table_size.y - 2 * _pocket_node_overlap)
+			_table_size.y - 2 * _pocket_node_overlap, RAIL_THICKNESS)
 	rails.get_node("Rail BL").set_size(
-			(_table_size.x - 4 * _pocket_node_overlap) / 2)
+			(_table_size.x - 4 * _pocket_node_overlap) / 2, RAIL_THICKNESS)
 	rails.get_node("Rail BR").set_size(
-			(_table_size.x - 4 * _pocket_node_overlap) / 2)
+			(_table_size.x - 4 * _pocket_node_overlap) / 2, RAIL_THICKNESS)
 	
 	for rail in rails.get_children():
 		rail.set_color(_rail_color)
@@ -280,9 +293,9 @@ func _init_balls():
 				Vector2(0,0))
 		# Define suit
 		if ball_index < EIGHT_BALL_NUMBER:
-			ball.suit = ball.Suits.Solid
+			ball.suit = ball.Suits.SOLID
 		else:
-			ball.suit = ball.Suits.Stripe
+			ball.suit = ball.Suits.STRIPE
 		# Eight ball is assigned to another variable and not part of the list yet
 		if ball_index == EIGHT_BALL_NUMBER - 1:
 			_eight_ball = ball
@@ -318,6 +331,8 @@ func _init_balls():
 			ball.set_position(Vector2(x_position, y_position))
 			ball.set_rotation(randf_range(0, 2*PI))
 			balls.add_child(ball)
+			# Connect to hole in signal of ball
+			ball.connect("ball_in_pocket", Callable(self, "ball_in_pocket"))
 			assignment_iterator += 1
 	
 	_count_object_balls()

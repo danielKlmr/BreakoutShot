@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://b8qr58gfibfqy"]
 
-[ext_resource type="PackedScene" uid="uid://cayjxa407by1a" path="res://Ball/Ball.tscn" id="1_hkypt"]
-[ext_resource type="Script" path="res://Ball/CueBall.gd" id="2_8lkch"]
-[ext_resource type="Script" path="res://Ball/ReadyCircle.gd" id="3_7gepk"]
+[ext_resource type="PackedScene" uid="uid://cayjxa407by1a" path="res://ball/ball.tscn" id="1_tgwwy"]
+[ext_resource type="Script" path="res://ball/CueBall.gd" id="2_6htwm"]
+[ext_resource type="Script" path="res://ball/ReadyCircle.gd" id="3_scg1y"]
 
 [sub_resource type="Animation" id="Animation_aawxf"]
 length = 0.001
@@ -77,13 +77,13 @@ _data = {
 "SignalCircleReady": SubResource("Animation_6lwn2")
 }
 
-[node name="CueBall" instance=ExtResource("1_hkypt")]
-script = ExtResource("2_8lkch")
+[node name="CueBall" instance=ExtResource("1_tgwwy")]
+script = ExtResource("2_6htwm")
 
 [node name="ReadyCircle" type="Node2D" parent="." index="0"]
 modulate = Color(1, 1, 1, 0)
 show_behind_parent = true
-script = ExtResource("3_7gepk")
+script = ExtResource("3_scg1y")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="ReadyCircle" index="0"]
 libraries = {
