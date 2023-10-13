@@ -6,7 +6,6 @@ const LOCATION_MAIN_MENU = "res://ui/main_menu.tscn"
 var music = true
 
 # Game
-
 var ballradius = 20
 var CUTOUT_OVERLAP = 38
 var RAIL_SCALE = 0.5

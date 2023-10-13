@@ -8,9 +8,6 @@ var RADIUS = 70
 func _ready():
 	pass
 
-func _process(delta):
-	pass
-	#queue_redraw()
 
 func _draw():
 	draw_circle(Vector2(0, 0), self.RADIUS, Color('lightblue'))

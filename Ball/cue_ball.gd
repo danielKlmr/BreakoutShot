@@ -1,25 +1,23 @@
 extends "res://ball/ball.gd"
+## Playable Cue Ball
+##
+## Extends the ball class about features requeired for interaction
+## Some information about godots coordinate systems:
+## Local: Relative to objects Coordinate system
+## Global: Relative to Base canvas layer coordinate system
 
 var hit_strength_values = {
 	0: 0.5,
 	1: 1,
 	2: 2,
 }
-
 var hit_direction = Vector2(0, 0)
 var target_d = Vector2(0, 0)
 var movement = Vector2(0, 0)
 
 @onready var aim_line = preload("res://Player/AimLine.tscn")
-@onready var ReadyCircle = get_node("ReadyCircle")
-@onready var GAMEPLAY = get_node("/root/Table/Gameplay")
-
-# Local: Relative to objects Coordinate system
-# Global: Relative to Base canvas layer coordinate system
-
-# Transform from local to global with m.basis_xform(pos)
-# reverse with .mbasis_xform_inv(pos)
-# for every transformed node in the hierarchy!
+@onready var ready_circle = get_node("ReadyCircle")
+@onready var gameplay = get_node("/root/Table/Gameplay")
 
 
 func _physics_process(delta):
@@ -29,7 +27,7 @@ func _physics_process(delta):
 		aiming(delta)
 		
 			
-func aiming(delta):
+func aiming(_delta):
 	var space_state = get_world_2d().direct_space_state # Returns the state of the space of the current World_2D, to make an intersection query for the prediction
 	var hit_global = to_global(hit_direction) - global_position#self.transform.basis_xform(hit_direction)
 	var target = global_position + (hit_global.normalized() * (GameEngine.original_window_size.x + GameEngine.original_window_size.y)) # Defined als the hit direction scaled to a length that is bigger than the table
@@ -42,15 +40,15 @@ func aiming(delta):
 		self.get_node("AimLine").draw_aim_line(local_target_position)
 			
 # Player Input
-func _on_Ball_input_event(viewport, event, shape_idx):
-	if GAMEPLAY.current_turn_state == GAMEPLAY.TurnStates.PLAY:
+func _on_Ball_input_event(_viewport, event, _shape_idx):
+	if gameplay.current_turn_state == gameplay.TurnStates.PLAY:
 		if event is InputEventMouseButton:
 			if event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 				current_ball_state = BallStates.AIMING
 				var new_aim_line = aim_line.instantiate()
 				self.add_child(new_aim_line)
 
-func _input(event):
+func _input(_event):
 	# To calculate the direction of a hit as long as the player is in hit mode
 	if(current_ball_state == BallStates.AIMING):
 		hit_direction = -get_local_mouse_position()
@@ -59,7 +57,7 @@ func _unhandled_input(event):
 	# When ball is shot
 	if(
 		current_ball_state == BallStates.AIMING
-		and GAMEPLAY.current_turn_state == GAMEPLAY.TurnStates.PLAY
+		and gameplay.current_turn_state == gameplay.TurnStates.PLAY
 	):
 		# TODO: dont hit when placing
 		if event is InputEventMouseButton:
@@ -81,4 +79,4 @@ func shoot_ball():
 	self.get_node("AimLine").queue_free()
 	audio.get_node("Hit").play()
 	current_ball_state = BallStates.NORMAL
-	GAMEPLAY.set_turn_state(GAMEPLAY.TurnStates.HIT)
+	gameplay.set_turn_state(gameplay.TurnStates.HIT)

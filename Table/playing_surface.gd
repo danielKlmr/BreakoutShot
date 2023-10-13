@@ -25,6 +25,7 @@ const COLORS_TABLE = [
 ]
 const SPOT_DRAWING_SIZE = 5
 const SNAPPING_DISTANCE = 50
+const MOUSE_DRAG_SCALE = 1000
 # Field size (mm)
 # https://de.wikipedia.org/wiki/Billardtisch_(Pool)
 const POCKET_NODE_SIZE = 256
@@ -51,9 +52,9 @@ var _pocket_node_overlap
 var _table_color
 var _table_size: Vector2i
 
-@onready var Ball = preload("res://Ball/Ball.tscn")
-@onready var CueBall = preload("res://Ball/CueBall.tscn")
-@onready var BallPositioner = preload("res://Ball/BallPositioner.tscn")
+@onready var Ball = preload("res://ball/ball.tscn")
+@onready var CueBall = preload("res://ball/cue_ball.tscn")
+@onready var BallPositioner = preload("res://ball/ball_positioner.tscn")
 @onready var balls = get_node("Balls")
 @onready var head_string = get_node("HeadString")
 @onready var pockets = get_node("Pockets")
@@ -106,7 +107,17 @@ func setup_cue_ball(kitchen):
 	_cue_ball.set_rotation(randf_range(0, 2*PI))
 	
 	if kitchen:
-		_cue_ball_positioner = BallPositioner.instantiate().init(_cue_ball)
+		# Instantiate cue ball positioner
+		# Used to let the cue ball follow the mouse when placing it
+		# Uses CharacterBody instead of RigidBody to be able to do so
+		_cue_ball_positioner = BallPositioner.instantiate()#.init(_cue_ball)
+		_cue_ball_positioner.add_child(_cue_ball)
+		_cue_ball_positioner.position = _cue_ball.position
+		_cue_ball.position = Vector2(0, 0)
+		var shape = _cue_ball.get_node("CollisionShape2D")
+		_cue_ball_positioner.add_child(shape.duplicate())
+		shape.set_disabled(true)
+		_cue_ball.set_freeze_enabled(true)
 		add_child(_cue_ball_positioner)
 	else:
 		balls.add_child(_cue_ball)
@@ -128,6 +139,35 @@ func project_cue_ball_to_head_string():
 		_cue_ball.set_position(head_spot_position)
 	else:
 		_cue_ball.set_position(projected_position)
+
+
+## Let ballpositioner follow the mouse inside the kitchen
+func follow_mouse(delta):
+	var mouse_position = get_local_mouse_position()
+
+	var linear_velocity
+	# If mouse is in kitchen
+	if mouse_position.x >= head_string_x_position:
+		# Move ball to mouse if mouse is in head field
+		linear_velocity = (
+				get_global_mouse_position() - _cue_ball_positioner.global_position)
+	# If mouse is left of kitchen
+	else:
+		var projected_position = mouse_position
+		projected_position.x = head_string_x_position
+		var vector_to_head_spot = (
+				projected_position - Vector2(head_spot_position))
+		if vector_to_head_spot.length() < SNAPPING_DISTANCE:
+			# Snap ball to head spot if it is close to it
+			_cue_ball_positioner.set_position(head_spot_position)
+			linear_velocity = Vector2(0, 0)
+		else:
+			linear_velocity = (
+					to_global(projected_position) - to_global(_cue_ball_positioner.position))
+	
+	linear_velocity *= MOUSE_DRAG_SCALE
+	_cue_ball_positioner.set_velocity(linear_velocity * delta)
+	_cue_ball_positioner.move_and_slide()
 
 
 # Klicking in the kitchen while placing the cue ball removes the ball positioner
@@ -152,7 +192,7 @@ func set_balls_static(value: bool):
 func play():
 	# Relevant, if cue ball was placed before
 	set_balls_static(false)
-	_cue_ball.get_node("ReadyCircle").animate()
+	_cue_ball.set_ball_state(_cue_ball.BallStates.PLAYABLE)
 
 ## Called, when hit_ball signal is received from gameplay
 func hit_ball(_attempts):
@@ -161,7 +201,7 @@ func hit_ball(_attempts):
 
 ## Removes ball that was pocketed
 func ball_in_pocket(ball):
-	var pocket_sound = ball.Audio.get_node("PocketSound")
+	var pocket_sound = ball.audio.get_node("PocketSound")
 	pocket_sound.play()
 	await pocket_sound.finished
 	

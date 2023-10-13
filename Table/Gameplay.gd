@@ -37,7 +37,7 @@ var fouls
 @onready var playing_surface = get_parent().get_node("PlayingSurface")
 
 
-func _physics_process(_delta):
+func _physics_process(delta):
 	if current_turn_state == TurnStates.CORRECT_HIT:
 		if !playing_surface.balls_moving:
 			set_turn_state(TurnStates.PLAY)
@@ -45,6 +45,8 @@ func _physics_process(_delta):
 		# When no ball is pocketed
 		if !playing_surface.balls_moving:
 			set_turn_state(TurnStates.FOUL)
+	elif current_turn_state == TurnStates.PLACE_BALL_KITCHEN:
+		playing_surface.follow_mouse(delta)
 	elif current_turn_state == TurnStates.FOUL:
 		# Check if balls are moving in case of cue ball in foul
 		if !playing_surface.balls_moving:
@@ -103,7 +105,6 @@ func set_turn_state(state: TurnStates):
 		if current_game_state == GameStates.BREAK:
 			set_game_state(GameStates.POCKET)
 		emit_signal("play")
-		print("playwuhu")
 	elif state == TurnStates.HIT:
 		attempts += 1
 		emit_signal("hit_ball", attempts)

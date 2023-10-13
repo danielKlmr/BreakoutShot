@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://bwun66iaha7p3"]
+
+[node name="BallPositioner" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 7
