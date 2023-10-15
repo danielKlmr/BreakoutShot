@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cayjxa407by1a" path="res://ball/ball.tscn" id="1_3j723"]
 [ext_resource type="Script" path="res://ball/cue_ball.gd" id="2_q5rmo"]
-[ext_resource type="Script" path="res://ball/ReadyCircle.gd" id="3_45mkd"]
+[ext_resource type="Script" path="res://ball/circle_effect.gd" id="3_0y631"]
 
 [sub_resource type="Animation" id="Animation_aawxf"]
 length = 0.001
@@ -80,12 +80,12 @@ _data = {
 [node name="CueBall" instance=ExtResource("1_3j723")]
 script = ExtResource("2_q5rmo")
 
-[node name="ReadyCircle" type="Node2D" parent="." index="0"]
+[node name="CircleEffect" type="Node2D" parent="." index="0"]
 modulate = Color(1, 1, 1, 0)
 show_behind_parent = true
-script = ExtResource("3_45mkd")
+script = ExtResource("3_0y631")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="ReadyCircle" index="0"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CircleEffect" index="0"]
 libraries = {
 "": SubResource("AnimationLibrary_c8iy1")
 }

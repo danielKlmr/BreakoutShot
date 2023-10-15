@@ -9,9 +9,10 @@ signal strike_object_ball(other_ball_number)
 signal ball_in_pocket(ball)
 
 enum BallStates {
-	NORMAL,
+	NONE,
 	PLAYABLE,
 	AIMING,
+	MOVING,
 	IN_POCKET,
 }
 enum Suits {
@@ -35,7 +36,7 @@ var pocket
 var _radius
 var _color = Color("white")
 var first_collider = true
-var current_ball_state = BallStates.NORMAL
+var current_ball_state = BallStates.NONE
 
 @onready var collision_shape = get_node("CollisionShape2D")
 @onready var label = get_node("Label")
@@ -93,9 +94,6 @@ func set_ball_state(state: BallStates):
 		emit_signal("ball_in_pocket", self)
 		# Slow ball
 		set_linear_damp(POCKET_PHYSICS_DAMP)
-	if state == BallStates.IN_POCKET:
-		# Only for cue ball
-		get_node("ReadyCircle").animate() # TODO: Derived class
 
 
 ## Draw arcs on the side of the ball if it is striped

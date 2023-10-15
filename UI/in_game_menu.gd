@@ -5,6 +5,8 @@ extends CanvasLayer
 
 const AUTOCLOSE_TIME = 2.0
 
+var attempts
+
 @onready var popup = get_node("Popup")
 @onready var popup_elements = popup.get_node("PopupElements")
 @onready var label = popup.get_node("PopupElements/LabelMargin/LabelVBox/Label")
@@ -19,7 +21,8 @@ const AUTOCLOSE_TIME = 2.0
 
 func _ready():
 	_close_popup()
-	attempts_value.set_text(str(0))
+	attempts = 0
+	attempts_value.set_text(str(attempts))
 	fouls_value.set_text(str(0))
 
 
@@ -82,9 +85,10 @@ func show_place_cue():
 		_close_popup()
 
 
-## Set attempts value when signal is received
-func hit_ball(number_attempts):
-	attempts_value.set_text(str(number_attempts))
+## Increase attempts value when signal is received
+func increase_attempts():
+	attempts += 1
+	attempts_value.set_text(str(attempts))
 
 
 ## Set fouls value when signal is received and open foul popup

@@ -68,7 +68,6 @@ func _ready():
 	_setup_table()
 	_setup_play_field()
 	_init_balls()
-	setup_cue_ball(false)
 
 
 func _process(_delta):
@@ -97,7 +96,6 @@ func setup_cue_ball(kitchen):
 	# Remove cue ball if it already exists (in case of foul)
 	if _cue_ball:
 		delete_ball(_cue_ball)
-	var Gameplay = get_parent().get_node("Gameplay")
 	_cue_ball = CueBall.instantiate().init(
 			_ball_radius,
 			0,
@@ -122,10 +120,13 @@ func setup_cue_ball(kitchen):
 	else:
 		balls.add_child(_cue_ball)
 	
+	_cue_ball.connect("hit_ball", Callable(self, "hit_ball"))
 	_cue_ball.connect("strike_object_ball", Callable(self, "strike_object_ball"))
 	_cue_ball.connect("ball_in_pocket", Callable(self, "ball_in_pocket"))
 	
 	set_balls_static(true)
+	
+	return _cue_ball
 
 
 ## Use mouse position to project the cue ball to the head string
@@ -194,8 +195,8 @@ func play():
 	set_balls_static(false)
 	_cue_ball.set_ball_state(_cue_ball.BallStates.PLAYABLE)
 
-## Called, when hit_ball signal is received from gameplay
-func hit_ball(_attempts):
+## Called, when hit_ball signal is received from cue ball
+func hit_ball():
 	balls_moving = true
 
 
@@ -262,10 +263,8 @@ func _convert_mm_to_px():
 ## Set pocket and rail locations
 ## Position of corners: Half of the table size in each direction for corners
 func _setup_table():
-	var top = -(_table_size.y / 2)
-	var bottom = (_table_size.y / 2)
-	var left = -(_table_size.x / 2)
-	var right = (_table_size.x / 2)
+	var top = -int(_table_size.y / 2)
+	var bottom = int(_table_size.y / 2)
 	
 	rails.get_node("Rail TL").set_position(Vector2(
 			-(_table_size.x - 4 * _pocket_node_overlap) / 4 - _pocket_node_overlap,

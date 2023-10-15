@@ -39,7 +39,7 @@ func _setup_gui():
 	# and bottom
 	camera.offset.y = -_hud_height / 2
 	gameplay.connect("place_cue_ball", Callable(gui, "show_place_cue"))
-	gameplay.connect("hit_ball", Callable(gui, "hit_ball"))
+	gameplay.connect("increase_attempts", Callable(gui, "increase_attempts"))
 	gameplay.connect("foul", Callable(gui, "foul"))
 	gameplay.connect("lost", Callable(gui, "open_lost_menu"))
 	gameplay.connect("win", Callable(gui, "open_win_menu"))
@@ -49,7 +49,6 @@ func _setup_gui():
 func _setup_playing_surface():
 	playing_surface.set_position(GameEngine.original_window_size / 2)
 	gameplay.connect("play", Callable(playing_surface, "play"))
-	gameplay.connect("hit_ball", Callable(playing_surface, "hit_ball"))
 	playing_surface.connect("strike_object_ball", Callable(gameplay, "strike_object_ball"))
 
 

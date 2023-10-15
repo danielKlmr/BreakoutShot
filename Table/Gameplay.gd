@@ -6,7 +6,7 @@ extends Node
 
 signal place_cue_ball()
 signal play()
-signal hit_ball(number_attempts)
+signal increase_attempts()
 signal foul(number_fouls)
 signal lost()
 signal win()
@@ -81,6 +81,8 @@ func set_game_state(state: GameStates):
 	current_game_state = state
 	
 	if state == GameStates.START:
+		var cue_ball = playing_surface.setup_cue_ball(false)
+		cue_ball.connect("hit_ball", Callable(self, "hit_ball"))
 		playing_surface.connect("ball_removed", Callable(self, "_ball_removed"))
 		attempts = 0
 		fouls = 0
@@ -100,14 +102,20 @@ func set_turn_state(state: TurnStates):
 		emit_signal("place_cue_ball")
 		playing_surface.set_balls_static(true)
 	elif state == TurnStates.PLACE_BALL_KITCHEN:
-		playing_surface.setup_cue_ball(true)
+		var cue_ball = playing_surface.setup_cue_ball(true)
+		cue_ball.connect("hit_ball", Callable(self, "hit_ball"))
 	elif state == TurnStates.PLAY:
 		if current_game_state == GameStates.BREAK:
 			set_game_state(GameStates.POCKET)
 		emit_signal("play")
 	elif state == TurnStates.HIT:
 		attempts += 1
-		emit_signal("hit_ball", attempts)
+		emit_signal("increase_attempts")
+
+
+## Called when hit ball signal is received from cue ball
+func hit_ball():
+	set_turn_state(TurnStates.HIT)
 
 
 ## When signal is received, that the cue ball stroke an object ball
