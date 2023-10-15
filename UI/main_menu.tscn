@@ -6,9 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://mwoc6ftik2w" path="res://ui/options_menu.tscn" id="5_ryiaq"]
 [ext_resource type="Theme" uid="uid://cfxs4s6yhcvc1" path="res://ui/LabelTheme.tres" id="5_vhall"]
 [ext_resource type="FontFile" uid="uid://c3a6ubp2mwy8r" path="res://addons/Roboto_Condensed/RobotoCondensed-Bold.ttf" id="6_6nei3"]
-[ext_resource type="Texture2D" uid="uid://b6yr80cijrtp6" path="res://Logo/logo.png" id="7_677sq"]
 [ext_resource type="Texture2D" uid="uid://b6mpxfh0hrs5q" path="res://addons/Mastodon/edited_logo-white.svg" id="7_qcrpe"]
 [ext_resource type="Texture2D" uid="uid://c1s5we5b4u00x" path="res://addons/github-mark/edited_github-mark-white.svg" id="7_qq3m7"]
+[ext_resource type="Texture2D" uid="uid://b6yr80cijrtp6" path="res://logo/logo.png" id="9_8ooi7"]
 
 [node name="Main Menu" type="Control"]
 layout_mode = 3
@@ -240,7 +240,7 @@ alignment = 2
 custom_minimum_size = Vector2(512, 512)
 layout_mode = 2
 size_flags_vertical = 0
-texture = ExtResource("7_677sq")
+texture = ExtResource("9_8ooi7")
 expand_mode = 1
 
 [connection signal="pressed" from="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/SelectItem/PlayButton" to="." method="_on_play_button_pressed"]

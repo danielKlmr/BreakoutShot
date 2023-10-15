@@ -17,7 +17,7 @@ var aim_line
 var hit_direction = Vector2(0, 0)
 var movement = Vector2(0, 0)
 
-@onready var AimLine = preload("res://Player/AimLine.tscn")
+@onready var AimLine = preload("res://ball/aim_line.tscn")
 @onready var ready_circle = get_node("CircleEffect")
 
 
@@ -83,10 +83,13 @@ func _aiming(_delta):
 	var target = global_position + (
 			hit_direction_without_rotation.normalized() * very_long_vector)
 	
-	var intersect_ray_params = PhysicsRayQueryParameters2D.create(global_position, target)
+	var intersect_ray_params = PhysicsRayQueryParameters2D.create(
+			global_position, target)
+	intersect_ray_params.set_collide_with_areas(false)
 	var result = space_state.intersect_ray(intersect_ray_params)
 	# Should always have some result
 	if result:
+		print(result.collider)
 		var local_target_position = to_local(result.position)
 		aim_line.draw_aim_line(local_target_position)
 

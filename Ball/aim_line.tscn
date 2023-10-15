@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dfbmx7lavgsdl"]
 
-[ext_resource type="Script" path="res://Player/AimLine.gd" id="1"]
+[ext_resource type="Script" path="res://ball/aim_line.gd" id="1_ubh4x"]
 
 [sub_resource type="Curve2D" id="1"]
 _data = {
@@ -10,4 +10,4 @@ point_count = 2
 
 [node name="AimLine" type="Path2D"]
 curve = SubResource("1")
-script = ExtResource("1")
+script = ExtResource("1_ubh4x")

@@ -119,6 +119,7 @@ func setup_cue_ball(kitchen):
 		add_child(_cue_ball_positioner)
 	else:
 		balls.add_child(_cue_ball)
+		balls.move_child(_cue_ball, 0)
 	
 	_cue_ball.connect("hit_ball", Callable(self, "hit_ball"))
 	_cue_ball.connect("strike_object_ball", Callable(self, "strike_object_ball"))
@@ -180,6 +181,7 @@ func place_cue_ball_in_kitchen():
 	_cue_ball.set_freeze_enabled(false)
 	_cue_ball_positioner.remove_child(_cue_ball)
 	balls.add_child(_cue_ball)
+	balls.move_child(_cue_ball, 0)
 	_cue_ball_positioner.queue_free()
 
 
@@ -263,8 +265,8 @@ func _convert_mm_to_px():
 ## Set pocket and rail locations
 ## Position of corners: Half of the table size in each direction for corners
 func _setup_table():
-	var top = -int(_table_size.y / 2)
-	var bottom = int(_table_size.y / 2)
+	var top = -int(_table_size.y / 2.0)
+	var bottom = int(_table_size.y / 2.0)
 	
 	rails.get_node("Rail TL").set_position(Vector2(
 			-(_table_size.x - 4 * _pocket_node_overlap) / 4 - _pocket_node_overlap,
@@ -302,13 +304,13 @@ func _setup_table():
 ## Setup headstring, headspot and footspot
 func _setup_play_field():
 	# Head spot is at 3/4 of the tables length, foot spot at 1/4
-	head_spot_position = Vector2(_table_size.x * 1 / 4, 0)
-	foot_spot_position = Vector2(-_table_size.x * 1 / 4, 0)
+	head_spot_position = Vector2(_table_size.x * 1 / 4.0, 0)
+	foot_spot_position = Vector2(-_table_size.x * 1 / 4.0, 0)
 	
 	# Headstring
 	head_string_x_position = head_spot_position.x
-	var head_line_top = -(_table_size.y / 2) + _ball_radius
-	var head_line_bottom = (_table_size.y / 2) - _ball_radius
+	var head_line_top = -int(_table_size.y / 2.0) + _ball_radius
+	var head_line_bottom = int(_table_size.y / 2.0) - _ball_radius
 	head_string.get_curve().clear_points()
 	head_string.get_curve().add_point(Vector2(
 			head_string_x_position, head_line_top))

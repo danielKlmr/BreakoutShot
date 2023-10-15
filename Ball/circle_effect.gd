@@ -1,6 +1,6 @@
 extends Node2D
 
-const CIRCLE_COLOR = Color('lightblue')
+const CIRCLE_COLOR = Color.LIGHT_BLUE
 const CIRCLE_RADIUS = 70
 
 @onready var circle_animation = get_node("AnimationPlayer")

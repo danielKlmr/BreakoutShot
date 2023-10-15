@@ -20,31 +20,6 @@ process_mode = 3
 [node name="HeadString" type="Path2D" parent="."]
 curve = SubResource("1")
 
-[node name="Rails" type="Node2D" parent="."]
-
-[node name="Rail L" parent="Rails" instance=ExtResource("2_xrsnp")]
-position = Vector2(-890, 0)
-
-[node name="Rail R" parent="Rails" instance=ExtResource("2_xrsnp")]
-position = Vector2(890, 0)
-rotation = 3.14159
-
-[node name="Rail TL" parent="Rails" instance=ExtResource("2_xrsnp")]
-position = Vector2(-402, -445)
-rotation = 1.5708
-
-[node name="Rail BL" parent="Rails" instance=ExtResource("2_xrsnp")]
-position = Vector2(-521, 445)
-rotation = -1.5708
-
-[node name="Rail TR" parent="Rails" instance=ExtResource("2_xrsnp")]
-position = Vector2(409, -445)
-rotation = 1.5708
-
-[node name="Rail BR" parent="Rails" instance=ExtResource("2_xrsnp")]
-position = Vector2(522, 445)
-rotation = -1.5708
-
 [node name="Pockets" type="Node2D" parent="."]
 
 [node name="Pocket TL" parent="Pockets" instance=ExtResource("3_2eyna")]
@@ -76,3 +51,28 @@ rotation = -1.5708
 scale = Vector2(0.5, 0.5)
 
 [node name="Balls" type="Node2D" parent="."]
+
+[node name="Rails" type="Node2D" parent="."]
+
+[node name="Rail L" parent="Rails" instance=ExtResource("2_xrsnp")]
+position = Vector2(-890, 0)
+
+[node name="Rail R" parent="Rails" instance=ExtResource("2_xrsnp")]
+position = Vector2(890, 0)
+rotation = 3.14159
+
+[node name="Rail TL" parent="Rails" instance=ExtResource("2_xrsnp")]
+position = Vector2(-402, -445)
+rotation = 1.5708
+
+[node name="Rail BL" parent="Rails" instance=ExtResource("2_xrsnp")]
+position = Vector2(-521, 445)
+rotation = -1.5708
+
+[node name="Rail TR" parent="Rails" instance=ExtResource("2_xrsnp")]
+position = Vector2(409, -445)
+rotation = 1.5708
+
+[node name="Rail BR" parent="Rails" instance=ExtResource("2_xrsnp")]
+position = Vector2(522, 445)
+rotation = -1.5708
