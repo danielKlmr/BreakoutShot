@@ -14,14 +14,13 @@ config/name="BreakoutShot"
 run/main_scene="res://ui/main_menu.tscn"
 config/features=PackedStringArray("4.1")
 config/icon="res://logo/icon.png"
-config/version="0.2.7"
+config/version="0.3.0"
 
 [autoload]
 
-GameVariables="*res://GameVariables.gd"
-BackgroundMusic="*res://BackgroundMusic.tscn"
-GameEngine="*res://game_engine.gd"
-ClickSound="*res://ui/Sfx/ClickSound.tscn"
+BackgroundMusic="*res://background_tasks/background_music.tscn"
+GameEngine="*res://background_tasks/game_engine.gd"
+ClickSound="*res://ui/sfx/click_sound.tscn"
 
 [display]
 
@@ -44,7 +43,3 @@ import/blender/enabled=false
 
 2d/default_gravity=0
 2d/default_linear_damp=0.7
-
-[rendering]
-
-environment/defaults/default_environment="res://default_env.tres"

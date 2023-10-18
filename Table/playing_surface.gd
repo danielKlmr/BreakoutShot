@@ -99,7 +99,7 @@ func setup_cue_ball(kitchen):
 	_cue_ball = CueBall.instantiate().init(
 			_ball_radius,
 			0,
-			GameVariables.COLORS["white"],
+			GameEngine.COLORS["white"],
 			head_spot_position)
 	randomize()
 	_cue_ball.set_rotation(randf_range(0, 2*PI))
@@ -230,7 +230,7 @@ func _set_table_color():
 	randomize()
 	var color_index:int = randi() % len(COLORS_TABLE)
 	var color_name = COLORS_TABLE[color_index]
-	_rail_color = GameVariables.COLORS[color_name]
+	_rail_color = GameEngine.COLORS[color_name]
 	
 	_table_color = _rail_color
 	_table_color.s += RAIL_SATURATION_SHIFT
@@ -299,6 +299,7 @@ func _setup_table():
 		
 	for pocket in pockets.get_children():
 		pocket.get_node("Surface").set_modulate(_rail_color)
+		pocket.get_node("PocketHole").set_color(_rail_color)
 
 
 ## Setup headstring, headspot and footspot
@@ -325,7 +326,7 @@ func _init_balls():
 	
 	for ball_index in NUMBER_OBJECT_BALLS:
 		# Define color
-		var color = GameVariables.COLORS[ball_colors[ball_index % len(ball_colors)]]
+		var color = GameEngine.COLORS[ball_colors[ball_index % len(ball_colors)]]
 		# Instantiate ball
 		var ball = Ball.instantiate().init(
 				_ball_radius,

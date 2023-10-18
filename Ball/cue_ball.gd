@@ -8,6 +8,9 @@ extends "res://ball/ball.gd"
 
 signal hit_ball()
 
+const AIM_LINE_COLLISION_MASK = 0b00000000_00000000_00000000_00000011
+const HIT_STRENGTH = 8
+
 var hit_strength_values = {
 	0: 0.5,
 	1: 1,
@@ -56,8 +59,8 @@ func set_ball_state(state: BallStates):
 		add_child(aim_line)
 	elif state == BallStates.MOVING:
 		var hit_strength_multiplicator = hit_strength_values[
-				GameVariables.hit_strength_multiplicator_index]
-		var hit_strength = GameVariables.HIT_STRENGTH * hit_strength_multiplicator
+				GameEngine.hit_strength_multiplicator_index]
+		var hit_strength = HIT_STRENGTH * hit_strength_multiplicator
 		movement = hit_direction * hit_strength
 		# Global position of movement vector minus position off cue ball to make
 		# it relative
@@ -86,10 +89,10 @@ func _aiming(_delta):
 	var intersect_ray_params = PhysicsRayQueryParameters2D.create(
 			global_position, target)
 	intersect_ray_params.set_collide_with_areas(false)
+	intersect_ray_params.set_collision_mask(AIM_LINE_COLLISION_MASK)
 	var result = space_state.intersect_ray(intersect_ray_params)
 	# Should always have some result
 	if result:
-		print(result.collider)
 		var local_target_position = to_local(result.position)
 		aim_line.draw_aim_line(local_target_position)
 

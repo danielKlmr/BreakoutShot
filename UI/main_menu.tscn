@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" path="res://ui/main_menu.gd" id="1_36pkq"]
 [ext_resource type="Texture2D" uid="uid://c1op815dvohk7" path="res://addons/joeyguns/Main Menu Background.jpg" id="2_1aqyp"]
-[ext_resource type="Theme" uid="uid://dsxjacfs5pxiu" path="res://ui/ButtonTheme.tres" id="4_tq2r0"]
+[ext_resource type="Theme" uid="uid://dsxjacfs5pxiu" path="res://ui/button_theme.tres" id="3_bvbv7"]
+[ext_resource type="Theme" uid="uid://cfxs4s6yhcvc1" path="res://ui/label_theme.tres" id="5_jnpnc"]
 [ext_resource type="PackedScene" uid="uid://mwoc6ftik2w" path="res://ui/options_menu.tscn" id="5_ryiaq"]
-[ext_resource type="Theme" uid="uid://cfxs4s6yhcvc1" path="res://ui/LabelTheme.tres" id="5_vhall"]
 [ext_resource type="FontFile" uid="uid://c3a6ubp2mwy8r" path="res://addons/Roboto_Condensed/RobotoCondensed-Bold.ttf" id="6_6nei3"]
 [ext_resource type="Texture2D" uid="uid://b6mpxfh0hrs5q" path="res://addons/Mastodon/edited_logo-white.svg" id="7_qcrpe"]
 [ext_resource type="Texture2D" uid="uid://c1s5we5b4u00x" path="res://addons/github-mark/edited_github-mark-white.svg" id="7_qq3m7"]
@@ -71,33 +71,33 @@ theme_override_constants/margin_bottom = 30
 
 [node name="SelectItem" type="VBoxContainer" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin"]
 layout_mode = 2
-theme = ExtResource("4_tq2r0")
+theme = ExtResource("3_bvbv7")
 theme_override_constants/separation = 5
 alignment = 1
 
 [node name="PlayButton" type="Button" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/SelectItem"]
 layout_mode = 2
-theme = ExtResource("4_tq2r0")
+theme = ExtResource("3_bvbv7")
 text = "Play"
 
 [node name="OptionsButton" type="Button" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/SelectItem"]
 layout_mode = 2
-theme = ExtResource("4_tq2r0")
+theme = ExtResource("3_bvbv7")
 text = "Options"
 
 [node name="InfoButton" type="Button" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/SelectItem"]
 layout_mode = 2
-theme = ExtResource("4_tq2r0")
+theme = ExtResource("3_bvbv7")
 text = "Info & Rules"
 
 [node name="CreditsButton" type="Button" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/SelectItem"]
 layout_mode = 2
-theme = ExtResource("4_tq2r0")
+theme = ExtResource("3_bvbv7")
 text = "Credits"
 
 [node name="QuitButton" type="Button" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/SelectItem"]
 layout_mode = 2
-theme = ExtResource("4_tq2r0")
+theme = ExtResource("3_bvbv7")
 text = "Quit"
 
 [node name="Options" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin" instance=ExtResource("5_ryiaq")]
@@ -108,7 +108,7 @@ layout_mode = 2
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
-theme = ExtResource("4_tq2r0")
+theme = ExtResource("3_bvbv7")
 alignment = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/Info"]
@@ -123,7 +123,7 @@ theme_override_constants/margin_right = 5
 
 [node name="Label" type="RichTextLabel" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/Info/ScrollContainer/MarginContainer"]
 layout_mode = 2
-theme = ExtResource("5_vhall")
+theme = ExtResource("5_jnpnc")
 theme_override_fonts/bold_font = ExtResource("6_6nei3")
 bbcode_enabled = true
 text = "Hello, glad you found your way to my game. It may not look like a big deal, but it's the first project I've completed. It gave me the opportunity to learn a bit about gamedev and the Godot engine.
@@ -175,14 +175,14 @@ icon_alignment = 1
 
 [node name="BackButton" type="Button" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/Info"]
 layout_mode = 2
-theme = ExtResource("4_tq2r0")
+theme = ExtResource("3_bvbv7")
 text = "Back"
 
 [node name="Credits" type="VBoxContainer" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin"]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
-theme = ExtResource("4_tq2r0")
+theme = ExtResource("3_bvbv7")
 alignment = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/Credits"]
@@ -197,7 +197,7 @@ theme_override_constants/margin_right = 5
 
 [node name="Label" type="RichTextLabel" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/Credits/ScrollContainer/MarginContainer"]
 layout_mode = 2
-theme = ExtResource("5_vhall")
+theme = ExtResource("5_jnpnc")
 theme_override_fonts/bold_font = ExtResource("6_6nei3")
 bbcode_enabled = true
 text = "[center][b]Music[/b]
@@ -221,7 +221,7 @@ fit_content = true
 
 [node name="BackButton" type="Button" parent="Menu/MenuHMargin/ButtonNode/ButtonTopMargin/Credits"]
 layout_mode = 2
-theme = ExtResource("4_tq2r0")
+theme = ExtResource("3_bvbv7")
 text = "Back"
 
 [node name="LogoContainer" type="VBoxContainer" parent="Menu"]

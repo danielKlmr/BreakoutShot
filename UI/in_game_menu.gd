@@ -108,7 +108,7 @@ func foul(number_fouls):
 func _on_BackToMenuButton_pressed():
 	ClickSound.play()
 	get_tree().paused = false
-	get_tree().change_scene_to_file(GameVariables.LOCATION_MAIN_MENU)
+	get_tree().change_scene_to_file(GameEngine.LOCATION_MAIN_MENU)
 
 
 ## Reload table scene

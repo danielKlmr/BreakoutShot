@@ -1,8 +1,0 @@
-[gd_scene format=3 uid="uid://d2lu8qc1bg2o"]
-
-[node name="TrajectoryPoint" type="PathFollow2D"]
-loop = false
-
-[node name="Area2D" type="Area2D" parent="."]
-monitoring = false
-monitorable = false

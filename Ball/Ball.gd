@@ -24,7 +24,7 @@ const SPEED_THRESHOLD_VERY_SLOW = 1
 const SPEED_THRESHOLD_SLOW = 100000
 const SPEED_THRESHOLD_FAST = 500000
 const STRIPED_ANGLE_FROM_CENTER = 50
-const POCKET_AREA_NAME = "Pocket"
+const POCKET_AREA_NAME = "PocketHole"
 const POCKET_PHYSICS_DAMP = 15
 const POCKET_PHYSICS_FORCE = 30
 
@@ -70,20 +70,22 @@ func _physics_process(delta):
 
 func _draw():
 	draw_circle(Vector2(0,0), _radius, _color)
-	draw_circle(Vector2(0,0), _radius / 2, GameVariables.COLORS["white"])
+	draw_circle(Vector2(0,0), _radius / 2, GameEngine.COLORS["white"])
 	if suit == Suits.STRIPE:
-		_draw_white_stripes(
+		GameEngine.draw_circle_arc_poly(
+				self,
 				Vector2(0, 0),
 				_radius,
 				-STRIPED_ANGLE_FROM_CENTER,
 				STRIPED_ANGLE_FROM_CENTER,
-				GameVariables.COLORS["white"])
-		_draw_white_stripes(
+				GameEngine.COLORS["white"])
+		GameEngine.draw_circle_arc_poly(
+				self,
 				Vector2(0, 0),
 				_radius,
 				180 - STRIPED_ANGLE_FROM_CENTER,
 				180 + STRIPED_ANGLE_FROM_CENTER,
-				GameVariables.COLORS["white"])
+				GameEngine.COLORS["white"])
 
 
 ## Set the current state of the ball
@@ -96,20 +98,6 @@ func set_ball_state(state: BallStates):
 		set_linear_damp(POCKET_PHYSICS_DAMP)
 
 
-## Draw arcs on the side of the ball if it is striped
-func _draw_white_stripes(center, radius, angle_from, angle_to, color):
-	var nb_points = 32
-	var points_arc = []
-
-	for i in range(nb_points + 1):
-		var angle_point = deg_to_rad(
-				angle_from + i * (angle_to - angle_from) / nb_points - 90)
-		points_arc.push_back(
-				center + Vector2(cos(angle_point), sin(angle_point)) * radius)
-	
-	draw_colored_polygon(points_arc, color)
-
-
 ## Checks if ball is in pocket and runs pocket physics
 func _ball_in_pocket(delta):
 	# Check if ball is in pocket
@@ -117,8 +105,8 @@ func _ball_in_pocket(delta):
 		# Check if center point of ball intersects with pocket area
 		var intersect_point_params = PhysicsPointQueryParameters2D.new()
 		intersect_point_params.position = get_global_position()
-		intersect_point_params.collide_with_areas = true
-		intersect_point_params.collide_with_bodies = false
+		intersect_point_params.collide_with_areas = false
+		intersect_point_params.collide_with_bodies = true
 		
 		# Check, with areas are intersecting with the balls center point
 		var world_space_state = get_world_2d().direct_space_state

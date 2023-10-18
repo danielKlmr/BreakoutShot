@@ -14,9 +14,9 @@ var pressed_by_user = false
 
 func _ready():
 	fullscreen_button.set_pressed(GameEngine.fullscreen)
-	music_button.set_pressed(GameVariables.music)
+	music_button.set_pressed(GameEngine.music)
 	hit_strength_button.select(
-			GameVariables.hit_strength_multiplicator_index)
+			GameEngine.hit_strength_multiplicator_index)
 	pressed_by_user = true
 
 
@@ -43,11 +43,11 @@ func _on_music_button_toggled(button_pressed):
 	if pressed_by_user:
 		ClickSound.play()
 	BackgroundMusic.set_stream_paused(!button_pressed)
-	GameVariables.music = button_pressed
+	GameEngine.music = button_pressed
 
 
 ## Set hit strength
 func _hit_strength_item_selected(index):
 	if pressed_by_user:
 		ClickSound.play()
-	GameVariables.hit_strength_multiplicator_index = index
+	GameEngine.hit_strength_multiplicator_index = index

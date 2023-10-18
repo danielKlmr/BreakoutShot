@@ -1,10 +1,13 @@
 extends StaticBody2D
+## Rail between the pockets
+##
+## Handles collision and color. Size must be set for the rail to work.
 
 # How much should be drawn outside of the intended window
 const OUTSIDE_DRAWING = 5000
 
 var drawing_length = 0
-var drawing_color = Color("white")
+var drawing_color = Color.WHITE
 
 @onready var collision_shape = get_node("CollisionShape2D")
 
@@ -12,7 +15,7 @@ var drawing_color = Color("white")
 func _draw():
 	draw_rect(
 			Rect2(
-					Vector2(-OUTSIDE_DRAWING, -drawing_length / 2),
+					Vector2(-OUTSIDE_DRAWING, -drawing_length / 2.0),
 					Vector2(OUTSIDE_DRAWING, drawing_length)),
 			drawing_color)
 

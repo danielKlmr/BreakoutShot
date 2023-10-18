@@ -2,6 +2,8 @@ extends Path2D
 ## Dotted aim line between ball and target
 ##
 ## Is activated when the cue ball is in aiming mode
+## Ideas:
+## https://www.reddit.com/r/godot/comments/bp9qsv/visualising_shot_preview_in_2d_snooker_game/
 
 const CIRCLE_COLOR = Color.WHITE
 const CIRCLE_SIZE = 7
@@ -12,7 +14,7 @@ var aim_line_length = 0
 var current_rest = 0
 var line = get_curve()
 
-var TrajectoryPoint = preload("res://Player/TrajectoryPoint.tscn")
+var TrajectoryPoint = preload("res://ball/trajectory_point.tscn")
 
 
 func _process(delta):

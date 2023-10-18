@@ -1,9 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://5luljn1f1bxd"]
-
-[ext_resource type="AudioStream" uid="uid://boan0p70ogvgd" path="res://addons/cynicmusic/BackgroundMusic.mp3" id="1"]
-
-[node name="BackgroundMusic" type="AudioStreamPlayer"]
-process_mode = 3
-stream = ExtResource("1")
-volume_db = -25.0
-autoplay = true

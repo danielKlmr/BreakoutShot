@@ -21,6 +21,7 @@ process_mode = 3
 curve = SubResource("1")
 
 [node name="Pockets" type="Node2D" parent="."]
+z_index = 2
 
 [node name="Pocket TL" parent="Pockets" instance=ExtResource("3_2eyna")]
 position = Vector2(-890, -445)
@@ -50,9 +51,8 @@ position = Vector2(-890, 445)
 rotation = -1.5708
 scale = Vector2(0.5, 0.5)
 
-[node name="Balls" type="Node2D" parent="."]
-
 [node name="Rails" type="Node2D" parent="."]
+z_index = 2
 
 [node name="Rail L" parent="Rails" instance=ExtResource("2_xrsnp")]
 position = Vector2(-890, 0)
@@ -76,3 +76,6 @@ rotation = 1.5708
 [node name="Rail BR" parent="Rails" instance=ExtResource("2_xrsnp")]
 position = Vector2(522, 445)
 rotation = -1.5708
+
+[node name="Balls" type="Node2D" parent="."]
+z_index = 2

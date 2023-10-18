@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://c58kh7fy7d00h"]
 
-[ext_resource type="PackedScene" path="res://table/rail/Hole.tscn" id="1_47d71"]
-[ext_resource type="Texture2D" uid="uid://k63drbrh04em" path="res://table/rail/Hole Middle.png" id="2_pnpdl"]
+[ext_resource type="PackedScene" uid="uid://di303joqbj08q" path="res://table/rail/pocket_hole.tscn" id="1_47d71"]
+[ext_resource type="Texture2D" uid="uid://k63drbrh04em" path="res://table/rail/side_pocket.png" id="2_pnpdl"]
 
 [node name="PocketMiddle" type="StaticBody2D"]
 collision_layer = 2
@@ -9,7 +9,7 @@ collision_layer = 2
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 polygon = PackedVector2Array(-65, 0, -128, 0, -128, -128, 128, -128, 128, 0, 65, 0, 50, -63, 44, -77, 35, -89, 22, -96, 9, -98, -8, -98, -21, -96, -32, -91, -41, -81, -49, -66)
 
-[node name="Pocket" parent="." instance=ExtResource("1_47d71")]
+[node name="PocketHole" parent="." instance=ExtResource("1_47d71")]
 position = Vector2(0, -110)
 
 [node name="Surface" type="Sprite2D" parent="."]
