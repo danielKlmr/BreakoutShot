@@ -10,7 +10,7 @@ var _hud_height
 
 @onready var gameplay = get_node("Gameplay")
 @onready var playing_surface = get_node("PlayingSurface")
-@onready var camera = get_node("PlayingSurface/Camera3D")
+@onready var camera = get_node("PlayingSurface/Camera")
 @onready var gui = get_node("GUI Layer")
 @onready var hud = gui.get_node("HUD")
 
@@ -20,13 +20,17 @@ func _ready():
 	_setup_gui()
 	_setup_playing_surface()
 	_update_camera()
+	_update_hud_position()
 	gameplay.set_game_state(gameplay.GameStates.START)
 
 
 ## Get signals when window size or orientation changes
 func _setup_window():
-	get_tree().get_root().connect(
+	var root = get_tree().get_root()
+	root.connect(
 			"size_changed", Callable(self, "_update_camera"))
+	root.connect(
+			"size_changed", Callable(self, "_update_hud_position"))
 	GameEngine.connect(
 			"orientation_changed", Callable(self, "_change_table_orientation"))
 
@@ -34,6 +38,7 @@ func _setup_window():
 ## Set height of the hud and scale camera to fit the screen
 func _setup_gui():
 	_hud_height = hud.get_size().y + HUD_PADDING
+	
 	# Offset is only half of hud height because playing surface is scaled to
 	# window withoud hud. Therefore, half of the hud size is already free at top
 	# and bottom
@@ -57,7 +62,8 @@ func _setup_playing_surface():
 func _update_camera():
 	var original_size = Vector2(GameEngine.original_window_size)
 	if GameEngine.current_orientation == GameEngine.WindowOrientationModes.PORTRAIT:
-		original_size = Vector2(GameEngine.original_window_size.y, GameEngine.original_window_size.x)
+		original_size = Vector2(
+				GameEngine.original_window_size.y, GameEngine.original_window_size.x)
 	var current_window_height_without_hud = GameEngine.current_window_size.y - _hud_height
 	
 	var x_scale = GameEngine.current_window_size.x / original_size.x
@@ -66,6 +72,16 @@ func _update_camera():
 	_camera_zoom = min(x_scale, y_scale)
 	
 	camera.set_zoom(Vector2(_camera_zoom, _camera_zoom))
+
+
+## Align hud with left side of the table
+func _update_hud_position():
+	var pocket_left = playing_surface.get_node("Pockets/Pocket BL")
+	var left_side_gloal_position = playing_surface.to_global(
+			pocket_left.get_position())
+	var left_side_screen_position = get_global_transform_with_canvas() * left_side_gloal_position
+	var left_side_screen_x_position = int(left_side_screen_position.x)
+	hud.position.x = left_side_screen_x_position
 
 
 ## Change table orientation if signal to do so is received

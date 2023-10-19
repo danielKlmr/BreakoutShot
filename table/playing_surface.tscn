@@ -14,7 +14,7 @@ point_count = 2
 [node name="PlayingSurface" type="Node2D"]
 script = ExtResource("1_jml8b")
 
-[node name="Camera3D" type="Camera2D" parent="."]
+[node name="Camera" type="Camera2D" parent="."]
 process_mode = 3
 
 [node name="HeadString" type="Path2D" parent="."]
