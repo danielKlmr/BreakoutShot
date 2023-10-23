@@ -14,7 +14,7 @@ config/name="BreakoutShot"
 run/main_scene="res://ui/main_menu.tscn"
 config/features=PackedStringArray("4.1")
 config/icon="res://logo/icon.png"
-config/version="0.3.1"
+config/version="0.3.3"
 
 [autoload]
 
@@ -44,3 +44,7 @@ import/blender/enabled=false
 
 2d/default_gravity=0
 2d/default_linear_damp=0.7
+
+[rendering]
+
+anti_aliasing/quality/msaa_2d=3
