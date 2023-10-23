@@ -20,13 +20,13 @@ enum GameStates {
 	WIN,
 }
 enum TurnStates {
-	NONE, # 0
-	PLACE_BALL, # 1 Place cue ball on line
-	PLACE_BALL_KITCHEN, # 2 Place cue ball in kitchen
-	PLAY, # 3
-	HIT, # 4 Ball is moving
-	CORRECT_HIT, # 5
-	FOUL # 6
+	NONE,
+	PLACE_BALL, # Place cue ball on line
+	PLACE_BALL_KITCHEN, # Place cue ball in kitchen
+	PLAY,
+	HIT, # Ball is moving
+	CORRECT_HIT,
+	FOUL,
 }
 
 var current_game_state
@@ -62,10 +62,11 @@ func _input(event):
 			and current_turn_state == TurnStates.PLACE_BALL
 	):
 		playing_surface.project_cue_ball_to_head_string()
+	# Place cue ball at position
 	elif (
 			event is InputEventMouseButton
 			and event.button_index == MOUSE_BUTTON_LEFT
-			and !event.is_pressed()
+			and event.is_pressed()
 	):
 		# Place ball along headstring
 		if current_turn_state == TurnStates.PLACE_BALL:

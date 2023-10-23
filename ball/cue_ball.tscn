@@ -90,4 +90,4 @@ libraries = {
 "": SubResource("AnimationLibrary_c8iy1")
 }
 
-[connection signal="input_event" from="." to="." method="_on_Ball_input_event"]
+[connection signal="input_event" from="." to="." method="_on_ball_input_event"]

@@ -14,7 +14,7 @@ config/name="BreakoutShot"
 run/main_scene="res://ui/main_menu.tscn"
 config/features=PackedStringArray("4.1")
 config/icon="res://logo/icon.png"
-config/version="0.3.0"
+config/version="0.3.1"
 
 [autoload]
 
@@ -26,6 +26,7 @@ ClickSound="*res://ui/sfx/click_sound.tscn"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+window/size/mode=3
 window/stretch/aspect="expand"
 window/handheld/orientation=6
 

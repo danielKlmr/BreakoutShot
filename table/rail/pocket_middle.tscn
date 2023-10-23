@@ -10,6 +10,7 @@ collision_layer = 2
 polygon = PackedVector2Array(-65, 0, -128, 0, -128, -128, 128, -128, 128, 0, 65, 0, 50, -63, 44, -77, 35, -89, 22, -96, 9, -98, -8, -98, -21, -96, -32, -91, -41, -81, -49, -66)
 
 [node name="PocketHole" parent="." instance=ExtResource("1_47d71")]
+z_index = -2
 position = Vector2(0, -110)
 
 [node name="Surface" type="Sprite2D" parent="."]

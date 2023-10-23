@@ -20,6 +20,7 @@ enum Suits {
 	SOLID,
 }
 
+const COLLISION_LAYER = 1
 const SPEED_THRESHOLD_VERY_SLOW = 1
 const SPEED_THRESHOLD_SLOW = 100000
 const SPEED_THRESHOLD_FAST = 500000
@@ -130,9 +131,10 @@ func _pocket_physics(delta):
 	apply_central_force(force_to_pocket_center)
 
 
-func _on_Ball_body_entered(body):
+## Handles collisions between balls
+func _on_ball_body_entered(body):
 	# Check if collision is with another ball
-	if body.get_scene_file_path() == self.get_scene_file_path():
+	if body.get_collision_layer_value(COLLISION_LAYER):
 		# Only first called ball makes sound
 		if first_collider:
 			var collision_vector = linear_velocity - body.linear_velocity
@@ -155,5 +157,5 @@ func _on_Ball_body_entered(body):
 
 
 ## Sets first collider variable to true again when the collision is over
-func _on_Ball_body_exited(_body):
+func _on_ball_body_exited(_body):
 	first_collider = true

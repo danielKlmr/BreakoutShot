@@ -86,7 +86,6 @@ func _draw():
 	# Draw spots on playing surface
 	draw_circle(foot_spot_position, SPOT_DRAWING_SIZE, _rail_color)
 	draw_circle(head_spot_position, SPOT_DRAWING_SIZE, _rail_color)
-	draw_circle(center_spot_position, SPOT_DRAWING_SIZE, _rail_color)
 
 
 ## Place cue ball in head field
@@ -122,7 +121,7 @@ func setup_cue_ball(kitchen):
 		balls.move_child(_cue_ball, 0)
 	
 	_cue_ball.connect("hit_ball", Callable(self, "hit_ball"))
-	_cue_ball.connect("strike_object_ball", Callable(self, "strike_object_ball"))
+	_cue_ball.connect("strike_object_ball", Callable(self, "forward_strike_object_ball"))
 	_cue_ball.connect("ball_in_pocket", Callable(self, "ball_in_pocket"))
 	
 	set_balls_static(true)
@@ -200,6 +199,11 @@ func play():
 ## Called, when hit_ball signal is received from cue ball
 func hit_ball():
 	balls_moving = true
+
+
+## Forwards the strike object ball signal
+func forward_strike_object_ball(other_ball_number):
+	emit_signal("strike_object_ball", other_ball_number)
 
 
 ## Removes ball that was pocketed
