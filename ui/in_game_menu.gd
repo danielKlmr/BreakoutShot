@@ -68,17 +68,20 @@ func _toggle_pause_menu():
 ## Show win popup
 func open_win_menu():
 	win_lost_buttons.show()
-	_open_popup("Won!")
+	get_tree().paused = true
+	_open_popup("Win!")
 
 ## Show lost popup
 func open_lost_menu():
 	win_lost_buttons.show()
-	_open_popup("Lost!")
+	get_tree().paused = true
+	_open_popup("Loose!")
 
 
 ## Popup to show when ball has to be placed
 func show_place_cue():
-	_open_popup("Place\nCue Ball!")
+	subtext.set_text("Place Cue Ball along Head String")
+	_open_popup("Start!")
 	
 	await get_tree().create_timer(AUTOCLOSE_TIME).timeout
 	if !get_tree().is_paused():
@@ -96,7 +99,7 @@ func foul(number_fouls):
 	fouls_value.set_text(str(number_fouls))
 	
 	subtext.show()
-	subtext.set_text('Place Cue Ball in Head Field')
+	subtext.set_text("Place Cue Ball in Head Field")
 	_open_popup("Foul!")
 	
 	await get_tree().create_timer(AUTOCLOSE_TIME).timeout
