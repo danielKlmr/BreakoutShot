@@ -7,7 +7,7 @@ The billiards rules are simplified because there is no multiplayer functionality
 
 ## How to Play
 
-Download zip-File from release page or play in browser on (itch.io)[https://derdan-iel.itch.io/breakoutshot].
+Download zip-File from release page or play in browser on [itch.io](https://derdan-iel.itch.io/breakoutshot).
 
 ## Technical Features
 Here are some features that I implemented on my own because I did not find much about how it could be done based on my research. Maybe it can be useful for someone.
@@ -26,10 +26,8 @@ The idea here was to make the game adapt dynamically to any screen orientation a
 
 ## Contact
 
-https://mastodon.social/@Daniero
+[Mastodon](https://mastodon.social/@Daniero)
 
 ## Resources
-- Another pool billiards game made with Godot:  
-https://github.com/fswienty/godot-multiplayer-billiards
-- German tutorial for programming a billiards game (JavaScript):  
-https://www.youtube.com/watch?v=pJ0SW4ayXzU&list=PL1LHMFscti8vGfIvK5-9P5RAavTxzoQWP
+- [Another pool billiards game made with Godot (GitHub)](https://github.com/fswienty/godot-multiplayer-billiards)
+- [German tutorial for programming a billiards game written in JavaScript (YouTube)](https://www.youtube.com/watch?v=pJ0SW4ayXzU&list=PL1LHMFscti8vGfIvK5-9P5RAavTxzoQWP)
